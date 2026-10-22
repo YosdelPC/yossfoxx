@@ -593,9 +593,28 @@
       backdrop-filter: blur(3px);
     }
   </style>
+  <style>
+    /* Funciones nuevas 2026-10-22: promo, cómo pedir, filtro por precio, WhatsApp flotante */
+    .promo-bar { background: linear-gradient(90deg, #b8912a, #d4af37, #b8912a); color: #131a06; text-align: center; font-weight: 800; font-size: .82rem; letter-spacing: .04em; padding: 6px 12px; }
+    .howto { max-width: 1180px; margin: 26px auto 4px; padding: 18px 20px; background: color-mix(in srgb, var(--surface) 65%, transparent); backdrop-filter: blur(3px); border: 1px solid var(--line); border-radius: var(--radius); text-align: center; }
+    .howto-title { margin: 0 0 12px; font-size: 1.15rem; }
+    .howto-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .howto-step { display: flex; align-items: center; gap: 10px; text-align: left; }
+    .howto-step p { margin: 0; font-size: .9rem; }
+    .howto-num { flex: 0 0 auto; width: 30px; height: 30px; border-radius: 50%; background: #d4af37; color: #131a06; font-weight: 800; display: grid; place-items: center; }
+    .pdf-btn { display: inline-flex; align-items: center; gap: 8px; margin-top: 16px; padding: 10px 18px; border-radius: 999px; background: var(--ink); color: var(--bg); font-weight: 700; font-size: .9rem; text-decoration: none; }
+    .pdf-btn svg { width: 17px; height: 17px; }
+    .price-chips { max-width: 1180px; margin: 12px auto 0; display: flex; gap: 8px; flex-wrap: wrap; }
+    .price-chip { padding: 7px 16px; border-radius: 999px; border: 1px solid var(--line); background: color-mix(in srgb, var(--surface) 65%, transparent); color: var(--ink); font-weight: 700; font-size: .85rem; cursor: pointer; }
+    .price-chip.active { background: #d4af37; border-color: #d4af37; color: #131a06; }
+    .wa-float { position: fixed; right: 18px; bottom: 18px; z-index: 40; width: 56px; height: 56px; border-radius: 50%; background: #25d366; display: grid; place-items: center; box-shadow: 0 6px 20px rgba(0,0,0,.35); }
+    .wa-float svg { width: 30px; height: 30px; fill: #fff; }
+    @media (max-width: 640px) { .howto-steps { grid-template-columns: 1fr; } .howto { margin-left: 12px; margin-right: 12px; } .price-chips { margin-left: 12px; margin-right: 12px; } }
+  </style>
 </head>
 <body>
   <header class="topbar">
+    <div class="promo-bar">¡CADA 4 JUEGOS, 1 GRATIS!</div>
     <div class="topbar-inner">
       <div class="console-tag">PS4 · CATÁLOGO</div>
       <label class="search-wrap">
@@ -640,10 +659,29 @@
       <div class="catalog" id="premieresCatalog" aria-label="Juegos de estreno"></div>
     </section>
 
+    <section class="howto" aria-label="Cómo pedir">
+      <h2 class="howto-title">¿Cómo pedir?</h2>
+      <div class="howto-steps">
+        <div class="howto-step"><span class="howto-num">1</span><p>Elige tus juegos y agrégalos al carrito</p></div>
+        <div class="howto-step"><span class="howto-num">2</span><p>Envía tu pedido por WhatsApp</p></div>
+        <div class="howto-step"><span class="howto-num">3</span><p>Se copian a tu PS4 y ¡a jugar!</p></div>
+      </div>
+      <a class="pdf-btn" href="catalogo.pdf" download>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><path d="m7 10 5 5 5-5"></path><path d="M12 15V3"></path></svg>
+        Descargar catálogo en PDF
+      </a>
+    </section>
+
     <div class="section-head" id="catalogHeading">
       <h2>Juegos disponibles</h2>
       <p class="result-count" id="resultCount">143 juegos</p>
     </div>
+    <nav class="price-chips" aria-label="Filtrar por precio">
+      <button class="price-chip active" type="button" data-price="all">Todos</button>
+      <button class="price-chip" type="button" data-price="300">300 CUP</button>
+      <button class="price-chip" type="button" data-price="500">500 CUP</button>
+      <button class="price-chip" type="button" data-price="1000">1000 CUP</button>
+    </nav>
     <section class="catalog" id="catalog" aria-label="Catálogo de juegos"></section>
     <nav class="pagination" id="pagination" aria-label="Páginas del catálogo" hidden>
       <button class="page-btn" id="previousPage" type="button">Anterior</button>
@@ -824,6 +862,7 @@
       var cart = {};
       var pageSize = 32;
       var currentPage = 1;
+      var priceFilter = null;
       var catalog = document.getElementById('catalog');
       var premieres = document.getElementById('premieres');
       var premieresCatalog = document.getElementById('premieresCatalog');
@@ -887,7 +926,7 @@
       function renderCatalog() {
         var query = search.value.trim().toLocaleLowerCase('es');
         var filtered = games.filter(function (game) {
-          return game.title.toLocaleLowerCase('es').indexOf(query) !== -1;
+          return game.title.toLocaleLowerCase('es').indexOf(query) !== -1 && (priceFilter === null || gamePrice(game) === priceFilter);
         });
         var premiereGames = filtered.filter(function (game) { return game.premiere; });
         premiereGames.sort(function (a, b) {
@@ -1000,6 +1039,16 @@
         currentPage = 1;
         renderCatalog();
       });
+      document.querySelectorAll('.price-chip').forEach(function (chip) {
+        chip.addEventListener('click', function () {
+          document.querySelectorAll('.price-chip').forEach(function (c) { c.classList.remove('active'); });
+          chip.classList.add('active');
+          var value = chip.getAttribute('data-price');
+          priceFilter = value === 'all' ? null : parseInt(value, 10);
+          currentPage = 1;
+          renderCatalog();
+        });
+      });
       previousPage.addEventListener('click', function () { changePage(-1); });
       nextPage.addEventListener('click', function () { changePage(1); });
       document.getElementById('openCart').addEventListener('click', openCart);
@@ -1010,5 +1059,8 @@
       renderCart();
     })();
   </script>
-</body>
+<a class="wa-float" href="https://wa.me/5352390321?text=Hola%2C%20Yosdel%2C%20tengo%20una%20pregunta%20sobre%20los%20juegos%20de%20PS4" target="_blank" rel="noopener noreferrer" aria-label="Preguntar por WhatsApp" title="Preguntar por WhatsApp">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 3.5A11.6 11.6 0 0 0 12.1 0 11.9 11.9 0 0 0 1.8 17.8L0 24l6.4-1.7a11.7 11.7 0 0 0 5.7 1.5h.1A11.8 11.8 0 0 0 20.5 3.5Zm-8.4 18.3a9.8 9.8 0 0 1-5-1.4l-.4-.2-3.8 1 1-3.7-.2-.4A9.8 9.8 0 1 1 12.1 21.8Zm5.4-7.3c-.3-.1-1.7-.8-2-1-.3-.1-.5-.1-.7.2l-.9 1.1c-.2.2-.3.2-.6.1a8 8 0 0 1-2.4-1.5 9 9 0 0 1-1.7-2.1c-.2-.3 0-.5.1-.6l.5-.6.3-.5c.1-.2 0-.4 0-.5L9.2 7c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.7-.7 2-1.4.2-.7.2-1.3.2-1.4-.1-.2-.3-.3-.7-.4Z"></path></svg>
+  </a>
+  </body>
 </html>
