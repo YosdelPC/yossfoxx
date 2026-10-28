@@ -674,7 +674,7 @@
 
     <div class="section-head" id="catalogHeading">
       <h2>Juegos disponibles</h2>
-      <p class="result-count" id="resultCount">145 juegos</p>
+      <p class="result-count" id="resultCount">155 juegos</p>
     </div>
     <nav class="price-chips" aria-label="Filtrar por precio">
       <button class="price-chip active" type="button" data-price="all">Todos</button>
@@ -858,7 +858,17 @@
         { id: 'game-139', title: "Until Dawn", capacity: 42.7, cover: "https://yosdelpc.github.io/yossfoxx/portadas/00139.webp", trailer: "https://www.youtube.com/watch?v=FcxkVg9JHz0" },
         { id: 'game-140', title: "Untitled Goose Game", capacity: 0.438, cover: "https://yosdelpc.github.io/yossfoxx/portadas/00140.webp", trailer: "https://www.youtube.com/watch?v=cxFAT5aOMgg", premiere: true },
         { id: 'game-141', title: "Who Wants To Be A Millionaire", capacity: 1.0, cover: "https://yosdelpc.github.io/yossfoxx/portadas/00141.webp", trailer: "https://www.youtube.com/watch?v=Z_spkg15aVg" },
-        { id: 'game-142', title: "WRC 10 FIA World Rally Championship", capacity: 36.1, cover: "https://yosdelpc.github.io/yossfoxx/portadas/00142.webp", trailer: "https://www.youtube.com/watch?v=hKDh3RyVahk" }
+        { id: 'game-142', title: "WRC 10 FIA World Rally Championship", capacity: 36.1, cover: "https://yosdelpc.github.io/yossfoxx/portadas/00142.webp", trailer: "https://www.youtube.com/watch?v=hKDh3RyVahk" },
+        { id: 'game-146', title: "P.T.", capacity: 1.3, cover: "https://yosdelpc.github.io/yossfoxx/portadas/00146.webp", trailer: "https://www.youtube.com/watch?v=MnMJ0urMz54" },
+        { id: 'game-147', title: "Far Cry New Dawn", capacity: 21.4, cover: "https://yosdelpc.github.io/yossfoxx/portadas/00147.webp", trailer: "https://www.youtube.com/watch?v=mc9ORzs23oY" },
+        { id: 'game-148', title: "UFC 4", capacity: 22.9, cover: "https://yosdelpc.github.io/yossfoxx/portadas/00148.webp", trailer: "https://www.youtube.com/watch?v=GjugTk9ovcI" },
+        { id: 'game-149', title: "Sniper Elite 5", capacity: 38.6, cover: "https://yosdelpc.github.io/yossfoxx/portadas/00149.webp", trailer: "https://www.youtube.com/watch?v=-QpmtRbH33I" },
+        { id: 'game-150', title: "Dead Island 2", capacity: 17.5, cover: "https://yosdelpc.github.io/yossfoxx/portadas/00150.webp", trailer: "https://www.youtube.com/watch?v=f70Uz0fnX7E" },
+        { id: 'game-151', title: "Atomic Heart", capacity: 45.1, cover: "https://yosdelpc.github.io/yossfoxx/portadas/00151.webp", trailer: "https://www.youtube.com/watch?v=ZXSi4EcxnuY" },
+        { id: 'game-152', title: "Guns Gore and Cannoli 2", capacity: 1.08, cover: "https://yosdelpc.github.io/yossfoxx/portadas/00152.webp", trailer: "https://www.youtube.com/watch?v=y0D0O303DyQ", premiere: true },
+        { id: 'game-153', title: "Machinarium", capacity: 0.333, cover: "https://yosdelpc.github.io/yossfoxx/portadas/00153.webp", trailer: "https://www.youtube.com/watch?v=uwZBdWRSBRs", premiere: true },
+        { id: 'game-154', title: "SUPERHOT", capacity: 1.85, cover: "https://yosdelpc.github.io/yossfoxx/portadas/00154.webp", trailer: "https://www.youtube.com/watch?v=OaXv7J-kvjo", premiere: true },
+        { id: 'game-155', title: "Valfaris", capacity: 1.12, cover: "https://yosdelpc.github.io/yossfoxx/portadas/00155.webp", trailer: "https://www.youtube.com/watch?v=6RdvuT30zUA", premiere: true }
       ];
       var cart = {};
       var pageSize = 32;
@@ -885,7 +895,7 @@
       var toastTimer;
 
       function money(value) { return value.toLocaleString('es-ES') + ' CUP'; }
-      function gamePrice(game) { return game.title === 'EA SPORTS FC 27' ? 1000 : (game.capacity <= 3 ? 300 : 500); }
+      function gamePrice(game) { return game.title === 'EA SPORTS FC 27' ? 1000 : (game.capacity <= 1 ? 200 : (game.capacity <= 3 ? 300 : 500)); }
       function storage(value) {
         if (value < 1) return Math.round(value * 1000).toLocaleString('es-ES') + ' MB';
         return value.toLocaleString('es-ES', { maximumFractionDigits: 4 }) + ' GB';
