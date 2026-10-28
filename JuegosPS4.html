@@ -885,7 +885,7 @@
       var toastTimer;
 
       function money(value) { return value.toLocaleString('es-ES') + ' CUP'; }
-      function gamePrice(game) { return game.title === 'EA SPORTS FC 27' ? 1000 : (game.capacity < 5 ? 300 : 500); }
+      function gamePrice(game) { return game.title === 'EA SPORTS FC 27' ? 1000 : (game.capacity <= 3 ? 300 : 500); }
       function storage(value) {
         if (value < 1) return Math.round(value * 1000).toLocaleString('es-ES') + ' MB';
         return value.toLocaleString('es-ES', { maximumFractionDigits: 4 }) + ' GB';
