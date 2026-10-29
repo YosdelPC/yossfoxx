@@ -664,6 +664,7 @@
       padding: 11px 12px; border-radius: 8px; color: var(--ink); font-weight: 700; font-size: .92rem;
     }
     .bb-item:hover { background: var(--surface-2); }
+    .bb-panel a.bb-item { text-decoration: none; }
     .bb-sub { display: flex; flex-direction: column; padding: 2px 0 2px 12px; }
     .bb-sub[hidden] { display: none; }
     .bb-sub a {
@@ -1233,7 +1234,7 @@
       <a href="https://www.youtube.com/@YossFoxx" target="_blank" rel="noopener noreferrer">YouTube</a>
       <a href="mailto:yosdelpc@gmail.com">Correo</a>
     </div>
-    <button class="bb-item" id="bbPanelCart" type="button">Carrito <span id="bbPanelCartCount">0</span></button>
+    <a class="bb-item" href="PedidosUsuarios.html">Pedidos de Usuarios</a>
     <button class="bb-item" id="bbPanelPremieres" type="button">Estrenos</button>
     <button class="bb-item" id="bbPanelHowto" type="button">¿Cómo pedir?</button>
   </div>
@@ -1267,8 +1268,6 @@
       if (games) games.addEventListener('click', function () { scrollToId('catalogHeading'); });
       var cartBtn = document.getElementById('bbCart');
       if (cartBtn) cartBtn.addEventListener('click', openCartFromBar);
-      var panelCart = document.getElementById('bbPanelCart');
-      if (panelCart) panelCart.addEventListener('click', openCartFromBar);
       var howtoBtn = document.getElementById('bbHowto');
       if (howtoBtn) howtoBtn.addEventListener('click', function () { scrollToId('howto'); });
       var panelHowto = document.getElementById('bbPanelHowto');
