@@ -415,10 +415,7 @@
 
     .overlay {
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: calc(66px + env(safe-area-inset-bottom));
+      inset: 0;
       z-index: 50;
       background: rgba(0, 0, 0, .58);
       opacity: 0;
@@ -488,7 +485,7 @@
     .item-total { text-align: right; font-weight: 800; font-size: .9rem; }
     .remove-btn { display: block; margin: 8px 0 0 auto; padding: 0; border: 0; background: transparent; color: var(--danger); font-size: .75rem; cursor: pointer; }
     .cart-footer {
-      padding: 18px 20px;
+      padding: 18px 20px calc(18px + env(safe-area-inset-bottom));
       border-top: 1px solid var(--line);
       background: var(--surface);
       box-shadow: 0 -10px 35px rgba(0,0,0,.08);
