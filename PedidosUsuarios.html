@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pedidos de Usuarios · YossFoxx</title>
+<style>
+  :root { --bg: #0b1220; --card: #131c2e; --ink: #e8eef4; --mut: #9db2c3; --gold: #d4af37; --line: #24334d; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif; line-height: 1.5; }
+  main { width: min(720px, calc(100% - 32px)); margin: 0 auto; padding: 32px 0 80px; }
+  a { color: inherit; }
+  .back { display: inline-flex; gap: 8px; align-items: center; color: var(--gold); text-decoration: none; font-weight: 700; margin-bottom: 18px; }
+  h1 { font-family: "Barlow Condensed", "Arial Narrow", sans-serif; font-size: clamp(2.2rem, 8vw, 3.2rem); line-height: 1; margin: 0 0 6px; }
+  h1 span { color: var(--gold); }
+  .sub { color: var(--mut); margin: 0 0 24px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 18px; margin-bottom: 20px; }
+  label { display: block; font-weight: 700; margin-bottom: 8px; }
+  .row { display: flex; gap: 10px; flex-wrap: wrap; }
+  input[type="text"] { flex: 1; min-width: 200px; min-height: 46px; padding: 10px 14px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); color: var(--ink); font: inherit; }
+  button { min-height: 46px; padding: 10px 18px; border: 0; border-radius: 8px; background: var(--gold); color: #131a06; font-weight: 800; cursor: pointer; }
+  button:disabled { opacity: .5; cursor: default; }
+  .note { color: var(--mut); font-size: .85rem; margin: 12px 0 0; }
+  .msg { min-height: 1.4em; font-weight: 700; margin: 12px 0 0; }
+  .msg.ok { color: #7fd98a; }
+  .msg.err { color: #ff8a80; }
+  h2 { font-family: "Barlow Condensed", "Arial Narrow", sans-serif; font-size: 1.7rem; margin: 0 0 12px; }
+  ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  li { display: flex; gap: 12px; align-items: center; justify-content: space-between; background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; }
+  li .t { font-weight: 700; }
+  li .f { color: var(--mut); font-size: .8rem; }
+  li .done { background: transparent; border: 1px solid var(--line); color: var(--ink); min-height: 36px; padding: 6px 12px; font-size: .85rem; white-space: nowrap; }
+  .empty, .loading { color: var(--mut); text-align: center; padding: 20px 0; }
+</style>
+</head>
+<body>
+<main>
+  <a class="back" href="JuegosPS4.html">← Volver a Mis Juegos PS4</a>
+  <h1>Pedidos <span>de Usuarios</span></h1>
+  <p class="sub">Juegos que la comunidad quiere ver en el catálogo. Agrega el título y se suma a la lista compartida de pendientes.</p>
+  <section class="card">
+    <label for="pedidoTitulo">Título del juego</label>
+    <div class="row">
+      <input id="pedidoTitulo" type="text" maxlength="100" placeholder="Ej: Splinter Cell Conviction" autocomplete="off">
+      <button id="agregarPedido" type="button">Agregar pedido</button>
+    </div>
+    <p class="msg" id="pedidoMsg"></p>
+    <p class="note">La lista es compartida: todos ven los mismos pedidos pendientes. Solo se pide el título, ningún dato personal.</p>
+  </section>
+  <section class="card">
+    <h2>Pendientes (<span id="pedidoCount">0</span>)</h2>
+    <div class="loading" id="listaEstado">Cargando pedidos…</div>
+    <ul id="listaPedidos"></ul>
+  </section>
+</main>
+<script>
+  var API_URL = 'https://script.google.com/macros/s/AKfycbzaVhbagYIkT8iMghs1gtRIW5_1z4Z4Rk4h484S-e-1RI_6-0KKN0CdNirz_YN_ljNH/exec';
+  var input = document.getElementById('pedidoTitulo');
+  var addBtn = document.getElementById('agregarPedido');
+  var msg = document.getElementById('pedidoMsg');
+  var list = document.getElementById('listaPedidos');
+  var estado = document.getElementById('listaEstado');
+  var count = document.getElementById('pedidoCount');
+  function escapeHtml(value) {
+    return value.replace(/[&<>'"]/g, function (c) { return ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'})[c]; });
+  }
+  function formatFecha(value) {
+    var d = new Date(value);
+    if (isNaN(d.getTime())) return '';
+    return d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear();
+  }
+  function showMsg(text, kind) {
+    msg.textContent = text;
+    msg.className = 'msg ' + (kind || '');
+  }
+  function render(pedidos) {
+    count.textContent = pedidos.length;
+    if (!pedidos.length) {
+      estado.textContent = 'Aún no hay pedidos pendientes. ¡Sé el primero en agregar uno!';
+      estado.className = 'empty';
+      estado.style.display = 'block';
+      list.innerHTML = '';
+      return;
+    }
+    estado.style.display = 'none';
+    list.innerHTML = pedidos.map(function (p) {
+      return '<li><div><div class="t">' + escapeHtml(p.titulo) + '</div>' +
+        (p.fecha ? '<div class="f">' + escapeHtml(formatFecha(p.fecha)) + '</div>' : '') +
+        '</div><button class="done" type="button" data-done="' + p.row + '">Ya lo agregué</button></li>';
+    }).join('');
+  }
+  function loadPedidos() {
+    if (!API_URL || API_URL.indexOf('___') === 0) {
+      estado.textContent = 'La lista compartida estará disponible en cuanto se conecte el servicio.';
+      estado.className = 'empty';
+      return;
+    }
+    estado.textContent = 'Cargando pedidos…';
+    estado.className = 'loading';
+    estado.style.display = 'block';
+    fetch(API_URL).then(function (r) { return r.json(); }).then(function (data) {
+      if (data && data.pedidos) { render(data.pedidos); }
+      else { throw new Error('bad'); }
+    }).catch(function () {
+      estado.textContent = 'No se pudo cargar la lista. Revisa tu conexión e intenta de nuevo.';
+      estado.className = 'empty';
+    });
+  }
+  addBtn.addEventListener('click', function () {
+    var titulo = input.value.trim();
+    if (!titulo) { showMsg('Escribe el título del juego primero.', 'err'); input.focus(); return; }
+    if (!API_URL || API_URL.indexOf('___') === 0) { showMsg('La lista compartida aún no está conectada. Intenta en unos minutos.', 'err'); return; }
+    addBtn.disabled = true;
+    showMsg('Agregando…', '');
+    fetch(API_URL + '?action=add&title=' + encodeURIComponent(titulo)).then(function (r) { return r.json(); }).then(function () {
+      input.value = '';
+      showMsg('Pedido agregado a la lista compartida.', 'ok');
+      loadPedidos();
+    }).catch(function () {
+      showMsg('No se pudo agregar. Revisa tu conexión e intenta de nuevo.', 'err');
+    }).finally(function () { addBtn.disabled = false; });
+  });
+  input.addEventListener('keydown', function (e) { if (e.key === 'Enter') addBtn.click(); });
+  list.addEventListener('click', function (e) {
+    var btn = e.target.closest('[data-done]');
+    if (!btn) return;
+    var row = btn.getAttribute('data-done');
+    btn.disabled = true;
+    fetch(API_URL + '?action=done&row=' + encodeURIComponent(row)).then(function (r) { return r.json(); }).then(function () {
+      loadPedidos();
+    }).catch(function () {
+      btn.disabled = false;
+      showMsg('No se pudo marcar. Intenta de nuevo.', 'err');
+    });
+  });
+  loadPedidos();
+</script>
+</body>
+</html>
