@@ -415,7 +415,10 @@
 
     .overlay {
       position: fixed;
-      inset: 0;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: calc(66px + env(safe-area-inset-bottom));
       z-index: 50;
       background: rgba(0, 0, 0, .58);
       opacity: 0;
@@ -485,7 +488,7 @@
     .item-total { text-align: right; font-weight: 800; font-size: .9rem; }
     .remove-btn { display: block; margin: 8px 0 0 auto; padding: 0; border: 0; background: transparent; color: var(--danger); font-size: .75rem; cursor: pointer; }
     .cart-footer {
-      padding: 18px 20px calc(18px + env(safe-area-inset-bottom));
+      padding: 18px 20px;
       border-top: 1px solid var(--line);
       background: var(--surface);
       box-shadow: 0 -10px 35px rgba(0,0,0,.08);
@@ -515,7 +518,7 @@
     .toast {
       position: fixed;
       left: 50%;
-      bottom: 24px;
+      bottom: calc(90px + env(safe-area-inset-bottom));
       z-index: 80;
       transform: translate(-50%, 30px);
       opacity: 0;
@@ -616,41 +619,90 @@
     .price-chips { max-width: 1180px; margin: 12px auto 0; display: flex; gap: 8px; flex-wrap: wrap; }
     .price-chip { padding: 7px 16px; border-radius: 999px; border: 1px solid var(--line); background: color-mix(in srgb, var(--surface) 65%, transparent); color: var(--ink); font-weight: 700; font-size: .85rem; cursor: pointer; }
     .price-chip.active { background: #d4af37; border-color: #d4af37; color: #131a06; }
-    .wa-float { position: fixed; right: 18px; bottom: 18px; z-index: 40; width: 56px; height: 56px; border-radius: 50%; background: #25d366; display: grid; place-items: center; box-shadow: 0 6px 20px rgba(0,0,0,.35); }
+    .wa-float { position: fixed; right: 18px; bottom: calc(84px + env(safe-area-inset-bottom)); z-index: 40; width: 56px; height: 56px; border-radius: 50%; background: #25d366; display: grid; place-items: center; box-shadow: 0 6px 20px rgba(0,0,0,.35); }
     .wa-float svg { width: 30px; height: 30px; fill: #fff; }
     @media (max-width: 640px) { .howto-steps { grid-template-columns: 1fr; } .howto { margin-left: 12px; margin-right: 12px; } .price-chips { margin-left: 12px; margin-right: 12px; } }
+    body { padding-bottom: calc(66px + env(safe-area-inset-bottom)); }
+    .search-cart-row {
+      display: flex; gap: 10px; align-items: center;
+      max-width: 1180px; margin: 0 auto 20px; padding: 12px;
+      background: color-mix(in srgb, var(--surface) 65%, transparent);
+      backdrop-filter: blur(3px);
+      border: 1px solid var(--line); border-radius: var(--radius);
+    }
+    .search-cart-row .search-wrap { max-width: none; margin-left: 0; }
+    .howto[hidden] { display: none; }
+    .bottom-bar {
+      position: fixed; left: 0; right: 0; bottom: 0; z-index: 35;
+      display: flex; justify-content: space-around; align-items: stretch;
+      padding: 6px 6px calc(6px + env(safe-area-inset-bottom));
+      background: color-mix(in srgb, var(--bg) 92%, transparent);
+      backdrop-filter: blur(14px);
+      border-top: 1px solid var(--line);
+    }
+    .bb-btn {
+      flex: 1; border: 0; background: transparent; cursor: pointer;
+      display: flex; flex-direction: column; align-items: center; gap: 2px;
+      padding: 6px 2px 4px; color: var(--muted); font-size: .68rem; font-weight: 700;
+      border-radius: 10px; position: relative;
+    }
+    .bb-btn svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2; }
+    .bb-btn.bb-home { background: var(--signal); color: var(--signal-ink); }
+    .bb-btn.bb-home svg { stroke: var(--signal-ink); }
+    .bb-count {
+      position: absolute; top: 0; right: 8px; min-width: 18px; height: 18px; padding: 0 4px;
+      display: grid; place-items: center; border-radius: 999px;
+      background: var(--signal); color: var(--signal-ink); font-size: .65rem; font-weight: 800;
+    }
+    .bb-help { width: 24px; height: 24px; display: grid; place-items: center; border: 2px solid currentColor; border-radius: 50%; font-size: 15px; line-height: 1; }
+    .bb-panel {
+      position: fixed; right: 12px; bottom: calc(72px + env(safe-area-inset-bottom)); z-index: 60;
+      width: min(280px, calc(100% - 24px));
+      background: var(--surface); border: 1px solid var(--line); border-radius: 12px;
+      box-shadow: var(--shadow); padding: 8px; display: flex; flex-direction: column; gap: 2px;
+    }
+    .bb-panel[hidden] { display: none; }
+    .bb-item {
+      border: 0; background: transparent; cursor: pointer; text-align: left;
+      padding: 11px 12px; border-radius: 8px; color: var(--ink); font-weight: 700; font-size: .92rem;
+    }
+    .bb-item:hover { background: var(--surface-2); }
+    .bb-sub { display: flex; flex-direction: column; padding: 2px 0 2px 12px; }
+    .bb-sub[hidden] { display: none; }
+    .bb-sub a {
+      padding: 9px 12px; border-radius: 8px; color: var(--ink); text-decoration: none; font-weight: 700; font-size: .88rem;
+    }
+    .bb-sub a:hover { background: var(--surface-2); }
+    .wa-float { overflow: hidden; padding: 0; border: 0; cursor: pointer; }
+    .wa-float img.wa-main-photo { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .wa-float .wa-close-x { display: none; color: #fff; font-size: 30px; line-height: 1; }
+    .wa-float.open { background: #0b1f3d; }
+    .wa-float.open img.wa-main-photo { display: none; }
+    .wa-float.open .wa-close-x { display: block; }
+    .wa-fan {
+      position: fixed; right: 18px; bottom: calc(152px + env(safe-area-inset-bottom)); z-index: 40;
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .wa-fan[hidden] { display: none; }
+    .wa-fan-link {
+      display: flex; align-items: center; gap: 8px; padding: 8px 12px 8px 8px;
+      border-radius: 999px; background: var(--surface); border: 1px solid var(--line);
+      color: var(--ink); text-decoration: none; font-weight: 700; font-size: .85rem; box-shadow: var(--shadow);
+    }
+    .wa-fan-link svg { width: 26px; height: 26px; }
+    .wa-fan-link.whatsapp svg { fill: #25d366; }
+    .wa-fan-link.facebook svg { fill: currentColor; }
+    .wa-fan-link.instagram svg, .wa-fan-link.youtube svg, .wa-fan-link.email svg { fill: none; stroke: currentColor; stroke-width: 2; }
+    .wa-fan-link.youtube .play { fill: currentColor; stroke: none; }
+    @media (max-width: 690px) {
+      .topbar { display: none; }
+    }
   </style>
 </head>
 <body>
   <header class="topbar">
     <div class="topbar-inner">
-      <nav class="social-links" aria-label="Redes sociales y contacto">
-        <a class="social-link whatsapp" href="https://wa.me/5352390321?text=Hola%2C%20Yosdel%2C%20tengo%20una%20pregunta%20sobre%20los%20juegos%20de%20PS4" target="_blank" rel="noopener noreferrer" aria-label="Contactar por WhatsApp" title="WhatsApp">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 3.5A11.6 11.6 0 0 0 12.1 0 11.9 11.9 0 0 0 1.8 17.8L0 24l6.4-1.7a11.7 11.7 0 0 0 5.7 1.5h.1A11.8 11.8 0 0 0 20.5 3.5Zm-8.4 18.3a9.8 9.8 0 0 1-5-1.4l-.4-.2-3.8 1 1-3.7-.2-.4A9.8 9.8 0 1 1 12.1 21.8Zm5.4-7.3c-.3-.1-1.7-.8-2-1-.3-.1-.5-.1-.7.2l-.9 1.1c-.2.2-.3.2-.6.1a8 8 0 0 1-2.4-1.5 9 9 0 0 1-1.7-2.1c-.2-.3 0-.5.1-.6l.5-.6.3-.5c.1-.2 0-.4 0-.5L9.2 7c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.7-.7 2-1.4.2-.7.2-1.3.2-1.4-.1-.2-.3-.3-.7-.4Z"></path></svg>
-        </a>
-        <a class="social-link instagram" href="https://www.instagram.com/yosdelpc" target="_blank" rel="noopener noreferrer" aria-label="Visitar Instagram" title="Instagram">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"></circle></svg>
-        </a>
-        <a class="social-link facebook" href="https://www.facebook.com/yosdelpc" target="_blank" rel="noopener noreferrer" aria-label="Visitar Facebook" title="Facebook">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.7 22v-8h2.7l.4-3.1h-3.1v-2c0-.9.3-1.5 1.6-1.5H17V4.6c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2.1H7.5V14h2.8v8h3.4Z"></path></svg>
-        </a>
-        <a class="social-link youtube" href="https://www.youtube.com/@YossFoxx" target="_blank" rel="noopener noreferrer" aria-label="Visitar YouTube" title="YouTube">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="5" width="19" height="14" rx="4"></rect><path class="play" d="m10 9 5 3-5 3Z"></path></svg>
-        </a>
-        <a class="social-link email" href="mailto:yosdelpc@gmail.com" aria-label="Enviar correo a yosdelpc@gmail.com" title="Correo">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="m4 7 8 6 8-6"></path></svg>
-        </a>
-      </nav>
       <div class="console-tag">PS4 · CATÁLOGO</div>
-      <label class="search-wrap">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg>
-        <input id="search" class="search" type="search" placeholder="Buscar un juego" autocomplete="off" aria-label="Buscar un juego" />
-      </label>
-      <button class="cart-trigger" id="openCart" type="button" aria-label="Abrir carrito">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l2.2 10.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6L20.5 8H6.2"></path><circle cx="10" cy="20" r="1"></circle><circle cx="17" cy="20" r="1"></circle></svg>
-        <span class="cart-label">Carrito</span>
-        <span class="cart-count" id="cartCount">0</span>
-      </button>
       
     </div>
   </header>
@@ -660,6 +712,18 @@
       <h1 id="mainTitle"><span>Mis Juegos PS4</span></h1>
     </section>
 
+    <div class="search-cart-row">
+      <label class="search-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg>
+        <input id="search" class="search" type="search" placeholder="Buscar un juego" autocomplete="off" aria-label="Buscar un juego" />
+      </label>
+      <button class="cart-trigger" id="openCart" type="button" aria-label="Abrir carrito">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l2.2 10.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6L20.5 8H6.2"></path><circle cx="10" cy="20" r="1"></circle><circle cx="17" cy="20" r="1"></circle></svg>
+        <span class="cart-label">Carrito</span>
+        <span class="cart-count" id="cartCount">0</span>
+      </button>
+    </div>
+
     <div class="promo-bar" role="marquee" aria-label="¡CADA 4 JUEGOS, 1 GRATIS! ¡HASTA UN VALOR DE 300CUP.!">
       <div class="promo-track">
         <div class="promo-chunk"><span class="promo-item">¡CADA 4 JUEGOS, 1 GRATIS!</span><span class="promo-item">¡HASTA UN VALOR DE 300CUP.!</span><span class="promo-item">¡CADA 4 JUEGOS, 1 GRATIS!</span><span class="promo-item">¡HASTA UN VALOR DE 300CUP.!</span></div>
@@ -667,7 +731,7 @@
       </div>
     </div>
 
-    <section class="howto" aria-label="Cómo pedir">
+    <section class="howto" id="howto" aria-label="Cómo pedir">
       <h2 class="howto-title">¿Cómo pedir?</h2>
       <div class="howto-steps">
         <div class="howto-step"><span class="howto-num">1</span><p>Elige tus juegos y agrégalos al carrito</p></div>
@@ -787,8 +851,8 @@
         { id: 'game-052', title: "God of War IV 2018 - Dios de la Guerra IV", capacity: 50.5, cover: "https://yosdelpc.github.io/yossfoxx/portadas/00052.webp", trailer: "https://www.youtube.com/watch?v=jCB36uNrZ9I" },
         { id: 'game-053', title: "God of War Ragnarok 2022 - Dios de la Guerra Ragnarok", capacity: 113.4, cover: "https://yosdelpc.github.io/yossfoxx/portadas/00053.webp", trailer: "https://www.youtube.com/watch?v=g1wr0DfV73E" },
         { id: 'game-054', title: "Gran Turismo 7", capacity: 101.0, cover: "https://yosdelpc.github.io/yossfoxx/portadas/00054.webp", trailer: "https://www.youtube.com/watch?v=oz-O74SmTSQ" },
-        { id: 'game-055', title: "Grand Theft Auto San Andreas - The Definitive Edition", capacity: 21.1, cover: "https://yosdelpc.github.io/yossfoxx/portadas/00055.webp", trailer: "https://www.youtube.com/watch?v=D71cBUeAL58", premiere: true },
-        { id: 'game-056', title: "Grand Theft Auto V", capacity: 58.3, cover: "https://yosdelpc.github.io/yossfoxx/portadas/00056.webp", trailer: "https://www.youtube.com/watch?v=hBvMSP7cI-Q" },
+        { id: 'game-055', title: "Grand Theft Auto San Andreas - The Definitive Edition GTA", capacity: 21.1, cover: "https://yosdelpc.github.io/yossfoxx/portadas/00055.webp", trailer: "https://www.youtube.com/watch?v=D71cBUeAL58", premiere: true },
+        { id: 'game-056', title: "Grand Theft Auto V GTA", capacity: 58.3, cover: "https://yosdelpc.github.io/yossfoxx/portadas/00056.webp", trailer: "https://www.youtube.com/watch?v=hBvMSP7cI-Q" },
         { id: 'game-057', title: "Hellblade Senuas Sacrifice", capacity: 13.3, cover: "https://yosdelpc.github.io/yossfoxx/portadas/00057.webp", trailer: "https://www.youtube.com/watch?v=f7Ir5icRsZ0" },
         { id: 'game-058', title: "Hollow Knight - Edicion Corazon Vacio", capacity: 2.3, cover: "https://yosdelpc.github.io/yossfoxx/portadas/00058.webp", trailer: "https://www.youtube.com/watch?v=JuP47fRBsWg", premiere: true },
         { id: 'game-059', title: "Hollow Knight Silksong", capacity: 4.0, cover: "https://yosdelpc.github.io/yossfoxx/portadas/00059.webp", trailer: "https://www.youtube.com/watch?v=65IQ1JuyYfY" },
@@ -889,6 +953,26 @@
         { id: 'game-155', title: "Valfaris", capacity: 1.12, cover: "https://yosdelpc.github.io/yossfoxx/portadas/00155.webp", trailer: "https://www.youtube.com/watch?v=6RdvuT30zUA", premiere: true }
       ];
       var cart = {};
+      var CART_KEY = 'yossfoxx-cart-v1';
+      function loadCart() {
+        try {
+          var raw = window.localStorage.getItem(CART_KEY);
+          if (!raw) return;
+          var ids = JSON.parse(raw);
+          if (!Array.isArray(ids)) return;
+          ids.forEach(function (id) { if (getGame(id)) cart[id] = 1; });
+        } catch (e) {}
+      }
+      function saveCart() {
+        try {
+          var ids = Object.keys(cart).filter(function (id) { return cart[id] > 0; });
+          if (ids.length) { window.localStorage.setItem(CART_KEY, JSON.stringify(ids)); }
+          else { window.localStorage.removeItem(CART_KEY); }
+        } catch (e) {}
+      }
+      function clearSavedCart() {
+        try { window.localStorage.removeItem(CART_KEY); } catch (e) {}
+      }
       var pageSize = 32;
       var currentPage = 1;
       var priceFilter = null;
@@ -896,6 +980,7 @@
       var premieres = document.getElementById('premieres');
       var premieresCatalog = document.getElementById('premieresCatalog');
       var search = document.getElementById('search');
+      var howto = document.getElementById('howto');
       var resultCount = document.getElementById('resultCount');
       var pagination = document.getElementById('pagination');
       var previousPage = document.getElementById('previousPage');
@@ -963,8 +1048,9 @@
           if (b.title === 'EA SPORTS FC 27') return 1;
           return gameNumber(b) - gameNumber(a);
         });
-        var featuredPremieres = premiereGames.slice(0, 12);
-        var regularGames = premiereGames.slice(12).concat(filtered.filter(function (game) { return !game.premiere; }));
+        var searching = query.length > 0;
+        var featuredPremieres = searching ? [] : premiereGames.slice(0, 12);
+        var regularGames = searching ? filtered : premiereGames.slice(12).concat(filtered.filter(function (game) { return !game.premiere; }));
         var totalPages = Math.max(1, Math.ceil(regularGames.length / pageSize));
         currentPage = Math.min(currentPage, totalPages);
         var firstIndex = (currentPage - 1) * pageSize;
@@ -973,6 +1059,7 @@
 
         resultCount.textContent = filtered.length + (filtered.length === 1 ? ' juego' : ' juegos');
         premieres.hidden = !showPremieres;
+        howto.hidden = searching;
         premieresCatalog.innerHTML = showPremieres ? featuredPremieres.map(function (game, index) {
           return gameCardMarkup(game, index < 6);
         }).join('') : '';
@@ -998,6 +1085,11 @@
         var total = ids.reduce(function (sum, id) { return sum + gamePrice(getGame(id)); }, 0);
         var totalStorage = ids.reduce(function (sum, id) { return sum + getGame(id).capacity; }, 0);
         cartCount.textContent = count;
+        saveCart();
+        var bbCount = document.getElementById('bbCartCount');
+        if (bbCount) bbCount.textContent = count;
+        var bbPanelCount = document.getElementById('bbPanelCartCount');
+        if (bbPanelCount) bbPanelCount.textContent = count;
         cartTotal.textContent = money(total);
         storageTotal.textContent = storage(totalStorage);
 
@@ -1083,15 +1175,159 @@
       previousPage.addEventListener('click', function () { changePage(-1); });
       nextPage.addEventListener('click', function () { changePage(1); });
       document.getElementById('openCart').addEventListener('click', openCart);
+      sendOrder.addEventListener('click', function () {
+        if (!Object.keys(cart).length) return;
+        setTimeout(function () {
+          cart = {};
+          clearSavedCart();
+          renderCart();
+          closeCart();
+        }, 600);
+      });
       document.getElementById('closeCart').addEventListener('click', closeCart);
       overlay.addEventListener('click', function (event) { if (event.target === overlay) closeCart(); });
       document.addEventListener('keydown', function (event) { if (event.key === 'Escape' && overlay.classList.contains('open')) closeCart(); });
 
+      loadCart();
       renderCart();
     })();
   </script>
-<a class="wa-float" href="https://wa.me/5352390321?text=Hola%2C%20Yosdel%2C%20tengo%20una%20pregunta%20sobre%20los%20juegos%20de%20PS4" target="_blank" rel="noopener noreferrer" aria-label="Preguntar por WhatsApp" title="Preguntar por WhatsApp">
-    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 3.5A11.6 11.6 0 0 0 12.1 0 11.9 11.9 0 0 0 1.8 17.8L0 24l6.4-1.7a11.7 11.7 0 0 0 5.7 1.5h.1A11.8 11.8 0 0 0 20.5 3.5Zm-8.4 18.3a9.8 9.8 0 0 1-5-1.4l-.4-.2-3.8 1 1-3.7-.2-.4A9.8 9.8 0 1 1 12.1 21.8Zm5.4-7.3c-.3-.1-1.7-.8-2-1-.3-.1-.5-.1-.7.2l-.9 1.1c-.2.2-.3.2-.6.1a8 8 0 0 1-2.4-1.5 9 9 0 0 1-1.7-2.1c-.2-.3 0-.5.1-.6l.5-.6.3-.5c.1-.2 0-.4 0-.5L9.2 7c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.7-.7 2-1.4.2-.7.2-1.3.2-1.4-.1-.2-.3-.3-.7-.4Z"></path></svg>
-  </a>
+  <div class="wa-fan" id="waFan" hidden>
+    <a class="wa-fan-link whatsapp" href="https://wa.me/5352390321?text=Hola%2C%20Yosdel%2C%20tengo%20una%20pregunta%20sobre%20los%20juegos%20de%20PS4" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 3.5A11.6 11.6 0 0 0 12.1 0 11.9 11.9 0 0 0 1.8 17.8L0 24l6.4-1.7a11.7 11.7 0 0 0 5.7 1.5h.1A11.8 11.8 0 0 0 20.5 3.5Zm-8.4 18.3a9.8 9.8 0 0 1-5-1.4l-.4-.2-3.8 1 1-3.7-.2-.4A9.8 9.8 0 1 1 12.1 21.8Zm5.4-7.3c-.3-.1-1.7-.8-2-1-.3-.1-.5-.1-.7.2l-.9 1.1c-.2.2-.3.2-.6.1a8 8 0 0 1-2.4-1.5 9 9 0 0 1-1.7-2.1c-.2-.3 0-.5.1-.6l.5-.6.3-.5c.1-.2 0-.4 0-.5L9.2 7c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.7-.7 2-1.4.2-.7.2-1.3.2-1.4-.1-.2-.3-.3-.7-.4Z"></path></svg><span>WhatsApp</span></a>
+    <a class="wa-fan-link instagram" href="https://www.instagram.com/yosdelpc" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"></circle></svg><span>Instagram</span></a>
+    <a class="wa-fan-link facebook" href="https://www.facebook.com/yosdelpc" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.7 22v-8h2.7l.4-3.1h-3.1v-2c0-.9.3-1.5 1.6-1.5H17V4.6c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2.1H7.5V14h2.8v8h3.4Z"></path></svg><span>Facebook</span></a>
+    <a class="wa-fan-link youtube" href="https://www.youtube.com/@YossFoxx" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="5" width="19" height="14" rx="4"></rect><path class="play" d="m10 9 5 3-5 3Z"></path></svg><span>YouTube</span></a>
+    <a class="wa-fan-link email" href="mailto:yosdelpc@gmail.com"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="m4 7 8 6 8-6"></path></svg><span>Correo</span></a>
+  </div>
+  <button class="wa-float" id="waFloatBtn" type="button" aria-expanded="false" aria-label="Abrir redes de contacto">
+    <img class="wa-main-photo" src="data:image/webp;base64,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" alt="">
+    <span class="wa-close-x" aria-hidden="true">×</span>
+  </button>
+
+  <nav class="bottom-bar" aria-label="Menú principal">
+    <button class="bb-btn bb-home" id="bbHome" type="button" aria-label="Inicio">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11 12 4l8 7"></path><path d="M6 10v10h12V10"></path><path d="M10 20v-6h4v6"></path></svg>
+      <span>Inicio</span>
+    </button>
+    <button class="bb-btn" id="bbGames" type="button" aria-label="Juegos disponibles">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="18" height="11" rx="5"></rect><circle cx="8" cy="12" r="1" fill="currentColor" stroke="none"></circle><circle cx="16" cy="12" r="1" fill="currentColor" stroke="none"></circle></svg>
+      <span>Juegos</span>
+    </button>
+    <button class="bb-btn" id="bbCart" type="button" aria-label="Abrir carrito">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l2.2 10.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6L20.5 8H6.2"></path><circle cx="10" cy="20" r="1"></circle><circle cx="17" cy="20" r="1"></circle></svg>
+      <span>Carrito</span>
+      <span class="bb-count" id="bbCartCount">0</span>
+    </button>
+    <button class="bb-btn" id="bbHowto" type="button" aria-label="Cómo pedir">
+      <span class="bb-help" aria-hidden="true">?</span>
+      <span>¿Cómo pedir?</span>
+    </button>
+    <button class="bb-btn" id="bbMenuBtn" type="button" aria-expanded="false" aria-label="Abrir el menú principal">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"></path></svg>
+      <span>Menú</span>
+    </button>
+  </nav>
+  <div class="bb-panel" id="bbPanel" hidden>
+    <button class="bb-item" id="bbPanelHome" type="button">Inicio</button>
+    <button class="bb-item" id="bbSocialToggle" type="button" aria-expanded="false">Redes sociales ▾</button>
+    <div class="bb-sub" id="bbSocialSub" hidden>
+      <a href="https://wa.me/5352390321?text=Hola%2C%20Yosdel%2C%20tengo%20una%20pregunta%20sobre%20los%20juegos%20de%20PS4" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+      <a href="https://www.instagram.com/yosdelpc" target="_blank" rel="noopener noreferrer">Instagram</a>
+      <a href="https://www.facebook.com/yosdelpc" target="_blank" rel="noopener noreferrer">Facebook</a>
+      <a href="https://www.youtube.com/@YossFoxx" target="_blank" rel="noopener noreferrer">YouTube</a>
+      <a href="mailto:yosdelpc@gmail.com">Correo</a>
+    </div>
+    <button class="bb-item" id="bbPanelCart" type="button">Carrito <span id="bbPanelCartCount">0</span></button>
+    <button class="bb-item" id="bbPanelPremieres" type="button">Estrenos</button>
+    <button class="bb-item" id="bbPanelHowto" type="button">¿Cómo pedir?</button>
+  </div>
+  <script>
+    (function () {
+      function goHome() {
+        try { history.scrollRestoration = 'manual'; } catch (e) {}
+        window.scrollTo(0, 0);
+        window.location.reload();
+      }
+      function scrollToId(id) {
+        var el = document.getElementById(id);
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        closePanel();
+      }
+      function closePanel() {
+        var panel = document.getElementById('bbPanel');
+        var menuBtn = document.getElementById('bbMenuBtn');
+        if (!panel) return;
+        panel.hidden = true;
+        if (menuBtn) menuBtn.setAttribute('aria-expanded', 'false');
+      }
+      function openCartFromBar() {
+        var trigger = document.getElementById('openCart');
+        closePanel();
+        if (trigger) trigger.click();
+      }
+      var home = document.getElementById('bbHome');
+      if (home) home.addEventListener('click', goHome);
+      var panelHome = document.getElementById('bbPanelHome');
+      if (panelHome) panelHome.addEventListener('click', goHome);
+      var games = document.getElementById('bbGames');
+      if (games) games.addEventListener('click', function () { scrollToId('catalogHeading'); });
+      var cartBtn = document.getElementById('bbCart');
+      if (cartBtn) cartBtn.addEventListener('click', openCartFromBar);
+      var panelCart = document.getElementById('bbPanelCart');
+      if (panelCart) panelCart.addEventListener('click', openCartFromBar);
+      var howtoBtn = document.getElementById('bbHowto');
+      if (howtoBtn) howtoBtn.addEventListener('click', function () { scrollToId('howto'); });
+      var panelHowto = document.getElementById('bbPanelHowto');
+      if (panelHowto) panelHowto.addEventListener('click', function () { scrollToId('howto'); });
+      var panelPremieres = document.getElementById('bbPanelPremieres');
+      if (panelPremieres) panelPremieres.addEventListener('click', function () { scrollToId('premieres'); });
+      var menuBtn = document.getElementById('bbMenuBtn');
+      var panel = document.getElementById('bbPanel');
+      if (menuBtn && panel) menuBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var willOpen = panel.hidden;
+        panel.hidden = !willOpen;
+        menuBtn.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+      });
+      var socialToggle = document.getElementById('bbSocialToggle');
+      var socialSub = document.getElementById('bbSocialSub');
+      if (socialToggle && socialSub) socialToggle.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var willOpen = socialSub.hidden;
+        socialSub.hidden = !willOpen;
+        socialToggle.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+      });
+      document.addEventListener('click', function (e) {
+        if (!panel || panel.hidden) return;
+        if (panel.contains(e.target) || (menuBtn && menuBtn.contains(e.target))) return;
+        closePanel();
+      });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closePanel(); });
+      var waBtn = document.getElementById('waFloatBtn');
+      var waFan = document.getElementById('waFan');
+      function closeFan() {
+        if (!waFan || !waBtn) return;
+        waFan.hidden = true;
+        waBtn.classList.remove('open');
+        waBtn.setAttribute('aria-expanded', 'false');
+      }
+      if (waBtn && waFan) waBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var willOpen = waFan.hidden;
+        waFan.hidden = !willOpen;
+        waBtn.classList.toggle('open', willOpen);
+        waBtn.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+      });
+      if (waFan) waFan.addEventListener('click', function (e) {
+        if (e.target.closest('a')) closeFan();
+      });
+      document.addEventListener('click', function (e) {
+        if (!waFan || waFan.hidden) return;
+        if (waFan.contains(e.target) || (waBtn && waBtn.contains(e.target))) return;
+        closeFan();
+      });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeFan(); });
+    })();
+  </script>
   </body>
 </html>
