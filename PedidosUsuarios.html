@@ -26,10 +26,11 @@
   .msg.err { color: #ff8a80; }
   h2 { font-family: "Barlow Condensed", "Arial Narrow", sans-serif; font-size: 1.7rem; margin: 0 0 12px; }
   ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
-  li { display: flex; gap: 12px; align-items: center; justify-content: space-between; background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; }
+  li { display: flex; gap: 12px; align-items: center; background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; }
+  li .thumb { width: 64px; height: 64px; object-fit: cover; border-radius: 8px; flex-shrink: 0; background: var(--bg); border: 1px solid var(--line); }
+  li .thumb.gen { display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.4rem; color: var(--gold); }
   li .t { font-weight: 700; }
   li .f { color: var(--mut); font-size: .8rem; }
-  li .done { background: transparent; border: 1px solid var(--line); color: var(--ink); min-height: 36px; padding: 6px 12px; font-size: .85rem; white-space: nowrap; }
   .empty, .loading { color: var(--mut); text-align: center; padding: 20px 0; }
 </style>
 </head>
@@ -45,7 +46,7 @@
       <button id="agregarPedido" type="button">Agregar pedido</button>
     </div>
     <p class="msg" id="pedidoMsg"></p>
-    <p class="note">La lista es compartida: todos ven los mismos pedidos pendientes. Solo se pide el título, ningún dato personal.</p>
+    <p class="note">La lista es compartida: todos ven los mismos pedidos pendientes. Solo se pide el título, ningún dato personal. Cada título muestra su portada de PS4 cuando se encuentra.</p>
   </section>
   <section class="card">
     <h2>Pendientes (<span id="pedidoCount">0</span>)</h2>
@@ -84,9 +85,11 @@
     }
     estado.style.display = 'none';
     list.innerHTML = pedidos.map(function (p) {
-      return '<li><div><div class="t">' + escapeHtml(p.titulo) + '</div>' +
-        (p.fecha ? '<div class="f">' + escapeHtml(formatFecha(p.fecha)) + '</div>' : '') +
-        '</div><button class="done" type="button" data-done="' + p.row + '">Ya lo agregué</button></li>';
+      var thumb = p.miniatura
+        ? '<img class="thumb" src="' + escapeHtml(p.miniatura) + '" alt="" loading="lazy">'
+        : '<div class="thumb gen">' + escapeHtml((p.titulo || '?').charAt(0).toUpperCase()) + '</div>';
+      return '<li>' + thumb + '<div><div class="t">' + escapeHtml(p.titulo) + '</div>' +
+        (p.fecha ? '<div class="f">' + escapeHtml(formatFecha(p.fecha)) + '</div>' : '') + '</div></li>';
     }).join('');
   }
   function loadPedidos() {
@@ -121,18 +124,6 @@
     }).finally(function () { addBtn.disabled = false; });
   });
   input.addEventListener('keydown', function (e) { if (e.key === 'Enter') addBtn.click(); });
-  list.addEventListener('click', function (e) {
-    var btn = e.target.closest('[data-done]');
-    if (!btn) return;
-    var row = btn.getAttribute('data-done');
-    btn.disabled = true;
-    fetch(API_URL + '?action=done&row=' + encodeURIComponent(row)).then(function (r) { return r.json(); }).then(function () {
-      loadPedidos();
-    }).catch(function () {
-      btn.disabled = false;
-      showMsg('No se pudo marcar. Intenta de nuevo.', 'err');
-    });
-  });
   loadPedidos();
 </script>
 </body>
