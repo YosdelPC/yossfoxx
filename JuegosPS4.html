@@ -84,6 +84,7 @@
       margin: auto;
       min-height: 68px;
       display: flex;
+      flex-wrap: wrap;
       align-items: center;
       gap: 16px;
     }
@@ -157,6 +158,8 @@
     }
     .social-links {
       display: flex;
+      flex: 1 0 100%;
+      justify-content: flex-end;
       align-items: center;
       gap: 7px;
     }
@@ -221,6 +224,7 @@
       justify-content: space-between;
       gap: 16px;
       margin-bottom: 18px;
+      scroll-margin-top: 120px;
     }
     .section-head h2 {
       margin: 0;
@@ -301,7 +305,7 @@
     }
     .premieres .icon-btn svg { width: 15px; height: 15px; flex-basis: 15px; }
     .premieres[hidden] { display: none; }
-    .premieres, #catalogHeading { scroll-margin-top: 90px; }
+    .premieres, #catalogHeading { scroll-margin-top: 120px; }
     .catalog {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -620,16 +624,6 @@
 <body>
   <header class="topbar">
     <div class="topbar-inner">
-      <div class="console-tag">PS4 · CATÁLOGO</div>
-      <label class="search-wrap">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg>
-        <input id="search" class="search" type="search" placeholder="Buscar un juego" autocomplete="off" aria-label="Buscar un juego" />
-      </label>
-      <button class="cart-trigger" id="openCart" type="button" aria-label="Abrir carrito">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l2.2 10.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6L20.5 8H6.2"></path><circle cx="10" cy="20" r="1"></circle><circle cx="17" cy="20" r="1"></circle></svg>
-        <span class="cart-label">Carrito</span>
-        <span class="cart-count" id="cartCount">0</span>
-      </button>
       <nav class="social-links" aria-label="Redes sociales y contacto">
         <a class="social-link whatsapp" href="https://wa.me/5352390321?text=Hola%2C%20Yosdel%2C%20tengo%20una%20pregunta%20sobre%20los%20juegos%20de%20PS4" target="_blank" rel="noopener noreferrer" aria-label="Contactar por WhatsApp" title="WhatsApp">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 3.5A11.6 11.6 0 0 0 12.1 0 11.9 11.9 0 0 0 1.8 17.8L0 24l6.4-1.7a11.7 11.7 0 0 0 5.7 1.5h.1A11.8 11.8 0 0 0 20.5 3.5Zm-8.4 18.3a9.8 9.8 0 0 1-5-1.4l-.4-.2-3.8 1 1-3.7-.2-.4A9.8 9.8 0 1 1 12.1 21.8Zm5.4-7.3c-.3-.1-1.7-.8-2-1-.3-.1-.5-.1-.7.2l-.9 1.1c-.2.2-.3.2-.6.1a8 8 0 0 1-2.4-1.5 9 9 0 0 1-1.7-2.1c-.2-.3 0-.5.1-.6l.5-.6.3-.5c.1-.2 0-.4 0-.5L9.2 7c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.7-.7 2-1.4.2-.7.2-1.3.2-1.4-.1-.2-.3-.3-.7-.4Z"></path></svg>
@@ -647,6 +641,17 @@
           <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="m4 7 8 6 8-6"></path></svg>
         </a>
       </nav>
+      <div class="console-tag">PS4 · CATÁLOGO</div>
+      <label class="search-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg>
+        <input id="search" class="search" type="search" placeholder="Buscar un juego" autocomplete="off" aria-label="Buscar un juego" />
+      </label>
+      <button class="cart-trigger" id="openCart" type="button" aria-label="Abrir carrito">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l2.2 10.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6L20.5 8H6.2"></path><circle cx="10" cy="20" r="1"></circle><circle cx="17" cy="20" r="1"></circle></svg>
+        <span class="cart-label">Carrito</span>
+        <span class="cart-count" id="cartCount">0</span>
+      </button>
+      
     </div>
   </header>
 
@@ -655,10 +660,10 @@
       <h1 id="mainTitle"><span>Mis Juegos PS4</span></h1>
     </section>
 
-    <div class="promo-bar" role="marquee" aria-label="¡CADA 4 JUEGOS, 1 GRATIS! ¡Hasta un valor de 300Cup.!">
+    <div class="promo-bar" role="marquee" aria-label="¡CADA 4 JUEGOS, 1 GRATIS! ¡HASTA UN VALOR DE 300CUP.!">
       <div class="promo-track">
-        <div class="promo-chunk"><span class="promo-item">¡CADA 4 JUEGOS, 1 GRATIS!</span><span class="promo-item">¡Hasta un valor de 300Cup.!</span><span class="promo-item">¡CADA 4 JUEGOS, 1 GRATIS!</span><span class="promo-item">¡Hasta un valor de 300Cup.!</span></div>
-        <div class="promo-chunk"><span class="promo-item">¡CADA 4 JUEGOS, 1 GRATIS!</span><span class="promo-item">¡Hasta un valor de 300Cup.!</span><span class="promo-item">¡CADA 4 JUEGOS, 1 GRATIS!</span><span class="promo-item">¡Hasta un valor de 300Cup.!</span></div>
+        <div class="promo-chunk"><span class="promo-item">¡CADA 4 JUEGOS, 1 GRATIS!</span><span class="promo-item">¡HASTA UN VALOR DE 300CUP.!</span><span class="promo-item">¡CADA 4 JUEGOS, 1 GRATIS!</span><span class="promo-item">¡HASTA UN VALOR DE 300CUP.!</span></div>
+        <div class="promo-chunk"><span class="promo-item">¡CADA 4 JUEGOS, 1 GRATIS!</span><span class="promo-item">¡HASTA UN VALOR DE 300CUP.!</span><span class="promo-item">¡CADA 4 JUEGOS, 1 GRATIS!</span><span class="promo-item">¡HASTA UN VALOR DE 300CUP.!</span></div>
       </div>
     </div>
 
@@ -1055,6 +1060,8 @@
       function changePage(step) {
         currentPage += step;
         renderCatalog();
+        var heading = document.getElementById('catalogHeading');
+        if (heading) { heading.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
       }
 
       search.addEventListener('input', function () {
