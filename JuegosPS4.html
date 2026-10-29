@@ -1225,7 +1225,6 @@
     </button>
   </nav>
   <div class="bb-panel" id="bbPanel" hidden>
-    <button class="bb-item" id="bbPanelHome" type="button">Inicio</button>
     <button class="bb-item" id="bbSocialToggle" type="button" aria-expanded="false">Redes sociales ▾</button>
     <div class="bb-sub" id="bbSocialSub" hidden>
       <a href="https://wa.me/5352390321?text=Hola%2C%20Yosdel%2C%20tengo%20una%20pregunta%20sobre%20los%20juegos%20de%20PS4" target="_blank" rel="noopener noreferrer">WhatsApp</a>
@@ -1264,8 +1263,6 @@
       }
       var home = document.getElementById('bbHome');
       if (home) home.addEventListener('click', goHome);
-      var panelHome = document.getElementById('bbPanelHome');
-      if (panelHome) panelHome.addEventListener('click', goHome);
       var games = document.getElementById('bbGames');
       if (games) games.addEventListener('click', function () { scrollToId('catalogHeading'); });
       var cartBtn = document.getElementById('bbCart');
