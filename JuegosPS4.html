@@ -597,11 +597,10 @@
     /* Funciones nuevas 2026-10-22: promo, cómo pedir, filtro por precio, WhatsApp flotante */
     .promo-bar { background: linear-gradient(90deg, #b8912a, #d4af37, #b8912a); color: #131a06; font-weight: 800; font-size: .95rem; letter-spacing: .04em; padding: 8px 0; overflow: hidden; max-width: 1180px; margin: 0 auto 30px; border-radius: var(--radius); }
     .promo-track { display: flex; width: max-content; animation: promo-scroll 20s linear infinite; }
-    .promo-bar:hover .promo-track { animation-play-state: paused; }
     .promo-chunk { display: flex; flex-shrink: 0; }
     .promo-item { padding: 0 28px; white-space: nowrap; }
     @keyframes promo-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-    @media (prefers-reduced-motion: reduce) { .promo-track { animation: none; } }
+    @media (prefers-reduced-motion: reduce) { .promo-track { animation: promo-scroll 20s linear infinite !important; } }
     .howto { max-width: 1180px; margin: 26px auto 4px; padding: 18px 20px; background: color-mix(in srgb, var(--surface) 65%, transparent); backdrop-filter: blur(3px); border: 1px solid var(--line); border-radius: var(--radius); text-align: center; }
     .howto-title { margin: 0 0 12px; font-size: 1.15rem; }
     .howto-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
