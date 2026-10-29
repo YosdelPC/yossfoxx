@@ -194,7 +194,7 @@
       gap: 24px;
       padding: 24px 0 34px;
       border-bottom: 1px solid var(--line);
-      margin-bottom: 30px;
+      margin-bottom: 16px;
     }
     .intro h1 {
       max-width: 780px;
@@ -595,7 +595,13 @@
   </style>
   <style>
     /* Funciones nuevas 2026-10-22: promo, cómo pedir, filtro por precio, WhatsApp flotante */
-    .promo-bar { background: linear-gradient(90deg, #b8912a, #d4af37, #b8912a); color: #131a06; text-align: center; font-weight: 800; font-size: .82rem; letter-spacing: .04em; padding: 6px 12px; }
+    .promo-bar { background: linear-gradient(90deg, #b8912a, #d4af37, #b8912a); color: #131a06; font-weight: 800; font-size: .95rem; letter-spacing: .04em; padding: 8px 0; overflow: hidden; max-width: 1180px; margin: 0 auto 30px; border-radius: var(--radius); }
+    .promo-track { display: flex; width: max-content; animation: promo-scroll 20s linear infinite; }
+    .promo-bar:hover .promo-track { animation-play-state: paused; }
+    .promo-chunk { display: flex; flex-shrink: 0; }
+    .promo-item { padding: 0 28px; white-space: nowrap; }
+    @keyframes promo-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    @media (prefers-reduced-motion: reduce) { .promo-track { animation: none; } }
     .howto { max-width: 1180px; margin: 26px auto 4px; padding: 18px 20px; background: color-mix(in srgb, var(--surface) 65%, transparent); backdrop-filter: blur(3px); border: 1px solid var(--line); border-radius: var(--radius); text-align: center; }
     .howto-title { margin: 0 0 12px; font-size: 1.15rem; }
     .howto-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
@@ -614,7 +620,6 @@
 </head>
 <body>
   <header class="topbar">
-    <div class="promo-bar">¡CADA 4 JUEGOS, 1 GRATIS!</div>
     <div class="topbar-inner">
       <div class="console-tag">PS4 · CATÁLOGO</div>
       <label class="search-wrap">
@@ -650,6 +655,13 @@
     <section class="intro" aria-labelledby="mainTitle">
       <h1 id="mainTitle"><span>Mis Juegos PS4</span></h1>
     </section>
+
+    <div class="promo-bar" role="marquee" aria-label="¡CADA 4 JUEGOS, 1 GRATIS!">
+      <div class="promo-track">
+        <div class="promo-chunk"><span class="promo-item">¡CADA 4 JUEGOS, 1 GRATIS!</span><span class="promo-item">¡CADA 4 JUEGOS, 1 GRATIS!</span><span class="promo-item">¡CADA 4 JUEGOS, 1 GRATIS!</span><span class="promo-item">¡CADA 4 JUEGOS, 1 GRATIS!</span></div>
+        <div class="promo-chunk"><span class="promo-item">¡CADA 4 JUEGOS, 1 GRATIS!</span><span class="promo-item">¡CADA 4 JUEGOS, 1 GRATIS!</span><span class="promo-item">¡CADA 4 JUEGOS, 1 GRATIS!</span><span class="promo-item">¡CADA 4 JUEGOS, 1 GRATIS!</span></div>
+      </div>
+    </div>
 
     <section class="premieres" id="premieres" aria-labelledby="premieresTitle">
       <div class="premieres-head">
