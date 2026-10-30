@@ -1188,6 +1188,10 @@
 
       loadCart();
       renderCart();
+      // La barra inferior se escribe después de este script: al terminar de
+      // cargar la página se vuelve a pintar el carrito para que el contador
+      // de abajo muestre lo mismo que el de arriba.
+      document.addEventListener('DOMContentLoaded', function () { renderCart(); });
     })();
   </script>
   <div class="wa-fan" id="waFan" hidden>
