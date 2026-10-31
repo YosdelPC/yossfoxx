@@ -468,6 +468,18 @@
       font-size: 1.4rem;
     }
     .cart-body { overflow-y: auto; padding: 16px 20px 28px; }
+    .test-form { display: flex; flex-direction: column; gap: 10px; padding: 0 0 4px; }
+    .test-input { width: 100%; min-height: 46px; padding: 11px 14px; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 8px; font: inherit; }
+    .test-input::placeholder { color: var(--muted); }
+    .test-add { min-height: 48px; width: 100%; border: 0; border-radius: 8px; background: var(--accent); color: #fff; font-weight: 800; cursor: pointer; }
+    .test-error { margin: 0; padding: 4px 0 0; color: #ff6b6b; font-weight: 700; font-size: .88rem; }
+    .test-error[hidden] { display: none; }
+    .test-count { margin: 0; padding: 14px 0 0; color: var(--muted); font-weight: 700; font-size: .88rem; }
+    .test-list { list-style: none; margin: 0; padding: 8px 0 0; display: flex; flex-direction: column; gap: 8px; }
+    .test-row { display: flex; align-items: center; gap: 10px; padding: 11px 12px; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; }
+    .test-row span { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+    .test-remove { flex: 0 0 auto; width: 32px; height: 32px; border: 1px solid var(--line); border-radius: 7px; background: var(--surface-2); cursor: pointer; font-size: 1.1rem; line-height: 1; }
+    .test-empty { margin: 0; padding: 8px 0 0; color: var(--muted); }
     .cart-empty { min-height: 60vh; display: grid; place-items: center; text-align: center; color: var(--muted); }
     .cart-empty strong { display: block; color: var(--ink); font: 700 1.55rem/1.1 "Barlow Condensed", sans-serif; margin-bottom: 7px; }
     .cart-item {
@@ -831,6 +843,26 @@
     </aside>
   </div>
 
+  <div class="overlay" id="testListOverlay" aria-hidden="true">
+    <aside class="drawer" role="dialog" aria-modal="true" aria-labelledby="testListTitle">
+      <div class="drawer-head">
+        <h2 id="testListTitle">Lista de prueba</h2>
+        <button class="close-btn" id="closeTestList" type="button" aria-label="Cerrar lista de prueba">×</button>
+      </div>
+      <div class="cart-body">
+        <form class="test-form" id="testListForm">
+          <input class="test-input" id="testUserName" type="text" placeholder="Nombre de Usuario" aria-label="Nombre de Usuario" autocomplete="off" />
+          <input class="test-input" id="testGameName" type="text" placeholder="Nombre de Juego" aria-label="Nombre de Juego" autocomplete="off" />
+          <button class="test-add" id="testAddBtn" type="submit">Añadir</button>
+        </form>
+        <p class="test-error" id="testListError" role="alert" hidden></p>
+        <p class="test-count" id="testListCount"></p>
+        <ul class="test-list" id="testListItems"></ul>
+        <p class="test-empty" id="testListEmpty">Todavía no hay nada en la lista.</p>
+      </div>
+    </aside>
+  </div>
+
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script>
@@ -1031,6 +1063,86 @@
         document.getElementById('openCart').focus();
       }
 
+      var testListOverlay = document.getElementById('testListOverlay');
+      var testListForm = document.getElementById('testListForm');
+      var testUserInput = document.getElementById('testUserName');
+      var testGameInput = document.getElementById('testGameName');
+      var testListError = document.getElementById('testListError');
+      var testListCount = document.getElementById('testListCount');
+      var testListItems = document.getElementById('testListItems');
+      var testListEmpty = document.getElementById('testListEmpty');
+      var TEST_LIST_KEY = 'yossfoxx-test-list-v1';
+      var testList = [];
+      function loadTestList() {
+        try {
+          var raw = window.localStorage.getItem(TEST_LIST_KEY);
+          if (!raw) return;
+          var parsed = JSON.parse(raw);
+          if (!Array.isArray(parsed)) return;
+          testList = parsed.filter(function (entry) {
+            return entry && typeof entry.user === 'string' && typeof entry.game === 'string';
+          });
+        } catch (e) { testList = []; }
+      }
+      function saveTestList() {
+        try {
+          if (testList.length) window.localStorage.setItem(TEST_LIST_KEY, JSON.stringify(testList));
+          else window.localStorage.removeItem(TEST_LIST_KEY);
+        } catch (e) {}
+      }
+      function renderTestList() {
+        testListCount.textContent = testList.length + ' en la lista';
+        testListEmpty.hidden = testList.length > 0;
+        testListItems.innerHTML = testList.map(function (entry, index) {
+          return '<li class="test-row"><span><strong>' + escapeHtml(entry.user) + '</strong> — ' + escapeHtml(entry.game) + '</span><button class="test-remove" type="button" data-remove="' + index + '" aria-label="Quitar de la lista">×</button></li>';
+        }).join('');
+      }
+      function openTestList() {
+        renderTestList();
+        testListOverlay.classList.add('open');
+        testListOverlay.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+        testUserInput.focus();
+      }
+      function closeTestList() {
+        testListOverlay.classList.remove('open');
+        testListOverlay.setAttribute('aria-hidden', 'true');
+        if (!overlay.classList.contains('open')) document.body.style.overflow = '';
+      }
+      window.openTestList = openTestList;
+      testListForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+        var user = testUserInput.value.trim();
+        var game = testGameInput.value.trim();
+        if (!user || !game) {
+          testListError.textContent = 'Escribe el nombre de usuario y el nombre del juego.';
+          testListError.hidden = false;
+          if (!user) testUserInput.focus(); else testGameInput.focus();
+          return;
+        }
+        testListError.hidden = true;
+        testList.push({ user: user, game: game });
+        saveTestList();
+        renderTestList();
+        testGameInput.value = '';
+        testGameInput.focus();
+        showToast('Agregado a la lista');
+      });
+      testUserInput.addEventListener('input', function () { testListError.hidden = true; });
+      testGameInput.addEventListener('input', function () { testListError.hidden = true; });
+      testListItems.addEventListener('click', function (event) {
+        var button = event.target.closest('[data-remove]');
+        if (!button) return;
+        testList.splice(parseInt(button.getAttribute('data-remove'), 10), 1);
+        saveTestList();
+        renderTestList();
+      });
+      document.getElementById('closeTestList').addEventListener('click', closeTestList);
+      testListOverlay.addEventListener('click', function (event) { if (event.target === testListOverlay) closeTestList(); });
+      document.addEventListener('keydown', function (event) { if (event.key === 'Escape' && testListOverlay.classList.contains('open')) closeTestList(); });
+      loadTestList();
+      renderTestList();
+
       function handleAdd(event) {
         var button = event.target.closest('[data-add]');
         if (!button) return;
@@ -1167,6 +1279,7 @@
     </div>
 
     <button class="bb-item" id="bbPanelPremieres" type="button">Estrenos</button>
+    <button class="bb-item" id="bbPanelTestList" type="button">Lista de prueba</button>
     <button class="bb-item" id="bbPanelHowto" type="button">¿Cómo pedir?</button>
   </div>
   <script>
@@ -1216,6 +1329,8 @@
       if (panelHowto) panelHowto.addEventListener('click', function () { scrollToId('howto'); setActive(howtoBtn); });
       var panelPremieres = document.getElementById('bbPanelPremieres');
       if (panelPremieres) panelPremieres.addEventListener('click', function () { scrollToId('premieres'); setActive(games); });
+      var panelTestList = document.getElementById('bbPanelTestList');
+      if (panelTestList) panelTestList.addEventListener('click', function () { closePanel(); setActive(menuBtn); if (window.openTestList) window.openTestList(); });
       var pedidosBtn = document.getElementById('bbPedidos');
       if (pedidosBtn) pedidosBtn.addEventListener('click', function () { setActive(pedidosBtn); });
       var menuBtn = document.getElementById('bbMenuBtn');
