@@ -415,7 +415,8 @@
 
     .overlay {
       position: fixed;
-      inset: 0;
+      top: 0; left: 0; right: 0;
+      bottom: calc(88px + env(safe-area-inset-bottom));
       z-index: 50;
       background: rgba(0, 0, 0, .58);
       opacity: 0;
@@ -658,7 +659,7 @@
       border-radius: 999px; position: relative; overflow: visible;
       transition: flex-grow .25s ease, background .25s ease, border-color .25s ease, box-shadow .25s ease, color .25s ease;
     }
-    .bb-btn svg { flex: 0 0 auto; width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2; }
+    .bb-btn svg { flex: 0 0 auto; width: 28px; height: 28px; fill: none; stroke: currentColor; stroke-width: 2; }
     .bottom-bar a.bb-btn { text-decoration: none; }
     .bb-btn .bb-label { display: none; overflow: hidden; text-overflow: ellipsis; }
     .bb-btn.is-active { flex: 0 1 auto; background: #102b36; border-color: #22d3ee; color: #fff; box-shadow: 0 0 14px rgba(34, 211, 238, .45); }
@@ -670,12 +671,12 @@
       display: grid; place-items: center; border-radius: 999px; border: 2px solid #08141c;
       background: var(--signal); color: var(--signal-ink); font-size: .65rem; font-weight: 800;
     }
-    .bb-help { flex: 0 0 auto; width: 24px; height: 24px; display: grid; place-items: center; border: 2px solid currentColor; border-radius: 50%; font-size: 15px; line-height: 1; }
+    .bb-help { flex: 0 0 auto; width: 28px; height: 28px; display: grid; place-items: center; border: 2px solid currentColor; border-radius: 50%; font-size: 15px; line-height: 1; }
     @media (max-width: 480px) {
       .bottom-bar { left: 8px; right: 8px; padding: 6px; gap: 4px; }
       .bb-btn { padding: 8px 6px; gap: 6px; font-size: .78rem; }
-      .bb-btn svg { width: 20px; height: 20px; }
-      .bb-help { width: 20px; height: 20px; font-size: 13px; }
+      .bb-btn svg { width: 24px; height: 24px; }
+      .bb-help { width: 24px; height: 24px; font-size: 13px; }
       .bb-count { top: -8px; right: -9px; min-width: 16px; height: 16px; font-size: .6rem; }
     }
     .bb-panel {
