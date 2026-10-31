@@ -478,7 +478,8 @@
     .test-list { list-style: none; margin: 0; padding: 8px 0 0; display: flex; flex-direction: column; gap: 8px; }
     .test-row { display: flex; align-items: center; gap: 10px; padding: 11px 12px; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; }
     .test-row span { flex: 1; min-width: 0; overflow-wrap: anywhere; }
-    .test-remove { flex: 0 0 auto; width: 32px; height: 32px; border: 1px solid var(--line); border-radius: 7px; background: var(--surface-2); cursor: pointer; font-size: 1.1rem; line-height: 1; }
+    .test-thumb { width: 56px; height: 56px; object-fit: cover; border-radius: 8px; flex-shrink: 0; background: var(--bg); border: 1px solid var(--line); }
+    .test-thumb.gen { display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.3rem; color: #d4af37; }
     .test-empty { margin: 0; padding: 8px 0 0; color: var(--muted); }
     .cart-empty { min-height: 60vh; display: grid; place-items: center; text-align: center; color: var(--muted); }
     .cart-empty strong { display: block; color: var(--ink); font: 700 1.55rem/1.1 "Barlow Condensed", sans-serif; margin-bottom: 7px; }
@@ -1090,11 +1091,42 @@
           else window.localStorage.removeItem(TEST_LIST_KEY);
         } catch (e) {}
       }
+      function normalizeTitle(value) {
+        return String(value || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9 ]+/g, ' ').replace(/\s+/g, ' ').trim();
+      }
+      function findCover(name, list) {
+        var q = normalizeTitle(name);
+        if (!q) return null;
+        var i, t;
+        for (i = 0; i < list.length; i++) {
+          t = normalizeTitle(list[i].title);
+          if (t === q) return list[i].cover;
+        }
+        for (i = 0; i < list.length; i++) {
+          t = normalizeTitle(list[i].title);
+          if (t && t.indexOf(q) !== -1) return list[i].cover;
+        }
+        return null;
+      }
+      var pedidosCovers = [];
+      function resolveTestThumbs() {
+        var changed = false;
+        testList.forEach(function (entry) {
+          var next = findCover(entry.game, games) || findCover(entry.game, pedidosCovers) || null;
+          if (entry.thumb !== next) { entry.thumb = next; changed = true; }
+        });
+        if (changed) saveTestList();
+        renderTestList();
+      }
+      function testThumbHtml(entry) {
+        if (entry.thumb) return '<img class="test-thumb" src="' + escapeHtml(entry.thumb) + '" alt="" loading="lazy">';
+        return '<div class="test-thumb gen">' + escapeHtml((entry.game || '?').charAt(0).toUpperCase()) + '</div>';
+      }
       function renderTestList() {
         testListCount.textContent = testList.length + ' en la lista';
         testListEmpty.hidden = testList.length > 0;
-        testListItems.innerHTML = testList.map(function (entry, index) {
-          return '<li class="test-row"><span><strong>' + escapeHtml(entry.user) + '</strong> — ' + escapeHtml(entry.game) + '</span><button class="test-remove" type="button" data-remove="' + index + '" aria-label="Quitar de la lista">×</button></li>';
+        testListItems.innerHTML = testList.map(function (entry) {
+          return '<li class="test-row">' + testThumbHtml(entry) + '<span><strong>' + escapeHtml(entry.user) + '</strong> — ' + escapeHtml(entry.game) + '</span></li>';
         }).join('');
       }
       function openTestList() {
@@ -1123,20 +1155,13 @@
         testListError.hidden = true;
         testList.push({ user: user, game: game });
         saveTestList();
-        renderTestList();
+        resolveTestThumbs();
         testGameInput.value = '';
         testGameInput.focus();
         showToast('Agregado a la lista');
       });
       testUserInput.addEventListener('input', function () { testListError.hidden = true; });
       testGameInput.addEventListener('input', function () { testListError.hidden = true; });
-      testListItems.addEventListener('click', function (event) {
-        var button = event.target.closest('[data-remove]');
-        if (!button) return;
-        testList.splice(parseInt(button.getAttribute('data-remove'), 10), 1);
-        saveTestList();
-        renderTestList();
-      });
       document.getElementById('closeTestList').addEventListener('click', closeTestList);
       testListOverlay.addEventListener('click', function (event) { if (event.target === testListOverlay) closeTestList(); });
       document.addEventListener('keydown', function (event) { if (event.key === 'Escape' && testListOverlay.classList.contains('open')) closeTestList(); });
@@ -1223,7 +1248,8 @@
       overlay.addEventListener('click', function (event) { if (event.target === overlay) closeCart(); });
       document.addEventListener('keydown', function (event) { if (event.key === 'Escape' && overlay.classList.contains('open')) closeCart(); });
 
-      fetch('doc/juegos.json').then(function (response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); }).then(function (data) { games = data; gamesLoaded = true; loadCart(); renderCart(); }).catch(function () { catalog.innerHTML = '<div class="empty-search"><div><strong>No se pudieron cargar los juegos.</strong><br>Revisa tu conexión y recarga la página.</div></div>'; pagination.hidden = true; premieres.hidden = true; resultCount.textContent = '0 juegos'; });
+      fetch('doc/juegos.json').then(function (response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); }).then(function (data) { games = data; gamesLoaded = true; loadCart(); renderCart(); resolveTestThumbs(); }).catch(function () { catalog.innerHTML = '<div class="empty-search"><div><strong>No se pudieron cargar los juegos.</strong><br>Revisa tu conexión y recarga la página.</div></div>'; pagination.hidden = true; premieres.hidden = true; resultCount.textContent = '0 juegos'; });
+      fetch('imagenes/pedidos/portadas.json').then(function (response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); }).then(function (data) { if (Array.isArray(data)) pedidosCovers = data; resolveTestThumbs(); }).catch(function () { pedidosCovers = []; resolveTestThumbs(); });
       // La barra inferior se escribe después de este script: al terminar de
       // cargar la página se vuelve a pintar el carrito para que el contador
       // de abajo muestre lo mismo que el de arriba.
