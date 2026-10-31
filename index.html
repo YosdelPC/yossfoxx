@@ -469,6 +469,25 @@
     }
     .cart-body { overflow-y: auto; padding: 16px 20px 28px; }
     .cart-empty { min-height: 60vh; display: grid; place-items: center; text-align: center; color: var(--muted); }
+    .pedidos-drawer { grid-template-rows: auto 1fr; }
+    .pedidos-body { overflow-y: auto; padding: 18px 20px calc(28px + env(safe-area-inset-bottom)); }
+    .pedidos-body .ped-label { display: block; font-weight: 700; margin-bottom: 8px; }
+    .pedidos-row { display: flex; gap: 10px; flex-wrap: wrap; }
+    .pedidos-row input[type="text"] { flex: 1; min-width: 180px; min-height: 46px; padding: 10px 14px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--ink); }
+    .pedidos-add { min-height: 46px; padding: 10px 18px; border: 0; border-radius: 8px; background: var(--signal); color: var(--signal-ink); font-weight: 800; cursor: pointer; }
+    .pedidos-add:disabled { opacity: .5; cursor: default; }
+    .pedidos-msg { min-height: 1.4em; font-weight: 700; margin: 12px 0 0; }
+    .pedidos-msg.ok { color: #1f9d55; }
+    .pedidos-msg.err { color: var(--danger); }
+    .pedidos-note { color: var(--muted); font-size: .85rem; margin: 12px 0 20px; }
+    .pedidos-sub { font: 800 1.4rem/1 "Barlow Condensed", sans-serif; margin: 0 0 12px; }
+    .pedidos-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+    .pedidos-list li { display: flex; gap: 12px; align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; }
+    .pedidos-thumb { width: 64px; height: 64px; object-fit: cover; border-radius: 8px; flex-shrink: 0; background: var(--surface-2); border: 1px solid var(--line); }
+    .pedidos-thumb.gen { display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.4rem; color: var(--accent); }
+    .pedidos-list .t { font-weight: 700; }
+    .pedidos-list .f { color: var(--muted); font-size: .8rem; }
+    .pedidos-estado { color: var(--muted); text-align: center; padding: 20px 0; }
     .cart-empty strong { display: block; color: var(--ink); font: 700 1.55rem/1.1 "Barlow Condensed", sans-serif; margin-bottom: 7px; }
     .cart-item {
       display: grid;
@@ -831,6 +850,27 @@
     </aside>
   </div>
 
+  <div class="overlay" id="pedidosOverlay" aria-hidden="true">
+    <aside class="drawer pedidos-drawer" role="dialog" aria-modal="true" aria-labelledby="pedidosTitle">
+      <div class="drawer-head">
+        <h2 id="pedidosTitle">Pedidos de Usuarios</h2>
+        <button class="close-btn" id="closePedidos" type="button" aria-label="Cerrar pedidos">×</button>
+      </div>
+      <div class="pedidos-body">
+        <label class="ped-label" for="pedPanelTitulo">Título del juego</label>
+        <div class="pedidos-row">
+          <input id="pedPanelTitulo" type="text" maxlength="100" placeholder="Ej: Splinter Cell Conviction" autocomplete="off">
+          <button class="pedidos-add" id="pedPanelAgregar" type="button">Agregar pedido</button>
+        </div>
+        <p class="pedidos-msg" id="pedPanelMsg"></p>
+        <p class="pedidos-note">La lista es compartida: todos ven los mismos pedidos pendientes. Solo se pide el título, ningún dato personal. Cada título muestra su portada de PS4 cuando se encuentra.</p>
+        <h3 class="pedidos-sub">Pendientes (<span id="pedPanelCount">0</span>)</h3>
+        <div class="pedidos-estado" id="pedPanelEstado">Cargando pedidos…</div>
+        <ul class="pedidos-list" id="pedPanelLista"></ul>
+      </div>
+    </aside>
+  </div>
+
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script>
@@ -1143,10 +1183,10 @@
       <span class="bb-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l2.2 10.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6L20.5 8H6.2"></path><circle cx="10" cy="20" r="1"></circle><circle cx="17" cy="20" r="1"></circle></svg><span class="bb-count" id="bbCartCount">0</span></span>
       <span class="bb-label">Carrito</span>
     </button>
-    <a class="bb-btn" id="bbPedidos" href="PedidosUsuarios.html" aria-label="Pedidos de Usuarios">
+    <button class="bb-btn" id="bbPedidos" type="button" aria-label="Pedidos de Usuarios">
       <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="18" height="11" rx="5"></rect><path d="M8 12.2l2.2 2.2L16 9"></path></svg>
       <span class="bb-label">Pedidos</span>
-    </a>
+    </button>
     <button class="bb-btn" id="bbHowto" type="button" aria-label="Cómo pedir">
       <span class="bb-help" aria-hidden="true">?</span>
       <span class="bb-label">¿Cómo pedir?</span>
@@ -1266,6 +1306,90 @@
         closeFan();
       });
       document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeFan(); });
+    })();
+  </script>
+  <script>
+    (function () {
+      var API_URL = 'https://script.google.com/macros/s/AKfycbzaVhbagYIkT8iMghs1gtRIW5_1z4Z4Rk4h484S-e-1RI_6-0KKN0CdNirz_YN_ljNH/exec';
+      var overlay = document.getElementById('pedidosOverlay');
+      var input = document.getElementById('pedPanelTitulo');
+      var addBtn = document.getElementById('pedPanelAgregar');
+      var msg = document.getElementById('pedPanelMsg');
+      var list = document.getElementById('pedPanelLista');
+      var estado = document.getElementById('pedPanelEstado');
+      var count = document.getElementById('pedPanelCount');
+      var pedidosBtn = document.getElementById('bbPedidos');
+      if (!overlay || !input || !addBtn || !pedidosBtn) return;
+      function escapeHtml(value) {
+        return String(value).replace(/[&<>'"]/g, function (c) { return ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'})[c]; });
+      }
+      function formatFecha(value) {
+        var d = new Date(value);
+        if (isNaN(d.getTime())) return '';
+        return d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear();
+      }
+      function showMsg(text, kind) {
+        msg.textContent = text;
+        msg.className = 'pedidos-msg ' + (kind || '');
+      }
+      function render(pedidos) {
+        count.textContent = pedidos.length;
+        if (!pedidos.length) {
+          estado.textContent = 'Aún no hay pedidos pendientes. ¡Sé el primero en agregar uno!';
+          estado.style.display = 'block';
+          list.innerHTML = '';
+          return;
+        }
+        estado.style.display = 'none';
+        list.innerHTML = pedidos.map(function (p) {
+          var thumb = p.miniatura
+            ? '<img class="pedidos-thumb" src="' + escapeHtml(p.miniatura) + '" alt="" loading="lazy">'
+            : '<div class="pedidos-thumb gen">' + escapeHtml((p.titulo || '?').charAt(0).toUpperCase()) + '</div>';
+          return '<li>' + thumb + '<div><div class="t">' + escapeHtml(p.titulo) + '</div>' +
+            (p.fecha ? '<div class="f">' + escapeHtml(formatFecha(p.fecha)) + '</div>' : '') + '</div></li>';
+        }).join('');
+      }
+      function loadPedidos() {
+        estado.textContent = 'Cargando pedidos…';
+        estado.style.display = 'block';
+        fetch(API_URL).then(function (r) { return r.json(); }).then(function (data) {
+          if (data && data.pedidos) { render(data.pedidos); }
+          else { throw new Error('bad'); }
+        }).catch(function () {
+          estado.textContent = 'No se pudo cargar la lista. Revisa tu conexión e intenta de nuevo.';
+        });
+      }
+      function openPedidos() {
+        overlay.classList.add('open');
+        overlay.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+        document.getElementById('closePedidos').focus();
+        loadPedidos();
+      }
+      function closePedidos() {
+        overlay.classList.remove('open');
+        overlay.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+        pedidosBtn.focus();
+      }
+      pedidosBtn.addEventListener('click', openPedidos);
+      document.getElementById('closePedidos').addEventListener('click', closePedidos);
+      overlay.addEventListener('click', function (event) { if (event.target === overlay) closePedidos(); });
+      document.addEventListener('keydown', function (event) { if (event.key === 'Escape' && overlay.classList.contains('open')) closePedidos(); });
+      addBtn.addEventListener('click', function () {
+        var titulo = input.value.trim();
+        if (!titulo) { showMsg('Escribe el título del juego primero.', 'err'); input.focus(); return; }
+        addBtn.disabled = true;
+        showMsg('Agregando…', '');
+        fetch(API_URL + '?action=add&title=' + encodeURIComponent(titulo)).then(function (r) { return r.json(); }).then(function () {
+          input.value = '';
+          showMsg('Pedido agregado a la lista compartida.', 'ok');
+          loadPedidos();
+        }).catch(function () {
+          showMsg('No se pudo agregar. Revisa tu conexión e intenta de nuevo.', 'err');
+        }).finally(function () { addBtn.disabled = false; });
+      });
+      input.addEventListener('keydown', function (e) { if (e.key === 'Enter') addBtn.click(); });
     })();
   </script>
   </body>
