@@ -632,7 +632,7 @@
     .wa-float { position: fixed; right: 18px; top: calc(14px + env(safe-area-inset-top)); z-index: 40; width: 64px; height: 64px; border-radius: 50%; background: #25d366; display: grid; place-items: center; box-shadow: 0 6px 20px rgba(0,0,0,.35); }
     .wa-float svg { width: 30px; height: 30px; fill: #fff; }
     @media (max-width: 640px) { .howto-steps { grid-template-columns: 1fr; } .howto { margin-left: 12px; margin-right: 12px; } .price-chips { margin-left: 12px; margin-right: 12px; } }
-    body { padding-bottom: calc(66px + env(safe-area-inset-bottom)); }
+    body { padding-bottom: calc(82px + env(safe-area-inset-bottom)); }
     .search-cart-row {
       display: flex; gap: 10px; align-items: center;
       max-width: 1180px; margin: 0 auto 20px; padding: 12px;
@@ -643,31 +643,43 @@
     .search-cart-row .search-wrap { max-width: none; margin-left: 0; }
     .howto[hidden] { display: none; }
     .bottom-bar {
-      position: fixed; left: 0; right: 0; bottom: 0; z-index: 35;
-      display: flex; justify-content: space-around; align-items: stretch;
-      padding: 6px 6px calc(6px + env(safe-area-inset-bottom));
-      background: color-mix(in srgb, var(--bg) 92%, transparent);
+      position: fixed; left: 10px; right: 10px; bottom: calc(10px + env(safe-area-inset-bottom)); z-index: 35;
+      display: flex; align-items: stretch; gap: 6px;
+      padding: 7px;
+      background: rgba(8, 20, 28, .94);
       backdrop-filter: blur(14px);
-      border-top: 1px solid var(--line);
+      border: 1.5px solid #22d3ee; border-radius: 999px;
+      box-shadow: 0 0 0 1px rgba(34, 211, 238, .25), 0 0 22px rgba(34, 211, 238, .35), 0 12px 30px rgba(0, 0, 0, .35);
     }
     .bb-btn {
-      flex: 1; border: 0; background: transparent; cursor: pointer;
-      display: flex; flex-direction: column; align-items: center; gap: 2px;
-      padding: 6px 2px 4px; color: var(--muted); font-size: .68rem; font-weight: 700;
-      border-radius: 10px; position: relative;
+      flex: 1 1 0; min-width: 0; border: 1.5px solid transparent; background: transparent; cursor: pointer;
+      display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 8px;
+      padding: 9px 8px; color: #d7e4ec; font-size: .92rem; font-weight: 700; white-space: nowrap;
+      border-radius: 999px; position: relative; overflow: visible;
+      transition: flex-grow .25s ease, background .25s ease, border-color .25s ease, box-shadow .25s ease, color .25s ease;
     }
-    .bb-btn svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2; }
+    .bb-btn svg { flex: 0 0 auto; width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2; }
     .bottom-bar a.bb-btn { text-decoration: none; }
-    .bb-btn.bb-home { background: var(--signal); color: var(--signal-ink); }
-    .bb-btn.bb-home svg { stroke: var(--signal-ink); }
+    .bb-btn .bb-label { display: none; overflow: hidden; text-overflow: ellipsis; }
+    .bb-btn.is-active { flex: 0 1 auto; background: #102b36; border-color: #22d3ee; color: #fff; box-shadow: 0 0 14px rgba(34, 211, 238, .45); }
+    .bb-btn.is-active .bb-label { display: inline; }
+    .bb-btn.is-active::after { content: ""; position: absolute; top: -1.5px; left: 50%; transform: translateX(-50%); width: 36px; height: 4px; border-radius: 999px; background: #22d3ee; box-shadow: 0 0 10px rgba(34, 211, 238, .9); }
+    .bb-icon { position: relative; flex: 0 0 auto; display: flex; }
     .bb-count {
-      position: absolute; top: 0; right: 8px; min-width: 18px; height: 18px; padding: 0 4px;
-      display: grid; place-items: center; border-radius: 999px;
+      position: absolute; top: -9px; right: -11px; min-width: 18px; height: 18px; padding: 0 4px;
+      display: grid; place-items: center; border-radius: 999px; border: 2px solid #08141c;
       background: var(--signal); color: var(--signal-ink); font-size: .65rem; font-weight: 800;
     }
-    .bb-help { width: 24px; height: 24px; display: grid; place-items: center; border: 2px solid currentColor; border-radius: 50%; font-size: 15px; line-height: 1; }
+    .bb-help { flex: 0 0 auto; width: 24px; height: 24px; display: grid; place-items: center; border: 2px solid currentColor; border-radius: 50%; font-size: 15px; line-height: 1; }
+    @media (max-width: 480px) {
+      .bottom-bar { left: 8px; right: 8px; padding: 6px; gap: 4px; }
+      .bb-btn { padding: 8px 6px; gap: 6px; font-size: .78rem; }
+      .bb-btn svg { width: 20px; height: 20px; }
+      .bb-help { width: 20px; height: 20px; font-size: 13px; }
+      .bb-count { top: -8px; right: -9px; min-width: 16px; height: 16px; font-size: .6rem; }
+    }
     .bb-panel {
-      position: fixed; right: 12px; bottom: calc(72px + env(safe-area-inset-bottom)); z-index: 60;
+      position: fixed; right: 12px; bottom: calc(88px + env(safe-area-inset-bottom)); z-index: 60;
       width: min(280px, calc(100% - 24px));
       background: var(--surface); border: 1px solid var(--line); border-radius: 12px;
       box-shadow: var(--shadow); padding: 8px; display: flex; flex-direction: column; gap: 2px;
@@ -1249,30 +1261,29 @@
   </button>
 
   <nav class="bottom-bar" aria-label="Menú principal">
-    <button class="bb-btn bb-home" id="bbHome" type="button" aria-label="Inicio">
+    <button class="bb-btn is-active" id="bbHome" type="button" aria-label="Inicio">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11 12 4l8 7"></path><path d="M6 10v10h12V10"></path><path d="M10 20v-6h4v6"></path></svg>
-      <span>Inicio</span>
+      <span class="bb-label">Inicio</span>
     </button>
     <button class="bb-btn" id="bbGames" type="button" aria-label="Juegos disponibles">
       <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="18" height="11" rx="5"></rect><circle cx="8" cy="12" r="1" fill="currentColor" stroke="none"></circle><circle cx="16" cy="12" r="1" fill="currentColor" stroke="none"></circle></svg>
-      <span>Juegos</span>
+      <span class="bb-label">Juegos</span>
     </button>
     <button class="bb-btn" id="bbCart" type="button" aria-label="Abrir carrito">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l2.2 10.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6L20.5 8H6.2"></path><circle cx="10" cy="20" r="1"></circle><circle cx="17" cy="20" r="1"></circle></svg>
-      <span>Carrito</span>
-      <span class="bb-count" id="bbCartCount">0</span>
+      <span class="bb-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l2.2 10.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6L20.5 8H6.2"></path><circle cx="10" cy="20" r="1"></circle><circle cx="17" cy="20" r="1"></circle></svg><span class="bb-count" id="bbCartCount">0</span></span>
+      <span class="bb-label">Carrito</span>
     </button>
-    <a class="bb-btn" href="PedidosUsuarios.html" aria-label="Pedidos de Usuarios">
+    <a class="bb-btn" id="bbPedidos" href="PedidosUsuarios.html" aria-label="Pedidos de Usuarios">
       <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="18" height="11" rx="5"></rect><path d="M8 12.2l2.2 2.2L16 9"></path></svg>
-      <span>Pedidos</span>
+      <span class="bb-label">Pedidos</span>
     </a>
     <button class="bb-btn" id="bbHowto" type="button" aria-label="Cómo pedir">
       <span class="bb-help" aria-hidden="true">?</span>
-      <span>¿Cómo pedir?</span>
+      <span class="bb-label">¿Cómo pedir?</span>
     </button>
     <button class="bb-btn" id="bbMenuBtn" type="button" aria-expanded="false" aria-label="Abrir el menú principal">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"></path></svg>
-      <span>Menú</span>
+      <span class="bb-label">Menú</span>
     </button>
   </nav>
   <div class="bb-panel" id="bbPanel" hidden>
@@ -1312,18 +1323,31 @@
         closePanel();
         if (trigger) trigger.click();
       }
+      var activeBtn = document.getElementById('bbHome');
+      var lastNonMenuBtn = activeBtn;
+      function setActive(btn) {
+        if (!btn) return;
+        var btns = document.querySelectorAll('.bb-btn');
+        for (var i = 0; i < btns.length; i++) btns[i].classList.remove('is-active');
+        btn.classList.add('is-active');
+        activeBtn = btn;
+        if (btn.id !== 'bbMenuBtn') lastNonMenuBtn = btn;
+      }
+      function restoreActive() { setActive(lastNonMenuBtn || document.getElementById('bbHome')); }
       var home = document.getElementById('bbHome');
-      if (home) home.addEventListener('click', goHome);
+      if (home) home.addEventListener('click', function () { setActive(home); goHome(); });
       var games = document.getElementById('bbGames');
-      if (games) games.addEventListener('click', function () { scrollToId('catalogHeading'); });
+      if (games) games.addEventListener('click', function () { setActive(games); scrollToId('catalogHeading'); });
       var cartBtn = document.getElementById('bbCart');
-      if (cartBtn) cartBtn.addEventListener('click', openCartFromBar);
+      if (cartBtn) cartBtn.addEventListener('click', function () { setActive(cartBtn); openCartFromBar(); });
       var howtoBtn = document.getElementById('bbHowto');
-      if (howtoBtn) howtoBtn.addEventListener('click', function () { scrollToId('howto'); });
+      if (howtoBtn) howtoBtn.addEventListener('click', function () { setActive(howtoBtn); scrollToId('howto'); });
       var panelHowto = document.getElementById('bbPanelHowto');
-      if (panelHowto) panelHowto.addEventListener('click', function () { scrollToId('howto'); });
+      if (panelHowto) panelHowto.addEventListener('click', function () { scrollToId('howto'); setActive(howtoBtn); });
       var panelPremieres = document.getElementById('bbPanelPremieres');
-      if (panelPremieres) panelPremieres.addEventListener('click', function () { scrollToId('premieres'); });
+      if (panelPremieres) panelPremieres.addEventListener('click', function () { scrollToId('premieres'); setActive(games); });
+      var pedidosBtn = document.getElementById('bbPedidos');
+      if (pedidosBtn) pedidosBtn.addEventListener('click', function () { setActive(pedidosBtn); });
       var menuBtn = document.getElementById('bbMenuBtn');
       var panel = document.getElementById('bbPanel');
       if (menuBtn && panel) menuBtn.addEventListener('click', function (e) {
@@ -1331,6 +1355,7 @@
         var willOpen = panel.hidden;
         panel.hidden = !willOpen;
         menuBtn.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+        if (willOpen) setActive(menuBtn); else restoreActive();
       });
       var socialToggle = document.getElementById('bbSocialToggle');
       var socialSub = document.getElementById('bbSocialSub');
@@ -1344,8 +1369,9 @@
         if (!panel || panel.hidden) return;
         if (panel.contains(e.target) || (menuBtn && menuBtn.contains(e.target))) return;
         closePanel();
+        restoreActive();
       });
-      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closePanel(); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { closePanel(); restoreActive(); } });
       var waBtn = document.getElementById('waFloatBtn');
       var waFan = document.getElementById('waFan');
       function closeFan() {
