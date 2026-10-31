@@ -821,163 +821,8 @@
 
   <script>
     (function () {
-      var games = [
-        { id: 'game-001', title: "A Way Out", capacity: 15.9, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00001.webp", trailer: "https://www.youtube.com/watch?v=VWvRa4D98Zg" },
-        { id: 'game-002', title: "Absolver", capacity: 15.5, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00002.webp", trailer: "https://www.youtube.com/watch?v=w0eypGqZtEQ" },
-        { id: 'game-003', title: "Ace Combat 7 Skies Unknown", capacity: 42.7, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00003.webp", trailer: "https://www.youtube.com/watch?v=oLChPjZnm54" },
-        { id: 'game-004', title: "Achilles Legends Untold", capacity: 8.9, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00004.webp", trailer: "https://www.youtube.com/watch?v=5wPHr73kims" },
-        { id: 'game-005', title: "Agatha Christie", capacity: 9.3, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00005.webp", trailer: "https://www.youtube.com/watch?v=6OyIs9BjqPw" },
-        { id: 'game-006', title: "Alan Wake Remastered", capacity: 57.7, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00006.webp", trailer: "https://www.youtube.com/watch?v=mRVBZC-RJF0" },
-        { id: 'game-007', title: "Alfred Hitchcock Vertigo", capacity: 9.9, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00007.webp", trailer: "https://www.youtube.com/watch?v=Up2HKg0j-h8" },
-        { id: 'game-008', title: "American Fugitive", capacity: 2.1, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00008.webp", trailer: "https://www.youtube.com/watch?v=tXUqCIr9uo4" },
-        { id: 'game-009', title: "Ancestors Legacy", capacity: 18.4, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00009.webp", trailer: "https://www.youtube.com/watch?v=cIL2fnxKBIE" },
-        { id: 'game-010', title: "Assassin's Creed - Black Flag", capacity: 30.3, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00010.webp", trailer: "https://www.youtube.com/watch?v=8_GDeIee6Kc" },
-        { id: 'game-011', title: "Assassin's Creed - Mirage", capacity: 27.0, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00011.webp", trailer: "https://www.youtube.com/watch?v=BhCYK72t6Xc" },
-        { id: 'game-012', title: "Assassin's Creed - Odyssey", capacity: 100.0, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00012.webp", trailer: "https://www.youtube.com/watch?v=ACZpHzBKCqU" },
-        { id: 'game-013', title: "Assassin's Creed - Rogue Remastered", capacity: 9.5, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00013.webp", trailer: "https://www.youtube.com/watch?v=doqq_NWLPV4" },
-        { id: 'game-014', title: "Assassin's Creed - Unity", capacity: 45.5, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00014.webp", trailer: "https://www.youtube.com/watch?v=-ohFulrJKhI" },
-        { id: 'game-015', title: "Assassin's Creed - Valhalla Ultimate", capacity: 122.8, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00015.webp", trailer: "https://www.youtube.com/watch?v=gpmngwWZf90" },
-        { id: 'game-016', title: "Atomfall", capacity: 39.4, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00016.webp", trailer: "https://www.youtube.com/watch?v=QD5txk1TTfk" },
-        { id: 'game-017', title: "Back to Bed", capacity: 0.9, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00017.webp", trailer: "https://www.youtube.com/watch?v=0lz-QUPABqw" },
-        { id: 'game-018', title: "Battlefield 1", capacity: 66.9, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00018.webp", trailer: "https://www.youtube.com/watch?v=4DI-EvlmVeQ" },
-        { id: 'game-019', title: "Battlefield 4", capacity: 33.5, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00019.webp", trailer: "https://www.youtube.com/watch?v=wJ_F525yHVY" },
-        { id: 'game-020', title: "Battlefield Hardline", capacity: 37.9, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00020.webp", trailer: "https://www.youtube.com/watch?v=tGQ18YFIEu0" },
-        { id: 'game-021', title: "Beyond Two Souls", capacity: 34.9, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00021.webp", trailer: "https://www.youtube.com/watch?v=J5D7E-V_etc" },
-        { id: 'game-022', title: "Bleach Rebirth of Souls", capacity: 36.6, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00022.webp", trailer: "https://www.youtube.com/watch?v=hiyFl_UPGpk" },
-        { id: 'game-023', title: "Braid Anniversary Edition", capacity: 4.2, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00023.webp", trailer: "https://www.youtube.com/watch?v=U738YZG1k1I" },
-        { id: 'game-024', title: "Bus Simulator 21", capacity: 5.7, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00024.webp", trailer: "https://www.youtube.com/watch?v=F4udi0ypUyQ" },
-        { id: 'game-025', title: "Call of Duty - Modern Warfare 2", capacity: 97.5, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00025.webp", trailer: "https://www.youtube.com/watch?v=hCY08h5UQVw" },
-        { id: 'game-026', title: "Call of Duty - MW3", capacity: 101.3, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00026.webp", trailer: "https://www.youtube.com/watch?v=pWY6Q3h5UA4" },
-        { id: 'game-027', title: "Call of Duty - Vanguard", capacity: 78.2, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00027.webp", trailer: "https://www.youtube.com/watch?v=zTIzNetF2_w" },
-        { id: 'game-028', title: "Car Mechanic Simulator", capacity: 8.9, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00028.webp", trailer: "https://www.youtube.com/watch?v=T1rxHxua9cQ" },
-        { id: 'game-029', title: "Castle Crashers Remastered", capacity: 0.2298, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00029.webp", trailer: "https://www.youtube.com/watch?v=_JcmxKOC4R0", premiere: true },
-        { id: 'game-030', title: "Commandos Origins Deluxe Edition", capacity: 11.6, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00030.webp", trailer: "https://www.youtube.com/watch?v=RclUbfguvqs", premiere: true },
-        { id: 'game-031', title: "Conan Exiles", capacity: 93.3, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00031.webp", trailer: "https://www.youtube.com/watch?v=NNOcrCV-N7E" },
-        { id: 'game-032', title: "Construction Simulator", capacity: 10.6, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00032.webp", trailer: "https://www.youtube.com/watch?v=0uAgCTBWZVw" },
-        { id: 'game-033', title: "Crash Bandicoot N. Sane Trilogy", capacity: 21.1, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00033.webp", trailer: "https://www.youtube.com/watch?v=F7G91RjVmvk", premiere: true },
-        { id: 'game-034', title: "Cuphead", capacity: 3.4, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00034.webp", trailer: "https://www.youtube.com/watch?v=N5B-GlawugI", premiere: true },
-        { id: 'game-035', title: "Cyberpunk", capacity: 77.0, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00035.webp", trailer: "https://www.youtube.com/watch?v=dkkfpZ7kMPw" },
-        { id: 'game-144', title: "Dating Stories", capacity: 1.7, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00144.webp", trailer: "https://www.youtube.com/watch?v=hGMWN-UD9Zo", premiere: true },
-        { id: 'game-036', title: "DAYS GONE", capacity: 35.9, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00036.webp", trailer: "https://www.youtube.com/watch?v=6LgVI2ze1dk" },
-        { id: 'game-037', title: "Detroit Become Human", capacity: 40.1, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00037.webp", trailer: "https://www.youtube.com/watch?v=8KCDR8cMer8" },
-        { id: 'game-038', title: "Devil May Cry - Definitive Edition", capacity: 17.0, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00038.webp", trailer: "https://www.youtube.com/watch?v=t8Fv9dh8Jfk" },
-        { id: 'game-039', title: "Devil may Cry 5 - Delux Upgrade", capacity: 41.0, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00039.webp", trailer: "https://www.youtube.com/watch?v=FtPUbKETl6Y" },
-        { id: 'game-040', title: "Diablo 3 Eternal Collection Ultimate Evil edition", capacity: 48.1, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00040.webp", trailer: "https://www.youtube.com/watch?v=lq6M-mn9fxM" },
-        { id: 'game-041', title: "Dishonored", capacity: 18.8, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00041.webp", trailer: "https://www.youtube.com/watch?v=XMCzCvR-O8M" },
-        { id: 'game-042', title: "Don't Strave Together", capacity: 0.474, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00042.webp", trailer: "https://www.youtube.com/watch?v=6TxCeu2F6bE", premiere: true },
-        { id: 'game-043', title: "Dragon Age inquisition - DE", capacity: 51.8, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00043.webp", trailer: "https://www.youtube.com/watch?v=jJqxfkgSUog" },
-        { id: 'game-044', title: "EA SPORTS FC 26", capacity: 76.1, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00044.webp", trailer: "https://www.youtube.com/watch?v=F2Q4xrASt94" },
-        { id: 'game-045', title: "EA SPORTS FC 27", capacity: 63.6, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00045.webp", trailer: "https://www.youtube.com/watch?v=xg9NAaKmAw8", premiere: true },
-        { id: 'game-046', title: "ELDEN RING", capacity: 53.4, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00046.webp", trailer: "https://www.youtube.com/watch?v=qqiC88f9ogU" },
-        { id: 'game-047', title: "Electrician Simulator", capacity: 8.1, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00047.webp", trailer: "https://www.youtube.com/watch?v=8ONU0W-B26Q", premiere: true },
-        { id: 'game-048', title: "Empire of Sin", capacity: 4.7, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00048.webp", trailer: "https://www.youtube.com/watch?v=F_izLa5D5NY" },
-        { id: 'game-049', title: "Evil West", capacity: 25.7, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00049.webp", trailer: "https://www.youtube.com/watch?v=2hP6IVcHRnQ" },
-        { id: 'game-050', title: "Fallout Shelter", capacity: 0.67, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00050.webp", trailer: "https://www.youtube.com/watch?v=VCyeqEfFcoE" },
-        { id: 'game-051', title: "Ghost of Tsushima", capacity: 48.4, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00051.webp", trailer: "https://www.youtube.com/watch?v=0HTfLqHoTmg" },
-        { id: 'game-052', title: "God of War IV 2018 - Dios de la Guerra IV", capacity: 50.5, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00052.webp", trailer: "https://www.youtube.com/watch?v=jCB36uNrZ9I" },
-        { id: 'game-053', title: "God of War Ragnarok 2022 - Dios de la Guerra Ragnarok", capacity: 113.4, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00053.webp", trailer: "https://www.youtube.com/watch?v=g1wr0DfV73E" },
-        { id: 'game-054', title: "Gran Turismo 7", capacity: 101.0, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00054.webp", trailer: "https://www.youtube.com/watch?v=oz-O74SmTSQ" },
-        { id: 'game-055', title: "Grand Theft Auto San Andreas - The Definitive Edition GTA", capacity: 21.1, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00055.webp", trailer: "https://www.youtube.com/watch?v=D71cBUeAL58", premiere: true },
-        { id: 'game-056', title: "Grand Theft Auto V GTA", capacity: 58.3, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00056.webp", trailer: "https://www.youtube.com/watch?v=hBvMSP7cI-Q" },
-        { id: 'game-057', title: "Hellblade Senuas Sacrifice", capacity: 13.3, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00057.webp", trailer: "https://www.youtube.com/watch?v=f7Ir5icRsZ0" },
-        { id: 'game-058', title: "Hollow Knight - Edicion Corazon Vacio", capacity: 2.3, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00058.webp", trailer: "https://www.youtube.com/watch?v=JuP47fRBsWg", premiere: true },
-        { id: 'game-059', title: "Hollow Knight Silksong", capacity: 4.0, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00059.webp", trailer: "https://www.youtube.com/watch?v=65IQ1JuyYfY" },
-        { id: 'game-060', title: "Homefront The Revolution", capacity: 27.2, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00060.webp", trailer: "https://www.youtube.com/watch?v=Gp1AE9ISysY" },
-        { id: 'game-061', title: "HorizonZero Dawn Complete", capacity: 45.1, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00061.webp", trailer: "https://www.youtube.com/watch?v=HhZmybfPEvk" },
-        { id: 'game-062', title: "Human Fall Flat", capacity: 0.7491, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00062.webp", trailer: "https://www.youtube.com/watch?v=DOq2Ay-pueM", premiere: true },
-        { id: 'game-063', title: "Hustle Kings VR", capacity: 0.9, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00063.webp", trailer: "https://www.youtube.com/watch?v=vH01nMsYPs8" },
-        { id: 'game-064', title: "It Takes Two", capacity: 33.1, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00064.webp", trailer: "http://youtube.com/watch?v=ohClxMmNLQQ", premiere: true },
-        { id: 'game-065', title: "Kill Zone Shadow Fall", capacity: 38.6, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00065.webp", trailer: "https://www.youtube.com/watch?v=-rBAkj5Egok" },
-        { id: 'game-066', title: "Like a Dragon - Pirate in Hawaii", capacity: 65.8, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00066.webp", trailer: "https://www.youtube.com/watch?v=vBmYPiWoigQ" },
-        { id: 'game-067', title: "Limbo", capacity: 0.1586, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00067.webp", trailer: "https://www.youtube.com/watch?v=Y4HSyVXKYz8" },
-        { id: 'game-068', title: "Little Nighmares 3 Deluxe Edition", capacity: 20.7, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00068.webp", trailer: "https://www.youtube.com/watch?v=A8w6LRyikHA" },
-        { id: 'game-069', title: "Lords of the Fallen", capacity: 5.3, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00069.webp", trailer: "https://www.youtube.com/watch?v=1aXZvuF0SH0" },
-        { id: 'game-070', title: "MadMax", capacity: 33.5, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00070.webp", trailer: "https://www.youtube.com/watch?v=bx980mqhOXs" },
-        { id: 'game-071', title: "Mafia II", capacity: 59.8, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00071.webp", trailer: "https://www.youtube.com/watch?v=wHoqwphzhzc" },
-        { id: 'game-072', title: "Mark McMorris Infinite Air", capacity: 1.7, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00072.webp", trailer: "https://www.youtube.com/watch?v=G8RwgRh9TuQ" },
-        { id: 'game-073', title: "Metal Gear Solid V - The Definitive Experience", capacity: 30.6, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00073.webp", trailer: "https://www.youtube.com/watch?v=2pAqPfTfqoI" },
-        { id: 'game-074', title: "MineCraft", capacity: 2.5, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00074.webp", trailer: "https://www.youtube.com/watch?v=1DhWXAiNgfQ" },
-        { id: 'game-075', title: "Minecraft Dungeons - Ultimate Edition", capacity: 3.9, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00075.webp", trailer: "https://www.youtube.com/watch?v=CoZ2V7XsSYk" },
-        { id: 'game-076', title: "MLB The Show 24", capacity: 82.2, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00076.webp", trailer: "https://www.youtube.com/watch?v=ZIsGTrrNhpM" },
-        { id: 'game-077', title: "Monopoly Family Fun Pack", capacity: 3.2, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00077.webp", trailer: "https://www.youtube.com/watch?v=20x5SLWxY0I" },
-        { id: 'game-078', title: "Monopoly Plus CUSA01061", capacity: 2.6, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00078.webp", trailer: "https://www.youtube.com/watch?v=BSJSd2yN8Z8" },
-        { id: 'game-079', title: "Monster Hunter WORLD", capacity: 14.4, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00079.webp", trailer: "https://www.youtube.com/watch?v=7paWNhKkX38" },
-        { id: 'game-080', title: "Mortal Kombat 11 Ultimate", capacity: 70.2, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00080.webp", trailer: "https://www.youtube.com/watch?v=GisOwMQUrIc" },
-        { id: 'game-081', title: "MotoGP", capacity: 37.5, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00081.webp", trailer: "https://youtu.be/mQdrgcMSa54" },
-        { id: 'game-082', title: "Murdered Soul Suspect", capacity: 8.6, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00082.webp", trailer: "https://www.youtube.com/watch?v=1xH4_YGEBPo" },
-        { id: 'game-083', title: "Need for Speed Most Wanted Black Edition", capacity: 3.4, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00083.webp", trailer: "https://www.youtube.com/watch?v=L7eHnAS3BDE" },
-        { id: 'game-084', title: "Need For Speed Payback", capacity: 22.1, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00084.webp", trailer: "https://www.youtube.com/watch?v=_rQ5Gi4nXXQ" },
-        { id: 'game-085', title: "NFS Heat", capacity: 39.5, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00085.webp", trailer: "https://www.youtube.com/watch?v=p4Q3uh2RaZo" },
-        { id: 'game-086', title: "On The Road The Truck Simulator", capacity: 7.4, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00086.webp", trailer: "https://www.youtube.com/watch?v=nB_PHq-NgHM" },
-        { id: 'game-087', title: "Overcooked 2", capacity: 9.1, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00087.webp", trailer: "https://www.youtube.com/watch?v=uKLb8D36YKk", premiere: true },
-        { id: 'game-088', title: "Plants vs Zombies Replanted", capacity: 2.9, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00088.webp", trailer: "https://www.youtube.com/watch?v=k18DL7PZ7U8" },
-        { id: 'game-089', title: "Police Simlator Patrol", capacity: 9.4, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00089.webp", trailer: "https://www.youtube.com/watch?v=EvXgV8nyOHo" },
-        { id: 'game-090', title: "Portal Knights", capacity: 4.5, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00090.webp", trailer: "https://www.youtube.com/watch?v=ccloZ7l266M" },
-        { id: 'game-091', title: "Prey", capacity: 36.0, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00091.webp", trailer: "https://www.youtube.com/watch?v=1hKTZGflqrc" },
-        { id: 'game-092', title: "Rayman Legends", capacity: 7.2, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00092.webp", trailer: "https://www.youtube.com/watch?v=yMIKs1PKrEM" },
-        { id: 'game-093', title: "Red Dead Redemption", capacity: 9.5, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00093.webp", trailer: "https://www.youtube.com/watch?v=FDdT8zMl7Xc" },
-        { id: 'game-094', title: "Red Dead Redemption 2", capacity: 98.6, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00094.webp", trailer: "https://www.youtube.com/watch?v=6VVhPqGMDAg" },
-        { id: 'game-095', title: "Resident Evil 4 Remake Deluxe Edition", capacity: 28.4, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00095.webp", trailer: "https://www.youtube.com/watch?v=j5Xv2lM9wes" },
-        { id: 'game-096', title: "Resident Evil 7 Biohazard GE", capacity: 32.6, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00096.webp", trailer: "https://www.youtube.com/watch?v=W1OUs3HwIuo" },
-        { id: 'game-097', title: "Resident Evil Village", capacity: 26.8, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00097.webp", trailer: "https://www.youtube.com/watch?v=5q4MgRrjMqQ" },
-        { id: 'game-098', title: "Rise of the Tomb Raider 20 Year Celebration", capacity: 16.1, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00098.webp", trailer: "https://www.youtube.com/watch?v=1_FIyNcQSgA" },
-        { id: 'game-145', title: "Riders Republic", capacity: 29.5, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00145.webp", trailer: "https://www.youtube.com/watch?v=fjtozVlPy88", premiere: true },
-        { id: 'game-099', title: "Rocket League", capacity: 2.4, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00099.webp", trailer: "https://www.youtube.com/watch?v=NC82dWrFqCE", premiere: true },
-        { id: 'game-100', title: "Sackboy A Big adventure", capacity: 32.8, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00100.webp", trailer: "https://www.youtube.com/watch?v=ZOk3fj5ujNM" },
-        { id: 'game-101', title: "Sekiro Shadows Die Twice", capacity: 15.4, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00101.webp", trailer: "https://www.youtube.com/watch?v=m7ceuZ0gXjg" },
-        { id: 'game-102', title: "Shadow of Mordor - La Tierra Media - Sombras de Mordor 2014", capacity: 26.8, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00102.webp", trailer: "https://www.youtube.com/watch?v=08_01gv2SRk" },
-        { id: 'game-103', title: "Shadow of The Colossus", capacity: 12.6, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00103.webp", trailer: "https://www.youtube.com/watch?v=OYmUgbVLs4k" },
-        { id: 'game-104', title: "Shadow of War - La Tierra Media - Sombras de Guerra 2017", capacity: 47.4, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00104.webp", trailer: "https://www.youtube.com/watch?v=zt5ya5Ijb7Q" },
-        { id: 'game-105', title: "Sherlock Holmes Crime and Punishments", capacity: 8.1, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00105.webp", trailer: "https://www.youtube.com/watch?v=vvU0XGc17yM" },
-        { id: 'game-106', title: "Sherlock Holmes The Devil's Daughter", capacity: 14.4, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00106.webp", trailer: "https://www.youtube.com/watch?v=-CI9CcGQnGE" },
-        { id: 'game-107', title: "SIFU", capacity: 29.0, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00107.webp", trailer: "https://www.youtube.com/watch?v=Kx3R2CNhLWA" },
-        { id: 'game-108', title: "Slain", capacity: 0.1839, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00108.webp", trailer: "https://www.youtube.com/watch?v=NvmdRTk3B9A", premiere: true },
-        { id: 'game-109', title: "Sniper Elite 4", capacity: 37.5, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00109.webp", trailer: "https://www.youtube.com/watch?v=lGBRAEvXZ94" },
-        { id: 'game-110', title: "Sniper Ghost Warrior 3", capacity: 58.0, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00110.webp", trailer: "https://www.youtube.com/watch?v=SAnLVJRLVMo" },
-        { id: 'game-111', title: "SnowRunner v1,64", capacity: 33.5, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00111.webp", trailer: "https://www.youtube.com/watch?v=hcFSFjJ2b6o", premiere: true },
-        { id: 'game-112', title: "STAR WARS - Jedi Fallen Order", capacity: 44.7, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00112.webp", trailer: "https://www.youtube.com/watch?v=CTc-iYL_rrU" },
-        { id: 'game-113', title: "Stardew Valley", capacity: 0.504, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00113.webp", trailer: "https://www.youtube.com/watch?v=8A7A1X1TVNc" },
-        { id: 'game-114', title: "Starlink Battle for Atlas™", capacity: 15.8, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00114.webp", trailer: "https://www.youtube.com/watch?v=NGBIUZreVV4", premiere: true },
-        { id: 'game-143', title: "Sudoku Champions", capacity: 0.147, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00143.webp", trailer: "https://www.youtube.com/watch?v=5ISDA3j81z0", premiere: true },
-        { id: 'game-115', title: "Street Food Restaurant Owner", capacity: 1.6, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00115.webp", trailer: "https://www.youtube.com/watch?v=FS7YK7yGjVI" },
-        { id: 'game-116', title: "Syberia The World Before", capacity: 10.0, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00116.webp", trailer: "https://www.youtube.com/watch?v=cDnXG71G8QM" },
-        { id: 'game-117', title: "Tetris© Ultimate", capacity: 0.26, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00117.webp", trailer: "https://www.youtube.com/watch?v=Ad51_Kv90HU" },
-        { id: 'game-118', title: "The Callisto Protocol", capacity: 57.9, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00118.webp", trailer: "https://www.youtube.com/watch?v=gghRJv_tdb0" },
-        { id: 'game-119', title: "The Crew 2", capacity: 59.3, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00119.webp", trailer: "https://www.youtube.com/watch?v=ZgAHC0q-93k" },
-        { id: 'game-120', title: "The Elder Scrolls V Skyrim", capacity: 29.6, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00120.webp", trailer: "https://www.youtube.com/watch?v=znj_r4YNbqE" },
-        { id: 'game-121', title: "The Forest", capacity: 1.8, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00121.webp", trailer: "https://www.youtube.com/watch?v=8KXfxHujIAA", premiere: true },
-        { id: 'game-122', title: "The Last of Us™ Part II", capacity: 77.3, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00122.webp", trailer: "https://www.youtube.com/watch?v=8z4v-V76gn8" },
-        { id: 'game-123', title: "The Last of US™ Remasterisado", capacity: 41.5, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00123.webp", trailer: "https://www.youtube.com/watch?v=ygVPHxkokAE" },
-        { id: 'game-124', title: "The Long Dark", capacity: 15.8, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00124.webp", trailer: "https://www.youtube.com/watch?v=WJ-1O_w2KTg" },
-        { id: 'game-125', title: "The Settlers New Allies", capacity: 18.5, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00125.webp", trailer: "https://www.youtube.com/watch?v=wmO1kTv1WuM" },
-        { id: 'game-126', title: "The Walking Dead - Destinies", capacity: 23.0, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00126.webp", trailer: "https://www.youtube.com/watch?v=Ak29xe4sApg" },
-        { id: 'game-127', title: "The Withcer 3 Wild Hunt GOTY", capacity: 37.3, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00127.webp", trailer: "https://www.youtube.com/watch?v=nYwe_WHARdc" },
-        { id: 'game-128', title: "This War of Mine", capacity: 1.2, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00128.webp", trailer: "https://www.youtube.com/watch?v=5kjeXZB5UZE" },
-        { id: 'game-129', title: "Tom Clancy's Ghost Recon© Wildlands", capacity: 39.0, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00129.webp", trailer: "https://www.youtube.com/watch?v=Jmzo4KvRmsM" },
-        { id: 'game-130', title: "Tomb Raider Definitive Edition", capacity: 18.5, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00130.webp", trailer: "https://www.youtube.com/watch?v=3VmFhs26U2E" },
-        { id: 'game-131', title: "TopSpin 2K25", capacity: 24.2, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00131.webp", trailer: "https://www.youtube.com/watch?v=E13jqZUaTrE" },
-        { id: 'game-132', title: "Tropico 6", capacity: 9.4, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00132.webp", trailer: "https://www.youtube.com/watch?v=X6Kmi8DYl0o" },
-        { id: 'game-133', title: "Truck and Logistics Simulator", capacity: 2.5, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00133.webp", trailer: "https://www.youtube.com/watch?v=8JsJk-MhCrM" },
-        { id: 'game-134', title: "Truck Driver", capacity: 1.2, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00134.webp", trailer: "https://www.youtube.com/watch?v=hXle0PedlCQ" },
-        { id: 'game-135', title: "UFC 3", capacity: 21.7, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00135.webp", trailer: "https://www.youtube.com/watch?v=Pgh7dGxVKWw" },
-        { id: 'game-136', title: "Uncharted - El Legado Perdido", capacity: 44.6, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00136.webp", trailer: "https://www.youtube.com/watch?v=i8qzBkHjk_0" },
-        { id: 'game-137', title: "Uncharted - The Nathan Drake Collection", capacity: 40.5, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00137.webp", trailer: "https://www.youtube.com/watch?v=WFZW0yAUx1s" },
-        { id: 'game-138', title: "Uncharted 4 - A Thief's End", capacity: 57.9, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00138.webp", trailer: "https://www.youtube.com/watch?v=hh5HV4iic1Y" },
-        { id: 'game-139', title: "Until Dawn", capacity: 42.7, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00139.webp", trailer: "https://www.youtube.com/watch?v=FcxkVg9JHz0" },
-        { id: 'game-140', title: "Untitled Goose Game", capacity: 0.438, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00140.webp", trailer: "https://www.youtube.com/watch?v=cxFAT5aOMgg", premiere: true },
-        { id: 'game-141', title: "Who Wants To Be A Millionaire", capacity: 1.0, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00141.webp", trailer: "https://www.youtube.com/watch?v=Z_spkg15aVg" },
-        { id: 'game-142', title: "WRC 10 FIA World Rally Championship", capacity: 36.1, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00142.webp", trailer: "https://www.youtube.com/watch?v=hKDh3RyVahk" },
-        { id: 'game-146', title: "P.T.", capacity: 1.3, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00146.webp", trailer: "https://www.youtube.com/watch?v=MnMJ0urMz54" },
-        { id: 'game-147', title: "Far Cry New Dawn", capacity: 21.4, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00147.webp", trailer: "https://www.youtube.com/watch?v=mc9ORzs23oY" },
-        { id: 'game-148', title: "UFC 4", capacity: 22.9, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00148.webp", trailer: "https://www.youtube.com/watch?v=GjugTk9ovcI" },
-        { id: 'game-149', title: "Sniper Elite 5", capacity: 38.6, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00149.webp", trailer: "https://www.youtube.com/watch?v=-QpmtRbH33I" },
-        { id: 'game-150', title: "Dead Island 2", capacity: 17.5, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00150.webp", trailer: "https://www.youtube.com/watch?v=f70Uz0fnX7E" },
-        { id: 'game-151', title: "Atomic Heart", capacity: 45.1, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00151.webp", trailer: "https://www.youtube.com/watch?v=ZXSi4EcxnuY" },
-        { id: 'game-152', title: "Guns Gore and Cannoli 2", capacity: 1.08, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00152.webp", trailer: "https://www.youtube.com/watch?v=y0D0O303DyQ", premiere: true },
-        { id: 'game-153', title: "Machinarium", capacity: 0.333, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00153.webp", trailer: "https://www.youtube.com/watch?v=uwZBdWRSBRs", premiere: true },
-        { id: 'game-154', title: "SUPERHOT", capacity: 1.85, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00154.webp", trailer: "https://www.youtube.com/watch?v=OaXv7J-kvjo", premiere: true },
-        { id: 'game-155', title: "Valfaris", capacity: 1.12, cover: "https://yosdelpc.github.io/yossfoxx/imagenes/portadas/00155.webp", trailer: "https://www.youtube.com/watch?v=6RdvuT30zUA", premiere: true }
-      ];
+      var games = [];
+      var gamesLoaded = false;
       var cart = {};
       var CART_KEY = 'yossfoxx-cart-v1';
       function loadCart() {
@@ -1065,6 +910,7 @@
       }
 
       function renderCatalog() {
+        if (!gamesLoaded) { catalog.innerHTML = '<div class="empty-search"><div><strong>Cargando juegos...</strong></div></div>'; pagination.hidden = true; return; }
         var query = search.value.trim().toLocaleLowerCase('es');
         var filtered = games.filter(function (game) {
           return game.title.toLocaleLowerCase('es').indexOf(query) !== -1 && (priceFilter === null || gamePrice(game) === priceFilter);
@@ -1108,6 +954,7 @@
       }
 
       function renderCart() {
+        if (!gamesLoaded) return;
         var ids = Object.keys(cart).filter(function (id) { return cart[id] > 0; });
         var count = itemCount();
         var total = ids.reduce(function (sum, id) { return sum + gamePrice(getGame(id)); }, 0);
@@ -1242,8 +1089,7 @@
       overlay.addEventListener('click', function (event) { if (event.target === overlay) closeCart(); });
       document.addEventListener('keydown', function (event) { if (event.key === 'Escape' && overlay.classList.contains('open')) closeCart(); });
 
-      loadCart();
-      renderCart();
+      fetch('doc/juegos.json').then(function (response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); }).then(function (data) { games = data; gamesLoaded = true; loadCart(); renderCart(); }).catch(function () { catalog.innerHTML = '<div class="empty-search"><div><strong>No se pudieron cargar los juegos.</strong><br>Revisa tu conexión y recarga la página.</div></div>'; pagination.hidden = true; premieres.hidden = true; resultCount.textContent = '0 juegos'; });
       // La barra inferior se escribe después de este script: al terminar de
       // cargar la página se vuelve a pintar el carrito para que el contador
       // de abajo muestre lo mismo que el de arriba.
