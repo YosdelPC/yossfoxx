@@ -1091,8 +1091,10 @@
           else window.localStorage.removeItem(TEST_LIST_KEY);
         } catch (e) {}
       }
+      var ROMAN_NUMERALS = { i: '1', ii: '2', iii: '3', iv: '4', v: '5', vi: '6', vii: '7', viii: '8', ix: '9', x: '10' };
       function normalizeTitle(value) {
-        return String(value || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9 ]+/g, ' ').replace(/\s+/g, ' ').trim();
+        var cleaned = String(value || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9 ]+/g, ' ').replace(/\s+/g, ' ').trim();
+        return cleaned.split(' ').map(function (word) { return ROMAN_NUMERALS[word] || word; }).join(' ');
       }
       function findCover(name, list) {
         var q = normalizeTitle(name);
