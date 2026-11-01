@@ -349,8 +349,6 @@
     .card-back-syn { margin: 0; font-size: .82rem; line-height: 1.35; }
     .card-back .actions { margin-top: auto; }
     .card-back .actions.cols-1 { grid-template-columns: minmax(0, 1fr); }
-    .card-back .actions.cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .card-back .actions.cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     .btn-gameplay svg { fill: currentColor; }
     .cover-wrap { position: relative; aspect-ratio: 3 / 4; background: var(--surface-2); overflow: hidden; }
     .cover-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
@@ -1002,14 +1000,12 @@
         return rows.join('');
       }
       function cardBackMarkup(game) {
-        var btnCount = (game.trailer ? 1 : 0) + (game.gameplay ? 1 : 0);
-        var trailerBtn = game.trailer ? '<a class="icon-btn btn-trailer" href="' + game.trailer + '" target="_blank" rel="noopener" aria-label="Ver tráiler de ' + escapeHtml(game.title) + '"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7Z"></path></svg><span>Trailer</span></a>' : '';
         var gameplayBtn = game.gameplay ? '<a class="icon-btn btn-gameplay" href="' + game.gameplay + '" target="_blank" rel="noopener" aria-label="Ver gameplay de ' + escapeHtml(game.title) + '"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7Z"></path></svg><span>Gameplay</span></a>' : '';
         return '<div class="card-back">' +
           '<h3>' + escapeHtml(game.title) + '</h3>' +
           '<div class="card-back-rows">' + cardBackRows(game) + '</div>' +
           (game.sinopsis ? '<p class="card-back-syn">' + escapeHtml(game.sinopsis) + '</p>' : '') +
-          '<div class="actions cols-' + btnCount + '">' + trailerBtn + gameplayBtn + '</div></div>';
+          (gameplayBtn ? '<div class="actions cols-1">' + gameplayBtn + '</div>' : '') + '</div>';
       }
 
       function gameCardMarkup(game, eager) {
