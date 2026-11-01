@@ -20,6 +20,7 @@ Más de 150 juegos de PS4 con precio en CUP y promoción
 
 ## Más
 - 📄 [Catálogo en PDF](doc/catalogo.pdf)
-- 📝 [Pedidos de usuarios](https://yosdelpc.github.io/yossfoxx/PedidosUsuarios.html)
+
+(https://yosdelpc.github.io/yossfoxx/PedidosUsuarios.html)
 
 _Actualizado con frecuencia · Banes, Cuba_
