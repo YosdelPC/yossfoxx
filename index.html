@@ -882,13 +882,17 @@
         <button class="close-btn" id="closePedidos" type="button" aria-label="Cerrar pedidos">×</button>
       </div>
       <div class="pedidos-body">
+        <label class="ped-label" for="pedPanelNombre">Tu nombre</label>
+        <div class="pedidos-row">
+          <input id="pedPanelNombre" type="text" maxlength="40" placeholder="Ej: Yosdel" autocomplete="name">
+        </div>
         <label class="ped-label" for="pedPanelTitulo">Título del juego</label>
         <div class="pedidos-row">
           <input id="pedPanelTitulo" type="text" maxlength="100" placeholder="Ej: Splinter Cell Conviction" autocomplete="off">
           <button class="pedidos-add" id="pedPanelAgregar" type="button">Agregar pedido</button>
         </div>
         <p class="pedidos-msg" id="pedPanelMsg"></p>
-        <p class="pedidos-note">La lista es compartida: todos ven los mismos pedidos pendientes. Solo se pide el título, ningún dato personal. Cada título muestra su portada de PS4 cuando se encuentra.</p>
+        <p class="pedidos-note">La lista es compartida: todos ven los mismos pedidos pendientes, con el nombre de quien pidió cada juego. Cada título muestra su portada de PS4 cuando se encuentra.</p>
         <h3 class="pedidos-sub">Pendientes (<span id="pedPanelCount">0</span>)</h3>
         <div class="pedidos-estado" id="pedPanelEstado">Cargando pedidos…</div>
         <ul class="pedidos-list" id="pedPanelLista"></ul>
@@ -1473,13 +1477,15 @@
       var API_URL = 'https://script.google.com/macros/s/AKfycbzaVhbagYIkT8iMghs1gtRIW5_1z4Z4Rk4h484S-e-1RI_6-0KKN0CdNirz_YN_ljNH/exec';
       var overlay = document.getElementById('pedidosOverlay');
       var input = document.getElementById('pedPanelTitulo');
+      var nameInput = document.getElementById('pedPanelNombre');
+      var nameKey = 'yossfoxx-pedidos-nombre-v1';
       var addBtn = document.getElementById('pedPanelAgregar');
       var msg = document.getElementById('pedPanelMsg');
       var list = document.getElementById('pedPanelLista');
       var estado = document.getElementById('pedPanelEstado');
       var count = document.getElementById('pedPanelCount');
       var pedidosBtn = document.getElementById('bbPedidos');
-      if (!overlay || !input || !addBtn || !pedidosBtn) return;
+      if (!overlay || !input || !nameInput || !addBtn || !pedidosBtn) return;
       var badge = document.getElementById('bbPedidosCount');
       var badgeKey = 'yossfoxx-pedidos-count-v1';
       function setBadge(n) {
@@ -1516,8 +1522,11 @@
           var thumb = p.miniatura
             ? '<img class="pedidos-thumb" src="' + escapeHtml(p.miniatura) + '" alt="" loading="lazy">'
             : '<div class="pedidos-thumb gen">' + escapeHtml((p.titulo || '?').charAt(0).toUpperCase()) + '</div>';
+          var meta = [];
+          if (p.nombre) meta.push('Pedido por ' + escapeHtml(p.nombre));
+          if (p.fecha) meta.push(escapeHtml(formatFecha(p.fecha)));
           return '<li>' + thumb + '<div><div class="t">' + escapeHtml(p.titulo) + '</div>' +
-            (p.fecha ? '<div class="f">' + escapeHtml(formatFecha(p.fecha)) + '</div>' : '') + '</div></li>';
+            (meta.length ? '<div class="f">' + meta.join(' · ') + '</div>' : '') + '</div></li>';
         }).join('');
       }
       function loadPedidos() {
@@ -1536,6 +1545,10 @@
         }).catch(function () {});
       }
       function openPedidos() {
+        try {
+          var savedName = localStorage.getItem(nameKey);
+          if (savedName && !nameInput.value) nameInput.value = savedName;
+        } catch (e) {}
         overlay.classList.add('open');
         overlay.setAttribute('aria-hidden', 'false');
         document.body.style.overflow = 'hidden';
@@ -1559,11 +1572,14 @@
       overlay.addEventListener('click', function (event) { if (event.target === overlay) closePedidos(); });
       document.addEventListener('keydown', function (event) { if (event.key === 'Escape' && overlay.classList.contains('open')) closePedidos(); });
       addBtn.addEventListener('click', function () {
+        var nombre = nameInput.value.trim();
+        if (!nombre) { showMsg('Escribe tu nombre primero.', 'err'); nameInput.focus(); return; }
         var titulo = input.value.trim();
         if (!titulo) { showMsg('Escribe el título del juego primero.', 'err'); input.focus(); return; }
         addBtn.disabled = true;
         showMsg('Agregando…', '');
-        fetch(API_URL + '?action=add&title=' + encodeURIComponent(titulo)).then(function (r) { return r.json(); }).then(function () {
+        fetch(API_URL + '?action=add&title=' + encodeURIComponent(titulo) + '&name=' + encodeURIComponent(nombre)).then(function (r) { return r.json(); }).then(function () {
+          try { localStorage.setItem(nameKey, nombre); } catch (e) {}
           input.value = '';
           showMsg('Pedido agregado a la lista compartida.', 'ok');
           loadPedidos();
@@ -1572,6 +1588,7 @@
         }).finally(function () { addBtn.disabled = false; });
       });
       input.addEventListener('keydown', function (e) { if (e.key === 'Enter') addBtn.click(); });
+      nameInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') addBtn.click(); });
       refreshBadge();
     })();
   </script>
