@@ -330,7 +330,8 @@
       transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
     }
     .game-card:hover { transform: translateY(-4px); border-color: var(--accent); box-shadow: var(--shadow); }
-    .game-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .cover-wrap[role="button"] { cursor: pointer; }
+    .cover-wrap[role="button"]:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
     .card-back {
       position: absolute; inset: 0; z-index: 3;
       display: flex; flex-direction: column; gap: 10px;
@@ -1016,8 +1017,8 @@
           ? '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"></path></svg>'
           : '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1 11H6L5 8Zm3 0V6a4 4 0 0 1 8 0v2M12 11v5M9.5 13.5h5"></path></svg>';
         var addBtn = '<button class="icon-btn btn-add' + (inCart ? ' added' : '') + '" type="button" data-add="' + game.id + '" aria-disabled="' + (inCart ? 'true' : 'false') + '" aria-label="' + addLabel + escapeHtml(game.title) + '">' + addIcon + '<span>' + addText + '</span></button>';
-        return '<article class="game-card" role="button" tabindex="0" aria-expanded="false" aria-label="Ver detalles de ' + escapeHtml(game.title) + '">' +
-          '<div class="cover-wrap"><img src="' + game.cover + '" alt="Portada de ' + escapeHtml(game.title) + ' para PlayStation 4" loading="' + (eager ? 'eager' : 'lazy') + '" fetchpriority="' + (eager ? 'high' : 'low') + '" decoding="async" width="400" height="560"></div>' +
+        return '<article class="game-card" aria-label="Tarjeta de ' + escapeHtml(game.title) + '">' +
+          '<div class="cover-wrap" role="button" tabindex="0" aria-expanded="false" aria-label="Ver detalles de ' + escapeHtml(game.title) + '"><img src="' + game.cover + '" alt="Portada de ' + escapeHtml(game.title) + ' para PlayStation 4" loading="' + (eager ? 'eager' : 'lazy') + '" fetchpriority="' + (eager ? 'high' : 'low') + '" decoding="async" width="400" height="560"></div>' +
           '<div class="game-info"><h3>' + escapeHtml(game.title) + '</h3>' +
           '<div class="game-meta"><span class="capacity">' + gameStorage(game) + '</span><span class="price">' + money(gamePrice(game)) + '</span></div>' +
           '<div class="actions">' + addBtn +
@@ -1278,10 +1279,11 @@
         if (!card) return;
         var willOpen = typeof force === 'boolean' ? force : !card.classList.contains('flipped');
         document.querySelectorAll('.game-card.flipped').forEach(function (other) {
-          if (other !== card) { other.classList.remove('flipped'); other.setAttribute('aria-expanded', 'false'); }
+          if (other !== card) { other.classList.remove('flipped'); var otherToggle = other.querySelector('.cover-wrap'); if (otherToggle) otherToggle.setAttribute('aria-expanded', 'false'); }
         });
         card.classList.toggle('flipped', willOpen);
-        card.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+        var toggle = card.querySelector('.cover-wrap');
+        if (toggle) toggle.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
       }
       function onCardClick(event) {
         var card = event.target.closest ? event.target.closest('.game-card') : null;
@@ -1292,7 +1294,9 @@
       function onCardKey(event) {
         if (event.key !== 'Enter' && event.key !== ' ') return;
         var card = event.target.closest ? event.target.closest('.game-card') : null;
-        if (!card || event.target !== card) return;
+        if (!card) return;
+        var toggle = card.querySelector('.cover-wrap');
+        if (event.target !== toggle) return;
         event.preventDefault();
         toggleCard(card);
       }
