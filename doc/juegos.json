@@ -153,5 +153,6 @@
 {"id": "game-152", "title": "Guns Gore and Cannoli 2", "capacity": 1.08, "cover": "imagenes/portadas/00152.webp", "trailer": "https://www.youtube.com/watch?v=y0D0O303DyQ", "premiere": true},
 {"id": "game-153", "title": "Machinarium", "capacity": 0.333, "cover": "imagenes/portadas/00153.webp", "trailer": "https://www.youtube.com/watch?v=uwZBdWRSBRs", "premiere": true},
 {"id": "game-154", "title": "SUPERHOT", "capacity": 1.85, "cover": "imagenes/portadas/00154.webp", "trailer": "https://www.youtube.com/watch?v=OaXv7J-kvjo", "premiere": true},
-{"id": "game-155", "title": "Valfaris", "capacity": 1.12, "cover": "imagenes/portadas/00155.webp", "trailer": "https://www.youtube.com/watch?v=6RdvuT30zUA", "premiere": true}
+{"id": "game-155", "title": "Valfaris", "capacity": 1.12, "cover": "imagenes/portadas/00155.webp", "trailer": "https://www.youtube.com/watch?v=6RdvuT30zUA", "premiere": true},
+{"id": "game-156", "title": "Marvel's Spider-Man: Miles Morales", "capacity": 46.4, "cover": "imagenes/portadas/00156.webp", "trailer": "https://www.youtube.com/watch?v=NTunTURbyUU", "premiere": true}
 ]
