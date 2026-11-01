@@ -985,7 +985,7 @@
         });
         var searching = query.length > 0;
         var featuredPremieres = searching ? [] : premiereGames.slice(0, 12);
-        var regularGames = searching ? filtered.slice() : premiereGames.slice(12).concat(filtered.filter(function (game) { return !game.premiere; }));
+        var regularGames = filtered.slice();
         regularGames.sort(function (a, b) { return a.title.localeCompare(b.title, 'es', { sensitivity: 'base' }); });
         var totalPages = Math.max(1, Math.ceil(regularGames.length / pageSize));
         currentPage = Math.min(currentPage, totalPages);
