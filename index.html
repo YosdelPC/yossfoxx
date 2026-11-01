@@ -802,7 +802,7 @@
       <button class="cart-trigger" id="openCart" type="button" aria-label="Abrir carrito">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l2.2 10.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6L20.5 8H6.2"></path><circle cx="10" cy="20" r="1"></circle><circle cx="17" cy="20" r="1"></circle></svg>
         <span class="cart-label">Carrito</span>
-        <span class="cart-count" id="cartCount">0</span>
+        <span class="cart-count" id="cartCount" aria-live="polite">0</span>
       </button>
     </div>
 
@@ -1011,14 +1011,14 @@
 
       function gameCardMarkup(game, eager) {
         var inCart = !!cart[game.id];
-        var addLabel = inCart ? 'Ya está agregado al carrito: ' : 'Pedir: ';
+        var addLabel = inCart ? 'Ya está agregado al carrito: ' : 'Pedir ';
         var addText = inCart ? 'Agregado' : 'Pedir';
         var addIcon = inCart
           ? '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"></path></svg>'
           : '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1 11H6L5 8Zm3 0V6a4 4 0 0 1 8 0v2M12 11v5M9.5 13.5h5"></path></svg>';
         var addBtn = '<button class="icon-btn btn-add' + (inCart ? ' added' : '') + '" type="button" data-add="' + game.id + '" aria-disabled="' + (inCart ? 'true' : 'false') + '" aria-label="' + addLabel + escapeHtml(game.title) + '">' + addIcon + '<span>' + addText + '</span></button>';
-        return '<article class="game-card" aria-label="Tarjeta de ' + escapeHtml(game.title) + '">' +
-          '<div class="cover-wrap" role="button" tabindex="0" aria-expanded="false" aria-label="Ver detalles de ' + escapeHtml(game.title) + '"><img src="' + game.cover + '" alt="Portada de ' + escapeHtml(game.title) + ' para PlayStation 4" loading="' + (eager ? 'eager' : 'lazy') + '" fetchpriority="' + (eager ? 'high' : 'low') + '" decoding="async" width="400" height="560"></div>' +
+        return '<article class="game-card">' +
+          '<div class="cover-wrap" role="button" tabindex="0" aria-expanded="false" aria-label="' + escapeHtml(game.title) + ', PS4, ' + money(gamePrice(game)) + ', ver más información"><img src="' + game.cover + '" alt="Portada de ' + escapeHtml(game.title) + '" loading="' + (eager ? 'eager' : 'lazy') + '" fetchpriority="' + (eager ? 'high' : 'low') + '" decoding="async" width="400" height="560"></div>' +
           '<div class="game-info"><h3>' + escapeHtml(game.title) + '</h3>' +
           '<div class="game-meta"><span class="capacity">' + gameStorage(game) + '</span><span class="price">' + money(gamePrice(game)) + '</span></div>' +
           '<div class="actions">' + addBtn +
@@ -1304,6 +1304,11 @@
       premieresCatalog.addEventListener('click', onCardClick);
       catalog.addEventListener('keydown', onCardKey);
       premieresCatalog.addEventListener('keydown', onCardKey);
+      document.addEventListener('keydown', function (event) {
+        if (event.key !== 'Escape') return;
+        var open = document.querySelector('.game-card.flipped');
+        if (open) toggleCard(open, false);
+      });
 
       fetch('doc/juegos.json', {cache: 'no-cache'}).then(function (response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); }).then(function (data) { games = data; gamesLoaded = true; loadCart(); renderCart(); }).catch(function () { catalog.innerHTML = '<div class="empty-search"><div><strong>No se pudieron cargar los juegos.</strong><br>Revisa tu conexión y recarga la página.</div></div>'; pagination.hidden = true; premieres.hidden = true; resultCount.textContent = '0 juegos'; });
       // La barra inferior se escribe después de este script: al terminar de
@@ -1324,8 +1329,8 @@
     <span class="wa-close-x" aria-hidden="true">×</span>
   </button>
 
-  <nav class="bottom-bar" aria-label="Menú principal">
-    <button class="bb-btn is-active" id="bbHome" type="button" aria-label="Inicio">
+  <nav class="bottom-bar" aria-label="Navegación principal">
+    <button class="bb-btn is-active" id="bbHome" type="button" aria-label="Inicio" aria-current="page">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11 12 4l8 7"></path><path d="M6 10v10h12V10"></path><path d="M10 20v-6h4v6"></path></svg>
       <span class="bb-label">Inicio</span>
     </button>
@@ -1334,7 +1339,7 @@
       <span class="bb-label">Juegos</span>
     </button>
     <button class="bb-btn" id="bbCart" type="button" aria-label="Abrir carrito">
-      <span class="bb-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l2.2 10.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6L20.5 8H6.2"></path><circle cx="10" cy="20" r="1"></circle><circle cx="17" cy="20" r="1"></circle></svg><span class="bb-count" id="bbCartCount">0</span></span>
+      <span class="bb-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l2.2 10.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6L20.5 8H6.2"></path><circle cx="10" cy="20" r="1"></circle><circle cx="17" cy="20" r="1"></circle></svg><span class="bb-count" id="bbCartCount" aria-live="polite">0</span></span>
       <span class="bb-label">Carrito</span>
     </button>
     <button class="bb-btn" id="bbPedidos" type="button" aria-label="Pedidos de Usuarios">
@@ -1398,8 +1403,9 @@
       function setActive(btn) {
         if (!btn) return;
         var btns = document.querySelectorAll('.bb-btn');
-        for (var i = 0; i < btns.length; i++) btns[i].classList.remove('is-active');
+        for (var i = 0; i < btns.length; i++) { btns[i].classList.remove('is-active'); btns[i].removeAttribute('aria-current'); }
         btn.classList.add('is-active');
+        btn.setAttribute('aria-current', 'page');
         activeBtn = btn;
         if (btn.id !== 'bbMenuBtn') lastNonMenuBtn = btn;
       }
