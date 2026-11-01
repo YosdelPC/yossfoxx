@@ -1306,7 +1306,7 @@
       catalog.addEventListener('keydown', onCardKey);
       premieresCatalog.addEventListener('keydown', onCardKey);
 
-      fetch('doc/juegos.json').then(function (response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); }).then(function (data) { games = data; gamesLoaded = true; loadCart(); renderCart(); }).catch(function () { catalog.innerHTML = '<div class="empty-search"><div><strong>No se pudieron cargar los juegos.</strong><br>Revisa tu conexión y recarga la página.</div></div>'; pagination.hidden = true; premieres.hidden = true; resultCount.textContent = '0 juegos'; });
+      fetch('doc/juegos.json', {cache: 'no-cache'}).then(function (response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); }).then(function (data) { games = data; gamesLoaded = true; loadCart(); renderCart(); }).catch(function () { catalog.innerHTML = '<div class="empty-search"><div><strong>No se pudieron cargar los juegos.</strong><br>Revisa tu conexión y recarga la página.</div></div>'; pagination.hidden = true; premieres.hidden = true; resultCount.textContent = '0 juegos'; });
       // La barra inferior se escribe después de este script: al terminar de
       // cargar la página se vuelve a pintar el carrito para que el contador
       // de abajo muestre lo mismo que el de arriba.
