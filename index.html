@@ -730,6 +730,7 @@
       display: grid; place-items: center; border-radius: 999px; border: 2px solid #08141c;
       background: var(--signal); color: var(--signal-ink); font-size: .65rem; font-weight: 800;
     }
+    .bb-count-red { background: #e11d48; color: #fff; }
     @media (max-width: 480px) {
       .bottom-bar { left: 8px; right: 8px; padding: 6px; gap: 4px; }
       .bb-btn { padding: 8px 6px; gap: 6px; font-size: .78rem; }
@@ -1333,7 +1334,7 @@
       <span class="bb-label">Carrito</span>
     </button>
     <button class="bb-btn" id="bbPedidos" type="button" aria-label="Pedidos de Usuarios">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="18" height="11" rx="5"></rect><path d="M8 12.2l2.2 2.2L16 9"></path></svg>
+      <span class="bb-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="18" height="11" rx="5"></rect><path d="M8 12.2l2.2 2.2L16 9"></path></svg><span class="bb-count bb-count-red" id="bbPedidosCount">0</span></span>
       <span class="bb-label">Pedidos</span>
     </button>
     <button class="bb-btn" id="bbMenuBtn" type="button" aria-expanded="false" aria-label="Abrir el menú principal">
@@ -1479,6 +1480,16 @@
       var count = document.getElementById('pedPanelCount');
       var pedidosBtn = document.getElementById('bbPedidos');
       if (!overlay || !input || !addBtn || !pedidosBtn) return;
+      var badge = document.getElementById('bbPedidosCount');
+      var badgeKey = 'yossfoxx-pedidos-count-v1';
+      function setBadge(n) {
+        if (badge) badge.textContent = n;
+        try { localStorage.setItem(badgeKey, String(n)); } catch (e) {}
+      }
+      try {
+        var cachedCount = localStorage.getItem(badgeKey);
+        if (cachedCount !== null && badge) badge.textContent = cachedCount;
+      } catch (e) {}
       function escapeHtml(value) {
         return String(value).replace(/[&<>'"]/g, function (c) { return ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'})[c]; });
       }
@@ -1493,6 +1504,7 @@
       }
       function render(pedidos) {
         count.textContent = pedidos.length;
+        setBadge(pedidos.length);
         if (!pedidos.length) {
           estado.textContent = 'Aún no hay pedidos pendientes. ¡Sé el primero en agregar uno!';
           estado.style.display = 'block';
@@ -1517,6 +1529,11 @@
         }).catch(function () {
           estado.textContent = 'No se pudo cargar la lista. Revisa tu conexión e intenta de nuevo.';
         });
+      }
+      function refreshBadge() {
+        fetch(API_URL).then(function (r) { return r.json(); }).then(function (data) {
+          if (data && data.pedidos) setBadge(data.pedidos.length);
+        }).catch(function () {});
       }
       function openPedidos() {
         overlay.classList.add('open');
@@ -1555,6 +1572,7 @@
         }).finally(function () { addBtn.disabled = false; });
       });
       input.addEventListener('keydown', function (e) { if (e.key === 'Enter') addBtn.click(); });
+      refreshBadge();
     })();
   </script>
   </body>
