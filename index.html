@@ -331,14 +331,6 @@
     }
     .game-card:hover { transform: translateY(-4px); border-color: var(--accent); box-shadow: var(--shadow); }
     .game-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-    .flip-hint {
-      position: absolute; top: 8px; right: 8px; z-index: 2;
-      width: 30px; height: 30px; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      background: rgba(6, 12, 28, .72); border: 1px solid var(--accent);
-      color: var(--accent); pointer-events: none;
-    }
-    .flip-hint svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
     .card-back {
       position: absolute; inset: 0; z-index: 3;
       display: flex; flex-direction: column; gap: 10px;
@@ -356,6 +348,7 @@
     .card-back-row span:last-child { text-align: right; font-weight: 700; }
     .card-back-syn { margin: 0; font-size: .82rem; line-height: 1.35; }
     .card-back .actions { margin-top: auto; }
+    .card-back .actions.cols-1 { grid-template-columns: minmax(0, 1fr); }
     .card-back .actions.cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .card-back .actions.cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     .btn-gameplay svg { fill: currentColor; }
@@ -1002,15 +995,15 @@
         row('Tamaño', gameStorage(game));
         return rows.join('');
       }
-      function cardBackMarkup(game, addBtn) {
-        var btnCount = 1 + (game.trailer ? 1 : 0) + (game.gameplay ? 1 : 0);
+      function cardBackMarkup(game) {
+        var btnCount = (game.trailer ? 1 : 0) + (game.gameplay ? 1 : 0);
         var trailerBtn = game.trailer ? '<a class="icon-btn btn-trailer" href="' + game.trailer + '" target="_blank" rel="noopener" aria-label="Ver tráiler de ' + escapeHtml(game.title) + '"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7Z"></path></svg><span>Trailer</span></a>' : '';
         var gameplayBtn = game.gameplay ? '<a class="icon-btn btn-gameplay" href="' + game.gameplay + '" target="_blank" rel="noopener" aria-label="Ver gameplay de ' + escapeHtml(game.title) + '"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7Z"></path></svg><span>Gameplay</span></a>' : '';
         return '<div class="card-back">' +
           '<h3>' + escapeHtml(game.title) + '</h3>' +
           '<div class="card-back-rows">' + cardBackRows(game) + '</div>' +
           (game.sinopsis ? '<p class="card-back-syn">' + escapeHtml(game.sinopsis) + '</p>' : '') +
-          '<div class="actions cols-' + btnCount + '">' + addBtn + trailerBtn + gameplayBtn + '</div></div>';
+          '<div class="actions cols-' + btnCount + '">' + trailerBtn + gameplayBtn + '</div></div>';
       }
 
       function gameCardMarkup(game, eager) {
@@ -1022,12 +1015,12 @@
           : '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1 11H6L5 8Zm3 0V6a4 4 0 0 1 8 0v2M12 11v5M9.5 13.5h5"></path></svg>';
         var addBtn = '<button class="icon-btn btn-add' + (inCart ? ' added' : '') + '" type="button" data-add="' + game.id + '" aria-disabled="' + (inCart ? 'true' : 'false') + '" aria-label="' + addLabel + escapeHtml(game.title) + '">' + addIcon + '<span>' + addText + '</span></button>';
         return '<article class="game-card" role="button" tabindex="0" aria-expanded="false" aria-label="Ver detalles de ' + escapeHtml(game.title) + '">' +
-          '<div class="cover-wrap"><img src="' + game.cover + '" alt="Portada de ' + escapeHtml(game.title) + ' para PlayStation 4" loading="' + (eager ? 'eager' : 'lazy') + '" fetchpriority="' + (eager ? 'high' : 'low') + '" decoding="async" width="400" height="560"><span class="flip-hint" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.34-5.66M20 3v4.5h-4.5"></path></svg></span></div>' +
+          '<div class="cover-wrap"><img src="' + game.cover + '" alt="Portada de ' + escapeHtml(game.title) + ' para PlayStation 4" loading="' + (eager ? 'eager' : 'lazy') + '" fetchpriority="' + (eager ? 'high' : 'low') + '" decoding="async" width="400" height="560"></div>' +
           '<div class="game-info"><h3>' + escapeHtml(game.title) + '</h3>' +
           '<div class="game-meta"><span class="capacity">' + gameStorage(game) + '</span><span class="price">' + money(gamePrice(game)) + '</span></div>' +
           '<div class="actions">' + addBtn +
           (game.trailer ? '<a class="icon-btn btn-trailer" href="' + game.trailer + '" target="_blank" rel="noopener" aria-label="Ver tráiler de ' + escapeHtml(game.title) + '"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7Z"></path></svg><span>Trailer</span></a>' : '') + '</div></div>' +
-          cardBackMarkup(game, addBtn) +
+          cardBackMarkup(game) +
           '</article>';
       }
 
