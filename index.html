@@ -1095,6 +1095,10 @@
         premiereGames.sort(function (a, b) {
           if (a.title === 'EA SPORTS FC 27') return -1;
           if (b.title === 'EA SPORTS FC 27') return 1;
+          /* Orden fijo en ESTRENOS: FC 27 primero, luego 'orden', luego número descendente. */
+          if (a.orden != null && b.orden != null) return a.orden - b.orden;
+          if (a.orden != null) return -1;
+          if (b.orden != null) return 1;
           return gameNumber(b) - gameNumber(a);
         });
         var searching = query.length > 0;
