@@ -684,11 +684,20 @@
     .pdf-btn svg { width: 17px; height: 17px; }
     .howto-videos { margin-top: 18px; }
     .howto-videos-title { margin: 0 0 10px; font-size: 1rem; }
-    .howto-videos-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 300px)); gap: 14px; justify-content: center; }
-    .howto-video { margin: 0; }
-    .howto-video video { width: min(100%, 270px); aspect-ratio: 9 / 16; border: 1px solid var(--line); border-radius: var(--radius); background: #000; display: block; margin: 0 auto; }
-    .howto-video figcaption { margin-top: 8px; font-size: .85rem; }
-    @media (max-width: 640px) { .howto-videos-grid { grid-template-columns: minmax(0, 300px); } }
+    .howto-videos-grid { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .howto-video-btn { background: none; border: 0; padding: 0; cursor: pointer; color: inherit; font: inherit; width: 118px; }
+    .howto-video-thumb { position: relative; display: block; width: 118px; aspect-ratio: 9 / 16; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: #000; }
+    .howto-video-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .howto-video-play { position: absolute; inset: 0; display: grid; place-items: center; }
+    .howto-video-play span { width: 46px; height: 46px; border-radius: 50%; background: rgba(0, 0, 0, .55); border: 2px solid #fff; display: grid; place-items: center; }
+    .howto-video-play svg { width: 18px; height: 18px; fill: #fff; margin-left: 2px; }
+    .howto-video-cap { display: block; margin-top: 6px; font-size: .8rem; }
+    .video-lightbox { position: fixed; inset: 0; z-index: 90; display: grid; place-items: center; }
+    .video-lightbox[hidden] { display: none; }
+    .video-lightbox-veil { position: absolute; inset: 0; background: rgba(0, 0, 0, .82); }
+    .video-lightbox-box { position: relative; width: min(92vw, 340px); }
+    .video-lightbox-box video { width: 100%; aspect-ratio: 9 / 16; background: #000; border: 1px solid var(--line); border-radius: var(--radius); display: block; }
+    .video-lightbox-close { position: absolute; top: -14px; right: -8px; width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--line); background: var(--surface); color: var(--ink); font-size: 1.1rem; cursor: pointer; }
     .price-chips { max-width: 1180px; margin: 12px auto 0; display: flex; gap: 8px; flex-wrap: wrap; }
     .price-chip { padding: 7px 16px; border-radius: 999px; border: 1px solid var(--line); background: color-mix(in srgb, var(--surface) 65%, transparent); color: var(--ink); font-weight: 700; font-size: .85rem; cursor: pointer; }
     .price-chip.active { background: #d4af37; border-color: #d4af37; color: #131a06; }
@@ -830,18 +839,20 @@
       <div class="howto-videos">
         <h3 class="howto-videos-title">Video Tutorial</h3>
         <div class="howto-videos-grid">
-          <figure class="howto-video">
-            <video controls preload="none" playsinline poster="doc/video-tutorial-carrito.jpg" aria-label="Video tutorial: cómo agregar juegos al carrito y enviar el pedido por WhatsApp">
-              <source src="doc/video-tutorial-carrito.mp4" type="video/mp4">
-            </video>
-            <figcaption>1. Cómo agregar juegos al carrito y enviar el pedido por WhatsApp</figcaption>
-          </figure>
-          <figure class="howto-video">
-            <video controls preload="none" playsinline poster="doc/video-tutorial-pedidos.jpg" aria-label="Video tutorial: cómo pedir un juego que no está en el catálogo">
-              <source src="doc/video-tutorial-pedidos.mp4" type="video/mp4">
-            </video>
-            <figcaption>2. Cómo pedir un juego que no está en el catálogo</figcaption>
-          </figure>
+          <button class="howto-video-btn" type="button" data-video-src="doc/video-tutorial-carrito.mp4" aria-label="Ver video tutorial: cómo agregar juegos al carrito y enviar el pedido por WhatsApp">
+            <span class="howto-video-thumb">
+              <img src="doc/video-tutorial-carrito.jpg" alt="" loading="lazy">
+              <span class="howto-video-play" aria-hidden="true"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"></path></svg></span></span>
+            </span>
+            <span class="howto-video-cap">1. Cómo agregar juegos al carrito y enviar el pedido por WhatsApp</span>
+          </button>
+          <button class="howto-video-btn" type="button" data-video-src="doc/video-tutorial-pedidos.mp4" aria-label="Ver video tutorial: cómo pedir un juego que no está en el catálogo">
+            <span class="howto-video-thumb">
+              <img src="doc/video-tutorial-pedidos.jpg" alt="" loading="lazy">
+              <span class="howto-video-play" aria-hidden="true"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"></path></svg></span></span>
+            </span>
+            <span class="howto-video-cap">2. Cómo pedir un juego que no está en el catálogo</span>
+          </button>
         </div>
       </div>
       <a class="pdf-btn" href="doc/catalogo.pdf" download="Catalogo YosdelPC 52390321.pdf">
@@ -849,6 +860,14 @@
         Descargar catálogo en PDF
       </a>
     </section>
+
+    <div class="video-lightbox" id="videoLightbox" hidden role="dialog" aria-modal="true" aria-label="Video tutorial">
+      <div class="video-lightbox-veil" id="videoLightboxVeil"></div>
+      <div class="video-lightbox-box">
+        <button class="video-lightbox-close" id="videoLightboxClose" type="button" aria-label="Cerrar video">×</button>
+        <video id="videoLightboxPlayer" controls preload="none" playsinline></video>
+      </div>
+    </div>
 
     <section class="premieres" id="premieres" aria-labelledby="premieresTitle">
       <div class="premieres-head">
@@ -1624,6 +1643,32 @@
       input.addEventListener('keydown', function (e) { if (e.key === 'Enter') addBtn.click(); });
       nameInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') addBtn.click(); });
       refreshBadge();
+    })();
+    (function () {
+      var lightbox = document.getElementById('videoLightbox');
+      var player = document.getElementById('videoLightboxPlayer');
+      var lastBtn = null;
+      function closeVideo() {
+        player.pause();
+        player.removeAttribute('src');
+        player.load();
+        lightbox.hidden = true;
+        if (lastBtn) lastBtn.focus();
+      }
+      document.querySelectorAll('.howto-video-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          lastBtn = btn;
+          player.src = btn.getAttribute('data-video-src');
+          lightbox.hidden = false;
+          player.load();
+          var p = player.play();
+          if (p && p.catch) p.catch(function () {});
+          document.getElementById('videoLightboxClose').focus();
+        });
+      });
+      document.getElementById('videoLightboxClose').addEventListener('click', closeVideo);
+      document.getElementById('videoLightboxVeil').addEventListener('click', closeVideo);
+      document.addEventListener('keydown', function (event) { if (event.key === 'Escape' && !lightbox.hidden) closeVideo(); });
     })();
   </script>
   </body>
