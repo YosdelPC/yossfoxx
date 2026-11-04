@@ -682,6 +682,13 @@
     .howto-num { flex: 0 0 auto; width: 30px; height: 30px; border-radius: 50%; background: #d4af37; color: #131a06; font-weight: 800; display: grid; place-items: center; }
     .pdf-btn { display: inline-flex; align-items: center; gap: 8px; margin-top: 16px; padding: 10px 18px; border-radius: 999px; background: var(--ink); color: var(--bg); font-weight: 700; font-size: .9rem; text-decoration: none; }
     .pdf-btn svg { width: 17px; height: 17px; }
+    .howto-videos { margin-top: 18px; }
+    .howto-videos-title { margin: 0 0 10px; font-size: 1rem; }
+    .howto-videos-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 300px)); gap: 14px; justify-content: center; }
+    .howto-video { margin: 0; }
+    .howto-video video { width: min(100%, 270px); aspect-ratio: 9 / 16; border: 1px solid var(--line); border-radius: var(--radius); background: #000; display: block; margin: 0 auto; }
+    .howto-video figcaption { margin-top: 8px; font-size: .85rem; }
+    @media (max-width: 640px) { .howto-videos-grid { grid-template-columns: minmax(0, 300px); } }
     .price-chips { max-width: 1180px; margin: 12px auto 0; display: flex; gap: 8px; flex-wrap: wrap; }
     .price-chip { padding: 7px 16px; border-radius: 999px; border: 1px solid var(--line); background: color-mix(in srgb, var(--surface) 65%, transparent); color: var(--ink); font-weight: 700; font-size: .85rem; cursor: pointer; }
     .price-chip.active { background: #d4af37; border-color: #d4af37; color: #131a06; }
@@ -819,6 +826,23 @@
         <div class="howto-step"><span class="howto-num">1</span><p>Elige tus juegos y agrégalos al carrito</p></div>
         <div class="howto-step"><span class="howto-num">2</span><p>Envía tu pedido por WhatsApp</p></div>
         <div class="howto-step"><span class="howto-num">3</span><p>Se copian a tu PS4 y ¡a jugar!</p></div>
+      </div>
+      <div class="howto-videos">
+        <h3 class="howto-videos-title">Video Tutorial</h3>
+        <div class="howto-videos-grid">
+          <figure class="howto-video">
+            <video controls preload="none" playsinline poster="doc/video-tutorial-carrito.jpg" aria-label="Video tutorial: cómo agregar juegos al carrito y enviar el pedido por WhatsApp">
+              <source src="doc/video-tutorial-carrito.mp4" type="video/mp4">
+            </video>
+            <figcaption>1. Cómo agregar juegos al carrito y enviar el pedido por WhatsApp</figcaption>
+          </figure>
+          <figure class="howto-video">
+            <video controls preload="none" playsinline poster="doc/video-tutorial-pedidos.jpg" aria-label="Video tutorial: cómo pedir un juego que no está en el catálogo">
+              <source src="doc/video-tutorial-pedidos.mp4" type="video/mp4">
+            </video>
+            <figcaption>2. Cómo pedir un juego que no está en el catálogo</figcaption>
+          </figure>
+        </div>
       </div>
       <a class="pdf-btn" href="doc/catalogo.pdf" download="Catalogo YosdelPC 52390321.pdf">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><path d="m7 10 5 5 5-5"></path><path d="M12 15V3"></path></svg>
