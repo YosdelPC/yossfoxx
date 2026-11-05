@@ -509,6 +509,9 @@
     .pedidos-thumb.gen { display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.4rem; color: var(--accent); }
     .pedidos-list .t { font-weight: 700; }
     .pedidos-list .f { color: var(--muted); font-size: .8rem; }
+    .pedidos-list li.tiene-nuevo { position: relative; }
+    .pedidos-list li.tiene-nuevo .pedidos-info { padding-right: 78px; }
+    .pedidos-nuevo { position: absolute; top: 8px; right: 10px; background: #facc15; color: #111827; font-weight: 800; font-size: .75rem; line-height: 1; padding: 5px 10px; border-radius: 999px; }
     .pedidos-estado { color: var(--muted); text-align: center; padding: 20px 0; }
     .cart-empty strong { display: block; color: var(--ink); font: 700 1.55rem/1.1 "Barlow Condensed", sans-serif; margin-bottom: 7px; }
     .cart-item {
@@ -1571,15 +1574,17 @@
           return;
         }
         estado.style.display = 'none';
-        list.innerHTML = pedidos.map(function (p) {
+        var ordenados = pedidos.slice().reverse();
+        list.innerHTML = ordenados.map(function (p, i) {
           var thumb = p.miniatura
             ? '<img class="pedidos-thumb" src="' + escapeHtml(p.miniatura) + '" alt="" loading="lazy">'
             : '<div class="pedidos-thumb gen">' + escapeHtml((p.titulo || '?').charAt(0).toUpperCase()) + '</div>';
           var meta = [];
           if (p.nombre) meta.push('Pedido por ' + escapeHtml(p.nombre));
           if (p.fecha) meta.push(escapeHtml(formatFecha(p.fecha)));
-          return '<li>' + thumb + '<div><div class="t">' + escapeHtml(p.titulo) + '</div>' +
-            (meta.length ? '<div class="f">' + meta.join(' · ') + '</div>' : '') + '</div></li>';
+          return '<li' + (i < 3 ? ' class="tiene-nuevo"' : '') + '>' + thumb + '<div class="pedidos-info"><div class="t">' + escapeHtml(p.titulo) + '</div>' +
+            (meta.length ? '<div class="f">' + meta.join(' · ') + '</div>' : '') + '</div>' +
+            (i < 3 ? '<span class="pedidos-nuevo">¡Nuevo!</span>' : '') + '</li>';
         }).join('');
       }
       function loadPedidos() {
