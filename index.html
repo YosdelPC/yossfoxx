@@ -1255,6 +1255,7 @@
       <button class="price-chip" type="button" data-price="200" aria-pressed="false">200 CUP</button>
       <button class="price-chip" type="button" data-price="300" aria-pressed="false">300 CUP</button>
       <button class="price-chip" type="button" data-price="500" aria-pressed="false">500 CUP</button>
+      <button class="price-chip" type="button" data-price="800" aria-pressed="false">800 CUP</button>
       <button class="price-chip" type="button" data-price="1000" aria-pressed="false">1000 CUP</button>
     </nav>
     <section class="catalog" id="catalog" aria-label="Catálogo de juegos"></section>
@@ -1562,7 +1563,7 @@
       var toastTimer;
 
       function money(value) { return value.toLocaleString('es-ES') + ' CUP'; }
-      function gamePrice(game) { return game.title === 'EA SPORTS FC 27' ? 1000 : (game.capacity <= 1 ? 200 : (game.capacity <= 3 ? 300 : 500)); }
+      function gamePrice(game) { return game.title === 'EA SPORTS FC 27' ? 1000 : (game.capacity <= 1 ? 200 : (game.capacity <= 3 ? 300 : (game.capacity >= 100 ? 1000 : (game.capacity >= 49.5 ? 800 : 500)))); }
       function storage(value) {
         if (value < 1) return Math.round(value * 1000).toLocaleString('es-ES') + ' MB';
         return value.toLocaleString('es-ES', { maximumFractionDigits: 4 }) + ' GB';
