@@ -1129,6 +1129,154 @@
       box-shadow: 0 0 0 3px rgba(0, 229, 255, .65), 0 0 18px rgba(0, 229, 255, .55);
     }
   </style>
+  <style>
+    /* Paginación (ajuste pedido por Yosdel):
+       1) La barra de números es MÁS PEQUEÑA y, junto con las flechas
+          laterales, SOLO aparece mientras el visitante está en la zona
+          de "Juegos disponibles" (las páginas del catálogo): arriba, en
+          Estrenos o en ¿Cómo pedir?, queda oculta. El script principal
+          pone y quita la clase in-catalog en <body> según la posición.
+       2) Flechas « » fijas a cada lado de la pantalla, a media altura,
+          más chicas, solo cuando hay página en esa dirección y se está
+          en la lista.
+       3) Deslizar el dedo sobre la lista cambia de página (el gesto se
+          detecta en el script principal; aquí va la animación de
+          entrada de la página nueva y el ajuste táctil de la zona). */
+    main { touch-action: pan-y; }
+    .pagination {
+      position: fixed;
+      left: 50%;
+      transform: translateX(-50%) translateY(8px);
+      bottom: calc(86px + env(safe-area-inset-bottom));
+      z-index: 34;
+      margin-top: 0;
+      padding: 4px 5px;
+      gap: 4px;
+      flex-wrap: nowrap;
+      max-width: calc(100vw - 12px);
+      background: linear-gradient(160deg, rgba(10, 34, 46, .97), rgba(4, 12, 24, .98) 55%, rgba(10, 20, 38, .97));
+      border: 1px solid rgba(34, 225, 255, .55);
+      border-radius: 999px;
+      box-shadow: 0 0 10px rgba(34, 225, 255, .26), 0 8px 22px rgba(0, 0, 0, .45);
+      color: #e9fbff;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity .22s ease, transform .22s ease, visibility 0s linear .22s;
+    }
+    body.in-catalog .pagination:not([hidden]) {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transform: translateX(-50%) translateY(0);
+      transition: opacity .22s ease, transform .22s ease, visibility 0s;
+    }
+    .pagination .page-btn {
+      min-width: 0;
+      min-height: 30px;
+      padding: 4px 10px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      flex: 0 0 auto;
+      border: 1px solid rgba(34, 225, 255, .25);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .04);
+      color: #e9fbff;
+      font-size: .8rem;
+    }
+    .pagination .page-btn:hover:not(:disabled) { border-color: rgba(34, 225, 255, .85); color: #aef4ff; }
+    .pagination .page-btn:disabled { opacity: .35; }
+    .pagination .page-btn svg { width: 13px; height: 13px; flex: 0 0 13px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+    .page-nums { display: flex; align-items: center; gap: 2px; }
+    .page-num {
+      min-width: 27px;
+      height: 27px;
+      padding: 0 4px;
+      border: 1px solid transparent;
+      border-radius: 999px;
+      background: transparent;
+      color: #cfe9f2;
+      font-weight: 800;
+      font-size: .8rem;
+      cursor: pointer;
+    }
+    .page-num:hover { border-color: rgba(34, 225, 255, .6); color: #ffffff; }
+    .page-num.active {
+      background: #22e1ff;
+      border-color: #22e1ff;
+      color: #04222b;
+      box-shadow: 0 0 12px rgba(34, 225, 255, .65);
+      cursor: default;
+    }
+    .page-status.sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      min-width: 0;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+      border: 0;
+    }
+    .edge-arrow {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 34;
+      width: 27px;
+      height: 54px;
+      padding: 0;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(34, 225, 255, .55);
+      border-radius: 999px;
+      background: rgba(4, 14, 24, .62);
+      color: #7df3ff;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      box-shadow: 0 0 10px rgba(34, 225, 255, .24);
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity .22s ease, visibility 0s linear .22s;
+    }
+    body.in-catalog .edge-arrow:not([hidden]) {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transition: opacity .22s ease, visibility 0s;
+    }
+    .edge-arrow[hidden] { display: none; }
+    .edge-arrow svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+    .edge-arrow:active { background: rgba(34, 225, 255, .28); }
+    .edge-prev { left: 5px; }
+    .edge-next { right: 5px; }
+    @media (min-width: 1200px) {
+      .edge-prev { left: 14px; }
+      .edge-next { right: 14px; }
+    }
+    @media (max-width: 560px) {
+      .pagination { gap: 3px; padding: 4px; bottom: calc(84px + env(safe-area-inset-bottom)); }
+      .pagination .page-btn { min-height: 28px; padding: 4px 8px; }
+      .pagination .page-btn .page-btn-label { display: none; }
+      .page-num { min-width: 25px; height: 25px; font-size: .78rem; }
+      .edge-arrow { width: 24px; height: 48px; }
+      .edge-arrow svg { width: 15px; height: 15px; }
+    }
+    /* Solo mientras la barra chica está visible (estando en la lista)
+       el contenido y el aviso necesitan un poco más de espacio libre
+       abajo para no quedar tapados. */
+    body.in-catalog:has(#pagination:not([hidden])) { padding-bottom: calc(156px + env(safe-area-inset-bottom)); }
+    body.in-catalog:has(#pagination:not([hidden])) .toast { bottom: calc(142px + env(safe-area-inset-bottom)); }
+    @keyframes page-in-next { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
+    @keyframes page-in-prev { from { opacity: 0; transform: translateX(-30px); } to { opacity: 1; transform: translateX(0); } }
+    #catalog.page-in-next { animation: page-in-next .26s ease; }
+    #catalog.page-in-prev { animation: page-in-prev .26s ease; }
+  </style>
 </head>
 <body>
   <script>
@@ -1260,10 +1408,13 @@
     </nav>
     <section class="catalog" id="catalog" aria-label="Catálogo de juegos"></section>
     <nav class="pagination" id="pagination" aria-label="Páginas del catálogo" hidden>
-      <button class="page-btn" id="previousPage" type="button">Anterior</button>
-      <span class="page-status" id="pageStatus" aria-live="polite"></span>
-      <button class="page-btn" id="nextPage" type="button">Siguiente</button>
+      <button class="page-btn" id="previousPage" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14.5 5.5-6.5 6.5 6.5 6.5"></path></svg><span class="page-btn-label">Anterior</span></button>
+      <span class="page-nums" id="pageNums" role="group" aria-label="Ir a una página"></span>
+      <span class="page-status sr-only" id="pageStatus" aria-live="polite"></span>
+      <button class="page-btn" id="nextPage" type="button"><span class="page-btn-label">Siguiente</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9.5 5.5 6.5 6.5-6.5 6.5"></path></svg></button>
     </nav>
+    <button class="edge-arrow edge-prev" id="edgePrev" type="button" aria-label="Página anterior" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14.5 5.5-6.5 6.5 6.5 6.5"></path></svg></button>
+    <button class="edge-arrow edge-next" id="edgeNext" type="button" aria-label="Página siguiente" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9.5 5.5 6.5 6.5-6.5 6.5"></path></svg></button>
   </main>
 
   <div class="overlay" id="cartOverlay" aria-hidden="true">
@@ -1543,6 +1694,9 @@
       var previousPage = document.getElementById('previousPage');
       var nextPage = document.getElementById('nextPage');
       var pageStatus = document.getElementById('pageStatus');
+      var pageNums = document.getElementById('pageNums');
+      var edgePrev = document.getElementById('edgePrev');
+      var edgeNext = document.getElementById('edgeNext');
       var overlay = document.getElementById('cartOverlay');
       var cartBody = document.getElementById('cartBody');
       var cartCount = document.getElementById('cartCount');
@@ -1705,6 +1859,9 @@
         if (!filtered.length) {
           catalog.innerHTML = '<div class="empty-search"><div><strong>No encontramos ese juego.</strong><br>Prueba con otro nombre o género.</div></div>';
           pagination.hidden = true;
+          edgePrev.hidden = true;
+          edgeNext.hidden = true;
+          updatePagerVisibility();
           return;
         }
 
@@ -1712,9 +1869,10 @@
           return gameCardMarkup(game, index < 3 && !showPremieres);
         }).join('');
         pagination.hidden = totalPages <= 1;
-        pageStatus.textContent = 'Página ' + currentPage + ' de ' + totalPages;
+        renderPageNumbers(totalPages);
         previousPage.disabled = currentPage === 1;
         nextPage.disabled = currentPage === totalPages;
+        updatePagerVisibility();
       }
 
       function renderCart() {
@@ -1895,9 +2053,29 @@
           heading.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
         }
       }
-      function changePage(step) {
-        var target = currentPage + step;
-        if (target < 1) return;
+      /* Números de página tocables: se dibuja un botón por página, el de
+         la página actual queda resaltado en cian, y las flechas de los
+         lados de la pantalla solo aparecen cuando hay página en esa
+         dirección. El texto "Página X de Y" se conserva en el elemento
+         oculto pageStatus para los lectores de pantalla. */
+      function renderPageNumbers(totalPages) {
+        pageStatus.textContent = 'Página ' + currentPage + ' de ' + totalPages;
+        var html = '';
+        for (var n = 1; n <= totalPages; n++) {
+          html += '<button class="page-num' + (n === currentPage ? ' active' : '') + '" type="button" data-page="' + n + '" aria-label="Ir a la página ' + n + '"' + (n === currentPage ? ' aria-current="page"' : '') + '>' + n + '</button>';
+        }
+        pageNums.innerHTML = html;
+        edgePrev.hidden = totalPages <= 1 || currentPage <= 1;
+        edgeNext.hidden = totalPages <= 1 || currentPage >= totalPages;
+      }
+      function animatePageChange(step) {
+        catalog.classList.remove('page-in-next', 'page-in-prev');
+        void catalog.offsetWidth;
+        catalog.classList.add(step > 0 ? 'page-in-next' : 'page-in-prev');
+      }
+      function goToPage(target) {
+        if (target === currentPage || target < 1) return;
+        var step = target > currentPage ? 1 : -1;
         currentPage = target;
         /* Cada cambio de página deja una entrada en el historial:
            Atrás vuelve a la página anterior del catálogo. */
@@ -1905,7 +2083,11 @@
           window.YossNav.push({ page: currentPage, overlay: null, q: search.value.trim(), price: priceFilter });
         }
         renderCatalog();
+        animatePageChange(step);
         scrollToCatalogHeading();
+      }
+      function changePage(step) {
+        goToPage(currentPage + step);
       }
       function syncPriceChips() {
         document.querySelectorAll('.price-chip').forEach(function (c) {
@@ -1970,6 +2152,59 @@
       });
       previousPage.addEventListener('click', function () { changePage(-1); });
       nextPage.addEventListener('click', function () { changePage(1); });
+      pageNums.addEventListener('click', function (event) {
+        var btn = event.target.closest('[data-page]');
+        if (btn) goToPage(parseInt(btn.getAttribute('data-page'), 10));
+      });
+      edgePrev.addEventListener('click', function () { changePage(-1); });
+      edgeNext.addEventListener('click', function () { changePage(1); });
+
+      /* La barra de números y las flechas laterales solo salen estando
+         en las páginas de la lista: mientras el título "Juegos
+         disponibles" o el propio catálogo ocupan la pantalla, el
+         <body> lleva la clase in-catalog y el CSS los muestra; arriba
+         (Estrenos, ¿Cómo pedir?) o fuera de la lista quedan ocultos. */
+      var catalogHeadingEl = document.getElementById('catalogHeading');
+      function updatePagerVisibility() {
+        if (!catalogHeadingEl || pagination.hidden) {
+          document.body.classList.remove('in-catalog');
+          return;
+        }
+        var vh = window.innerHeight || document.documentElement.clientHeight;
+        var headRect = catalogHeadingEl.getBoundingClientRect();
+        var catRect = catalog.getBoundingClientRect();
+        var inZone = headRect.top < vh * 0.72 && catRect.bottom > vh * 0.28;
+        document.body.classList.toggle('in-catalog', inZone);
+      }
+      window.addEventListener('scroll', updatePagerVisibility, { passive: true });
+      window.addEventListener('resize', updatePagerVisibility);
+
+      /* Deslizar el dedo sobre la lista de juegos cambia de página:
+         hacia la izquierda pasa a la siguiente y hacia la derecha
+         vuelve a la anterior. Solo cuenta si el gesto es claramente
+         horizontal (recorre bastante más en horizontal que en
+         vertical), para no estorbar el desplazamiento normal de la
+         página ni los toques en las tarjetas. */
+      var swipeX = null;
+      var swipeY = null;
+      var mainEl = document.querySelector('main');
+      mainEl.addEventListener('touchstart', function (event) {
+        if (event.touches.length !== 1) { swipeX = null; return; }
+        swipeX = event.touches[0].clientX;
+        swipeY = event.touches[0].clientY;
+      }, { passive: true });
+      mainEl.addEventListener('touchcancel', function () { swipeX = null; }, { passive: true });
+      mainEl.addEventListener('touchend', function (event) {
+        if (swipeX === null) return;
+        var dx = event.changedTouches[0].clientX - swipeX;
+        var dy = event.changedTouches[0].clientY - swipeY;
+        swipeX = null;
+        if (pagination.hidden) return;
+        if (event.target.closest('input, textarea, select')) return;
+        if (Math.abs(dx) < 56 || Math.abs(dx) < Math.abs(dy) * 1.6) return;
+        if (dx < 0 && !nextPage.disabled) changePage(1);
+        else if (dx > 0 && !previousPage.disabled) changePage(-1);
+      }, { passive: true });
       document.getElementById('openCart').addEventListener('click', openCart);
       document.getElementById('closeCart').addEventListener('click', closeCart);
       overlay.addEventListener('click', function (event) { if (event.target === overlay) closeCart(); });
