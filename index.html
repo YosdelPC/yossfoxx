@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="color-scheme" content="light dark" />
+  <meta name="color-scheme" content="dark" />
   <meta name="description" content="Catálogo de juegos para PS4 de YossFoxx: 179 juegos con precios en CUP. Revisa los estrenos, arma tu pedido y envíalo por WhatsApp al 52390321." />
   <meta property="og:type" content="website" />
   <meta property="og:title" content="YossFoxx - Mis Juegos PS4" />
@@ -15,47 +15,27 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Manrope:wght@400;700&display=swap" />
   <title>YosdelPC - Mis Juegos PS4</title>
   <style>
+    /* Tema SIEMPRE oscuro: la paleta oscura es la única, sin importar
+       el tema del teléfono o del sistema (no se usa prefers-color-scheme). */
     :root {
-      color-scheme: light dark;
-      --bg: #f3f6f7;
-      --surface: #ffffff;
-      --surface-2: #e7edef;
-      --ink: #111819;
-      --muted: #4e5c5f;
-      --line: #cbd5d7;
-      --accent: #007f88;
-      --accent-ink: #ffffff;
-      --signal: #d7f23d;
-      --signal-ink: #172000;
-      --premieres-bg: #dbe9e9;
-      --premieres-ink: #173032;
-      --premieres-line: #6c8f91;
-      --premieres-shadow: 0 16px 38px rgba(22, 50, 53, .14);
-      --danger: #c63e37;
-      --shadow: 0 18px 45px rgba(18, 33, 36, .13);
-      --focus: 0 0 0 4px rgba(0, 127, 136, .24);
-    }
-
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg: #080d0e;
-        --surface: #11191b;
-        --surface-2: #182427;
-        --ink: #f2f7f8;
-        --muted: #aab8bb;
-        --line: #2c3d41;
-        --accent: #38d7df;
-        --accent-ink: #041416;
-        --signal: #d9f659;
-        --signal-ink: #121800;
-        --premieres-bg: #173034;
-        --premieres-ink: #ecf7f7;
-        --premieres-line: #4f7478;
-        --premieres-shadow: 0 18px 44px rgba(0, 0, 0, .34);
-        --danger: #ff766d;
-        --shadow: 0 22px 55px rgba(0, 0, 0, .46);
-        --focus: 0 0 0 4px rgba(56, 215, 223, .22);
-      }
+      color-scheme: dark;
+      --bg: #080d0e;
+      --surface: #11191b;
+      --surface-2: #182427;
+      --ink: #f2f7f8;
+      --muted: #aab8bb;
+      --line: #2c3d41;
+      --accent: #38d7df;
+      --accent-ink: #041416;
+      --signal: #d9f659;
+      --signal-ink: #121800;
+      --premieres-bg: #173034;
+      --premieres-ink: #ecf7f7;
+      --premieres-line: #4f7478;
+      --premieres-shadow: 0 18px 44px rgba(0, 0, 0, .34);
+      --danger: #ff766d;
+      --shadow: 0 22px 55px rgba(0, 0, 0, .46);
+      --focus: 0 0 0 4px rgba(56, 215, 223, .22);
     }
 
     * { box-sizing: border-box; }
@@ -1172,9 +1152,7 @@
       .pd-title { font-size: 1.35rem; margin-right: 34px; }
       .pd-row { font-size: .78rem; }
     }
-    @media (prefers-color-scheme: dark) {
-      .pedidos-msg.ok { color: #7fd98a; }
-    }
+    .pedidos-msg.ok { color: #7fd98a; }
   </style>
   <style>
     /* Estrenos: estilo 5 FIJO, sin ninguna animación: fondo oscuro
