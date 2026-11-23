@@ -731,154 +731,7 @@
     .menu-sub.open { display: block; }
     .menu-sub .menu-item { padding: 8px 10px; font-size: .88rem; }
     .menu-sub .menu-item > svg { width: 18px; height: 18px; flex-basis: 18px; }
-    .bottom-nav-item[aria-expanded="true"] { color: var(--accent); }
     .howto { scroll-margin-top: 132px; }
-  </style>
-  <style>
-    /* Barra inferior neón cian con píldora que se expande (aprobado por Yosdel):
-       contenedor flotante oscuro con borde y brillo cian; el botón activo se
-       ensancha y muestra su texto, los demás quedan solo con el icono. */
-    body { padding-bottom: calc(102px + env(safe-area-inset-bottom)); }
-    .bottom-nav {
-      position: fixed;
-      left: 16px;
-      right: 16px;
-      bottom: calc(10px + env(safe-area-inset-bottom));
-      z-index: 35;
-      /* En PC la barra ocupa el mismo ancho que la columna del contenido
-         (main: min(1180px, 100% - 32px)) y queda centrada con ella. */
-      max-width: 1180px;
-      margin: 0 auto;
-      background: linear-gradient(160deg, rgba(10, 34, 46, .97), rgba(4, 12, 24, .98) 55%, rgba(10, 20, 38, .97));
-      border: 1px solid rgba(34, 225, 255, .65);
-      border-radius: 26px;
-      box-shadow: 0 0 16px rgba(34, 225, 255, .38), 0 0 44px rgba(34, 225, 255, .16), 0 14px 34px rgba(0, 0, 0, .55), inset 0 0 22px rgba(34, 225, 255, .07);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-    }
-    .bottom-nav-inner {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 8px;
-    }
-    a.bottom-nav-item { text-decoration: none; }
-    .bottom-nav-item {
-      position: relative;
-      flex: 0 0 54px;
-      min-width: 0;
-      height: 54px;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: center;
-      gap: 0;
-      padding: 0;
-      border: 1px solid rgba(34, 225, 255, .16);
-      border-radius: 17px;
-      background: rgba(255, 255, 255, .03);
-      color: #e9fbff;
-      font-weight: 700;
-      cursor: pointer;
-      overflow: visible;
-      transition: flex-basis .32s ease, flex-grow .32s ease, padding .32s ease, gap .32s ease, background .25s ease, border-color .25s ease, box-shadow .25s ease, color .25s ease;
-    }
-    .bottom-nav-item:hover { color: #aef4ff; border-color: rgba(34, 225, 255, .55); }
-    .bottom-nav-item:focus-visible { box-shadow: 0 0 0 3px rgba(34, 225, 255, .45), 0 0 16px rgba(34, 225, 255, .35); }
-    .bottom-nav-item.is-active {
-      flex: 1 1 auto;
-      gap: 8px;
-      padding: 0 14px;
-      justify-content: center;
-      background: linear-gradient(180deg, rgba(34, 225, 255, .24), rgba(34, 225, 255, .08));
-      border-color: rgba(34, 225, 255, .9);
-      color: #c9f8ff;
-      box-shadow: inset 0 0 18px rgba(34, 225, 255, .20), 0 0 14px rgba(34, 225, 255, .32);
-      text-shadow: 0 0 10px rgba(34, 225, 255, .75);
-    }
-    .bottom-nav-item.is-active::before {
-      content: "";
-      position: absolute;
-      top: -1px;
-      left: 16px;
-      right: 16px;
-      height: 3px;
-      border-radius: 0 0 4px 4px;
-      background: #3ee9ff;
-      box-shadow: 0 0 10px rgba(62, 233, 255, .95), 0 2px 12px rgba(62, 233, 255, .6);
-    }
-    .bottom-nav-item.is-active .bottom-nav-icon svg { filter: drop-shadow(0 0 6px rgba(62, 233, 255, .85)); }
-    .bottom-nav-item[aria-expanded="true"] { color: #aef4ff; border-color: rgba(34, 225, 255, .55); }
-    .bottom-nav-icon { position: relative; flex: 0 0 auto; display: grid; place-items: center; width: 30px; height: 30px; }
-    .bottom-nav-icon svg { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-    .bottom-nav-label {
-      max-width: 0;
-      opacity: 0;
-      overflow: hidden;
-      font-size: .86rem;
-      line-height: 1.1;
-      letter-spacing: .01em;
-      white-space: nowrap;
-      transition: max-width .32s ease, opacity .22s ease;
-    }
-    .bottom-nav-item.is-active .bottom-nav-label { max-width: 150px; opacity: 1; }
-    .bottom-cart-badge {
-      position: absolute;
-      top: -9px;
-      right: -9px;
-      min-width: 20px;
-      height: 20px;
-      padding: 0 5px;
-      display: grid;
-      place-items: center;
-      border-radius: 999px;
-      background: #d9f659;
-      color: #172000;
-      font-size: .68rem;
-      font-weight: 800;
-      text-shadow: none;
-      box-shadow: 0 0 0 2px #07131f, 0 0 10px rgba(217, 246, 89, .55);
-    }
-    .bottom-pedidos-badge {
-      position: absolute;
-      top: -9px;
-      right: -9px;
-      min-width: 20px;
-      height: 20px;
-      padding: 0 5px;
-      display: grid;
-      place-items: center;
-      border-radius: 999px;
-      background: #ff2d2d;
-      color: #fff;
-      font-size: .68rem;
-      font-weight: 800;
-      text-shadow: none;
-      box-shadow: 0 0 0 2px #07131f, 0 0 10px rgba(255, 45, 45, .65);
-    }
-    /* El aviso sube para no quedar bajo la barra */
-    .toast { bottom: calc(106px + env(safe-area-inset-bottom)); }
-    @media (max-width: 690px) {
-      /* En pantallas chicas la barra sigue el ancho del contenido
-         (main pasa a 100% - 24px); el teléfono queda casi a todo lo ancho. */
-      .bottom-nav { left: 12px; right: 12px; }
-    }
-    @media (max-width: 480px) {
-      .bottom-nav { left: 8px; right: 8px; bottom: calc(8px + env(safe-area-inset-bottom)); border-radius: 22px; }
-      .bottom-nav-inner { gap: 5px; padding: 7px; }
-      .bottom-nav-item { flex-basis: 44px; height: 50px; border-radius: 15px; }
-      .bottom-nav-item.is-active { padding: 0 10px; gap: 6px; }
-      .bottom-nav-label { font-size: .8rem; }
-      .bottom-nav-icon svg { width: 24px; height: 24px; }
-    }
-    @media (max-width: 380px) {
-      .bottom-nav-inner { gap: 4px; padding: 6px; }
-      .bottom-nav-item { flex-basis: 40px; height: 48px; border-radius: 14px; }
-      .bottom-nav-item.is-active { padding: 0 8px; }
-      .bottom-nav-label { font-size: .74rem; }
-      .bottom-nav-icon { width: 26px; height: 26px; }
-      .bottom-nav-icon svg { width: 23px; height: 23px; }
-    }
   </style>
   <style>
     /* Botón flotante de contacto: al tocarlo se despliegan los iconos de
@@ -1350,6 +1203,64 @@
        las portadas de la página destino estén listas y cambia todo de
        una vez (ver goToPage en el script principal). */
   </style>
+  <style>
+    /* La gota de los números de la paginación: el mismo disco
+       luminoso cian del menú inferior "Gota HUD" vive dentro de la
+       barra de páginas, detrás del número activo; al cambiar de
+       página viaja hasta el número nuevo con la misma curva
+       (cubic-bezier(.5,0,.2,1)) y la misma duración (.55s) que la
+       gota del menú. El script principal solo cambia el destino
+       (placePageGlow). */
+    .page-glow {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 34px;
+      height: 34px;
+      /* Centrado con márgenes fijos para que el transform quede
+         libre solo para el deslizamiento (translate3d, en la GPU). */
+      margin-left: -17px;
+      margin-top: -17px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 28%, #175263, #0b2f3a 75%);
+      border: 1px solid #46e6ff;
+      box-shadow: 0 0 18px rgba(70, 230, 255, .55), inset 0 0 8px rgba(37, 216, 232, .3);
+      pointer-events: none;
+      transition: transform .55s cubic-bezier(.5, 0, .2, 1);
+      will-change: transform;
+    }
+    .page-glow.no-anim { transition: none; }
+    /* Los números quedan por encima del brillo; el activo ya no
+       lleva el fondo cian sólido: lo sustituye el círculo luminoso
+       que trae detrás, y el número se lee en cian brillante. */
+    .page-num { position: relative; z-index: 1; }
+    .page-num.active {
+      background: transparent;
+      border-color: transparent;
+      color: #7df3ff;
+      box-shadow: none;
+      text-shadow: 0 0 9px rgba(70, 230, 255, .85);
+    }
+  </style>
+  <style>
+    /* Ajustes por la nueva barra inferior "Gota HUD" (104px de alto +
+       zona segura): el contenido de la página deja libre ese espacio
+       abajo para que la barra no tape el último juego, y lo que flota
+       justo encima de la barra (paginación, aviso, panel del menú) se
+       recoloca sobre su nueva altura. */
+    body { padding-bottom: calc(110px + env(safe-area-inset-bottom, 0px)); }
+    .pagination { bottom: calc(112px + env(safe-area-inset-bottom)); }
+    .toast { bottom: calc(118px + env(safe-area-inset-bottom)); }
+    .menu-panel { bottom: calc(112px + env(safe-area-inset-bottom)); }
+    body.in-catalog:has(#pagination:not([hidden])) .toast { bottom: calc(160px + env(safe-area-inset-bottom)); }
+    /* Insignias de la barra nueva: el contador del Carrito (lima) y el
+       conteo de Pedidos pendientes (roja, siempre visible), pequeñas
+       sobre la esquina del icono, como en la barra anterior. Sus ids
+       son los de siempre (bottomCartCount / bottomPedidosCount): los
+       scripts del carrito y de Pedidos las siguen actualizando. */
+    .yf-badge { position: absolute; top: -5px; left: 50%; margin-left: 5px; min-width: 18px; height: 18px; padding: 0 5px; display: grid; place-items: center; border-radius: 999px; background: #d9f659; color: #172000; font-size: 10px; font-weight: 800; line-height: 1; pointer-events: none; box-shadow: 0 0 0 2px #11191b, 0 0 8px rgba(217, 246, 89, .45); }
+    .yf-badge-red { background: #ff2d2d; color: #fff; box-shadow: 0 0 0 2px #11191b, 0 0 8px rgba(255, 45, 45, .55); }
+  </style>
 </head>
 <body>
   <script>
@@ -1481,6 +1392,7 @@
     </nav>
     <section class="catalog" id="catalog" aria-label="Catálogo de juegos"></section>
     <nav class="pagination" id="pagination" aria-label="Páginas del catálogo" hidden>
+      <span class="page-glow" id="pageGlow" aria-hidden="true"></span>
       <button class="page-btn" id="previousPage" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14.5 5.5-6.5 6.5 6.5 6.5"></path></svg><span class="page-btn-label">Anterior</span></button>
       <span class="page-nums" id="pageNums" role="group" aria-label="Ir a una página"></span>
       <span class="page-status sr-only" id="pageStatus" aria-live="polite"></span>
@@ -2232,7 +2144,7 @@
         var card = event.target.closest('.premiere-mini');
         if (!card) return;
         var gotoBtn = card.querySelector('[data-goto]');
-        if (gotoBtn) goToCatalogGame(gotoBtn.getAttribute('data-goto'));
+        if (gotoBtn) { goToCatalogGame(gotoBtn.getAttribute('data-goto')); if (window.yfNavSet) window.yfNavSet(1); }
       });
 
       /* Reverso de la tarjeta: tocar la tarjeta sube el panel de datos y
@@ -2314,7 +2226,39 @@
         pageNums.innerHTML = html;
         edgePrev.hidden = totalPages <= 1 || currentPage <= 1;
         edgeNext.hidden = totalPages <= 1 || currentPage >= totalPages;
+        placePageGlow();
       }
+      /* La gota de los números de página: el mismo efecto del menú
+         inferior "Gota HUD". El disco luminoso cian (.page-glow)
+         vive dentro de la barra de páginas, detrás del número
+         activo; al cambiar de página viaja hasta el número nuevo
+         con la misma curva y la misma duración que la gota del
+         menú (transición CSS de .55s). Aquí solo se cambia el
+         destino (transform: translate3d, en la GPU); al dibujar
+         los números por primera vez, al girar la pantalla o con
+         movimiento reducido, se coloca directo, sin animación. */
+      var pageGlow = document.getElementById('pageGlow');
+      var pageGlowPos = null;
+      function placePageGlow() {
+        if (!pageGlow) return;
+        var activeBtn = pageNums.querySelector('.page-num.active');
+        if (!activeBtn || pagination.hidden) { pageGlowPos = null; return; }
+        var x = activeBtn.offsetLeft + activeBtn.offsetWidth / 2;
+        var y = activeBtn.offsetTop + activeBtn.offsetHeight / 2;
+        var from = pageGlowPos;
+        pageGlowPos = { x: x, y: y };
+        var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (!from || (from.x === x && from.y === y) || reduce) {
+          pageGlow.classList.add('no-anim');
+          pageGlow.style.transform = 'translate3d(' + x + 'px, ' + y + 'px, 0)';
+          void pageGlow.offsetWidth;
+          pageGlow.classList.remove('no-anim');
+          return;
+        }
+        pageGlow.style.transform = 'translate3d(' + x + 'px, ' + y + 'px, 0)';
+      }
+      window.addEventListener('resize', function () { pageGlowPos = null; placePageGlow(); });
+      window.addEventListener('load', function () { pageGlowPos = null; placePageGlow(); });
       /* Cambio de página sin "salto": la página actual se queda en
          pantalla hasta que las primeras portadas de la página destino
          están descargadas y decodificadas; recién entonces se cambia
@@ -2674,55 +2618,98 @@
         <span>¿Cómo pedir?</span>
       </button>
     </div>
-  <nav class="bottom-nav" aria-label="Navegación principal">
-    <div class="bottom-nav-inner">
-      <button class="bottom-nav-item is-active" type="button" data-bottom-action="home" aria-current="page" aria-label="Ir al inicio de la página">
-        <span class="bottom-nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 11 9-8 9 8"></path><path d="M5 10v10h14V10"></path><path d="M10 20v-6h4v6"></path></svg></span>
-        <span class="bottom-nav-label">Inicio</span>
-      </button>
-      <button class="bottom-nav-item" type="button" data-bottom-action="games" aria-label="Ir a los juegos disponibles">
-        <span class="bottom-nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 7h11A4.5 4.5 0 0 1 22 11.5v3a3.5 3.5 0 0 1-6.4 2L14 14.5H10l-1.6 2A3.5 3.5 0 0 1 2 14.5v-3A4.5 4.5 0 0 1 6.5 7Z"></path><path d="M7 10.5v3M5.5 12h3"></path><path d="M15.5 10.8h.01M18 13.2h.01"></path></svg></span>
-        <span class="bottom-nav-label">Juegos</span>
-      </button>
-      <button class="bottom-nav-item" type="button" data-bottom-action="cart" aria-label="Abrir el carrito">
-        <span class="bottom-nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l2.2 10.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6L20.5 8H6.2"></path><circle cx="10" cy="20" r="1"></circle><circle cx="17" cy="20" r="1"></circle></svg><span class="bottom-cart-badge" id="bottomCartCount">0</span></span>
-        <span class="bottom-nav-label">Carrito</span>
-      </button>
-      <button class="bottom-nav-item pedidos-item" type="button" id="bottomPedidosBtn" data-bottom-action="pedidos" aria-label="Abrir Pedidos de Usuarios">
-        <span class="bottom-nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="2" width="8" height="4" rx="1"></rect><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><path d="M9 9.2h6"></path><path d="M7.6 15.1c0-1 .8-1.9 1.9-1.9h5c1.1 0 1.9.9 1.9 1.9v.4c0 .9-1 1.5-1.8 1l-.8-.6H10.2l-.8.6c-.8.5-1.8-.1-1.8-1v-.4Z"></path><path d="M9.7 14v1.3M9.05 14.65h1.3"></path><path d="M14.3 14.1h.01M15.3 15.1h.01"></path></svg><span class="bottom-pedidos-badge" id="bottomPedidosCount">0</span></span>
-        <span class="bottom-nav-label">Pedidos</span>
-      </button>
-      <button class="bottom-nav-item" type="button" id="bottomMenuBtn" aria-haspopup="true" aria-expanded="false" aria-controls="menuPanel" aria-label="Abrir el menú principal">
-        <span class="bottom-nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"></path></svg></span>
-        <span class="bottom-nav-label">Menú</span>
-      </button>
+  <!-- ===== YossFoxx · Menú inferior "Gota HUD" ===== -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <filter id="yf-goo" x="-10%" y="-60%" width="120%" height="220%">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="8" result="b"/>
+        <feColorMatrix in="b" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -10"/>
+      </filter>
+      <symbol id="yf-i-home" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8M5 10v10h5v-6h4v6h5V10"/></symbol>
+      <symbol id="yf-i-game" viewBox="0 0 24 24"><path d="M6 8h12a4 4 0 0 1 4 4v3a3 3 0 0 1-5.2 2L15 15H9l-1.8 2A3 3 0 0 1 2 15v-3a4 4 0 0 1 4-4z"/><path d="M7 11v3M5.5 12.5h3M16 11.5h.01M18 13.5h.01"/></symbol>
+      <symbol id="yf-i-cart" viewBox="0 0 24 24"><circle cx="9" cy="20" r="1.4"/><circle cx="17" cy="20" r="1.4"/><path d="M2 3h3l2.4 11.5h10.2L20 7H6"/></symbol>
+      <symbol id="yf-i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.6 2.2c-.7.4-1.1.9-1.1 1.8M12 17h.01"/></symbol>
+      <symbol id="yf-i-doc" viewBox="0 0 24 24"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M9 9.2h6"/><path d="M7.6 15.1c0-1 .8-1.9 1.9-1.9h5c1.1 0 1.9.9 1.9 1.9v.4c0 .9-1 1.5-1.8 1l-.8-.6H10.2l-.8.6c-.8.5-1.8-.1-1.8-1v-.4Z"/><path d="M9.7 14v1.3M9.05 14.65h1.3"/><path d="M14.3 14.1h.01M15.3 15.1h.01"/></symbol>
+      <symbol id="yf-i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></symbol>
+    </defs>
+  </svg>
+
+  <nav class="yf-nav" id="yfNav" aria-label="Menú principal">
+    <div class="yf-in">
+      <div class="yf-goo"><div class="yf-bar"></div><div class="yf-blob"></div></div>
+      <div class="yf-edge"></div>
+      <div class="yf-disc"></div>
+      <div class="yf-frame"></div>
+      <div class="yf-tabs">
+        <button type="button" data-id="inicio" aria-label="Inicio"><svg aria-hidden="true"><use href="#yf-i-home"/></svg></button>
+        <button type="button" data-id="juegos" aria-label="Juegos"><svg aria-hidden="true"><use href="#yf-i-game"/></svg></button>
+        <button type="button" data-id="carrito" aria-label="Carrito"><svg aria-hidden="true"><use href="#yf-i-cart"/></svg><span class="yf-badge" id="bottomCartCount">0</span></button>
+        <button type="button" data-id="como-pedir" id="bottomPedidosBtn" aria-label="Pedidos"><svg aria-hidden="true"><use href="#yf-i-doc"/></svg><span class="yf-badge yf-badge-red" id="bottomPedidosCount">0</span></button>
+        <button type="button" data-id="menu" id="bottomMenuBtn" aria-haspopup="true" aria-expanded="false" aria-controls="menuPanel" aria-label="Menú"><svg aria-hidden="true"><use href="#yf-i-menu"/></svg></button>
+      </div>
+      <div class="yf-lbl"></div>
     </div>
   </nav>
+
+  <style>
+  .yf-nav{--bar:#11191b;--c:0;--ease:cubic-bezier(.5,0,.2,1);position:fixed;left:50%;bottom:0;z-index:35;width:100%;max-width:560px;transform:translateX(-50%);padding-bottom:env(safe-area-inset-bottom,0px);background:linear-gradient(var(--bar),var(--bar)) 0 100%/100% env(safe-area-inset-bottom,0px) no-repeat;pointer-events:none;font-family:inherit}
+  .yf-in{position:relative;height:104px}
+  .yf-goo{position:absolute;inset:0;filter:url(#yf-goo)}
+  .yf-bar{position:absolute;left:0;right:0;bottom:0;height:66px;background:var(--bar);border-radius:22px 22px 0 0}
+  .yf-blob{position:absolute;top:6px;width:62px;height:62px;border-radius:50%;background:var(--bar);left:calc(var(--c)*20% + 10% - 31px);transition:left .55s var(--ease)}
+  .yf-edge{position:absolute;left:0;right:0;bottom:0;height:66px;border-radius:22px 22px 0 0;box-shadow:inset 0 1px 0 rgba(70,230,255,.55);background-image:repeating-linear-gradient(0deg,rgba(70,230,255,.06) 0 1px,transparent 1px 3px)}
+  .yf-disc{position:absolute;z-index:1;top:13px;width:46px;height:46px;border-radius:50%;background:radial-gradient(circle at 35% 28%,#175263,#0b2f3a 75%);border:1px solid #46e6ff;box-shadow:0 0 22px rgba(70,230,255,.6),inset 0 0 10px rgba(37,216,232,.25);left:calc(var(--c)*20% + 10% - 23px);transition:left .55s var(--ease)}
+  .yf-frame{--g:linear-gradient(#46e6ff,#46e6ff);position:absolute;z-index:2;top:5px;width:62px;height:62px;left:calc(var(--c)*20% + 10% - 31px);transition:left .55s var(--ease);pointer-events:none;background:var(--g) 0 0/12px 2px no-repeat,var(--g) 0 0/2px 12px no-repeat,var(--g) 100% 0/12px 2px no-repeat,var(--g) 100% 0/2px 12px no-repeat,var(--g) 0 100%/12px 2px no-repeat,var(--g) 0 100%/2px 12px no-repeat,var(--g) 100% 100%/12px 2px no-repeat,var(--g) 100% 100%/2px 12px no-repeat;filter:drop-shadow(0 0 4px #46e6ff)}
+  .yf-tabs{position:absolute;z-index:3;top:13px;left:0;right:0;height:46px;display:grid;grid-template-columns:repeat(5,1fr)}
+  .yf-tabs button{position:relative;display:grid;place-items:center;padding:0;margin:0;border:0;background:none;color:#7f9aa8;cursor:pointer;pointer-events:auto;-webkit-tap-highlight-color:transparent;transition:color .25s,transform .45s cubic-bezier(.3,1.25,.5,1)}
+  .yf-tabs button:not(.on){transform:translateY(27px)}
+  .yf-tabs button.on{color:#46e6ff}
+  .yf-tabs button:focus-visible{outline:2px solid #8fd3ff;outline-offset:-4px;border-radius:14px}
+  .yf-tabs svg{width:26px;height:26px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+  .yf-lbl{position:absolute;z-index:3;bottom:9px;width:20%;left:calc(var(--c)*20%);text-align:center;color:#aef4ff;font-size:11.5px;letter-spacing:.08em;transition:left .55s var(--ease);pointer-events:none;white-space:nowrap}
+  @media (prefers-reduced-motion:reduce){.yf-blob,.yf-disc,.yf-frame,.yf-lbl,.yf-tabs button{transition:none}}
+  </style>
+
   <script>
+  (function(){
+    var nav=document.getElementById("yfNav");
+    if(!nav)return;
+    var btns=[].slice.call(nav.querySelectorAll(".yf-tabs button")),lbl=nav.querySelector(".yf-lbl");
+    function set(i){
+      nav.style.setProperty("--c",i);
+      btns.forEach(function(b,k){
+        b.classList.toggle("on",k===i);
+        if(k===i)b.setAttribute("aria-current","page");else b.removeAttribute("aria-current");
+      });
+      lbl.textContent=btns[i].getAttribute("aria-label");
+    }
+    btns.forEach(function(b,i){
+      b.addEventListener("click",function(){
+        set(i);
+        document.dispatchEvent(new CustomEvent("yfnav:select",{detail:{id:b.dataset.id,index:i}}));
+      });
+    });
+    window.yfNavSet=set;
+    set(0);
+  })();
+  </script>
+  <!-- ===== fin del menú ===== -->
+  <script>
+    /* Conexión de la barra nueva "Gota HUD": escucha el evento
+       yfnav:select que disparan sus botones y llama a las mismas
+       acciones que hacía la barra anterior. El botón Menú lo sigue
+       manejando el script del panel (clic directo sobre el botón,
+       que conserva su id bottomMenuBtn). El 4to botón (data-id
+       "como-pedir") abre Pedidos de Usuarios, como hacía el 4to
+       botón de la barra anterior. */
     (function () {
-      var cartCount = document.getElementById('cartCount');
-      var bottomBadge = document.getElementById('bottomCartCount');
       function reduceMotion() { return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches; }
-      function syncCartCount() { if (bottomBadge && cartCount) bottomBadge.textContent = cartCount.textContent; }
-      syncCartCount();
-      if (cartCount && window.MutationObserver) {
-        new MutationObserver(syncCartCount).observe(cartCount, { childList: true, characterData: true, subtree: true });
-      }
-      var pedidoCountEl = document.getElementById('pedidoCount');
-      var bottomPedidosBadge = document.getElementById('bottomPedidosCount');
-      function syncPedidosCount() { if (bottomPedidosBadge && pedidoCountEl) bottomPedidosBadge.textContent = pedidoCountEl.textContent; }
-      syncPedidosCount();
-      if (pedidoCountEl && window.MutationObserver) {
-        new MutationObserver(syncPedidosCount).observe(pedidoCountEl, { childList: true, characterData: true, subtree: true });
-      }
-      if (window.loadPedidosBadge) window.loadPedidosBadge();
       function scrollToEl(el) {
         if (!el) return;
         el.scrollIntoView({ behavior: reduceMotion() ? 'auto' : 'smooth', block: 'start' });
       }
-      /* Con el carrito abierto, la barra queda visible por encima de su
-         borde inferior: al ir a Juegos el carrito se
-         cierra solo para poder ver el destino, sin cerrarlo a mano antes. */
+      /* Con el carrito abierto, al ir a Juegos el carrito se cierra
+         solo para poder ver el destino, sin cerrarlo a mano antes. */
       function closeCartIfOpen() {
         var overlay = document.getElementById('cartOverlay');
         if (overlay && overlay.classList.contains('open')) {
@@ -2736,25 +2723,23 @@
           window.closePedidosPanel();
         }
       }
-      document.querySelectorAll('[data-bottom-action]').forEach(function (item) {
-        item.addEventListener('click', function () {
-          var action = item.getAttribute('data-bottom-action');
-          if (action === 'home') {
-            if ('scrollRestoration' in window.history) window.history.scrollRestoration = 'manual';
-            window.scrollTo(0, 0);
-            window.location.reload();
-          } else if (action === 'games') {
-            closeCartIfOpen();
-            closePedidosIfOpen();
-            scrollToEl(document.getElementById('catalogHeading'));
-          } else if (action === 'cart') {
-            closePedidosIfOpen();
-            var trigger = document.getElementById('openCart');
-            if (trigger) trigger.click();
-          } else if (action === 'pedidos') {
-            if (window.openPedidosPanel) window.openPedidosPanel();
-          }
-        });
+      document.addEventListener('yfnav:select', function (event) {
+        var id = event.detail && event.detail.id;
+        if (id === 'inicio') {
+          if ('scrollRestoration' in window.history) window.history.scrollRestoration = 'manual';
+          window.scrollTo(0, 0);
+          window.location.reload();
+        } else if (id === 'juegos') {
+          closeCartIfOpen();
+          closePedidosIfOpen();
+          scrollToEl(document.getElementById('catalogHeading'));
+        } else if (id === 'carrito') {
+          closePedidosIfOpen();
+          var trigger = document.getElementById('openCart');
+          if (trigger) trigger.click();
+        } else if (id === 'como-pedir') {
+          if (window.openPedidosPanel) window.openPedidosPanel();
+        }
       });
     })();
   </script>
@@ -2828,9 +2813,11 @@
             goHomeReload();
           } else if (action === 'cart') {
             closePedidosIfOpen();
+            if (window.yfNavSet) window.yfNavSet(2);
             var trigger = document.getElementById('openCart');
             if (trigger) trigger.click();
           } else if (action === 'premieres') {
+            if (window.yfNavSet) window.yfNavSet(0);
             closeCartIfOpen();
             closePedidosIfOpen();
             var premieres = document.getElementById('premieres');
@@ -2847,25 +2834,6 @@
           link.addEventListener('click', function () { closeMenu(); });
         });
       }
-    })();
-  </script>
-  <script>
-    /* Píldora que se expande: el botón tocado pasa a ser el activo y es el
-       único que muestra su texto; los demás quedan solo con el icono. */
-    (function () {
-      var items = Array.prototype.slice.call(document.querySelectorAll('.bottom-nav-item'));
-      if (!items.length) return;
-      function setActive(item) {
-        items.forEach(function (el) {
-          var active = el === item;
-          el.classList.toggle('is-active', active);
-          if (active) el.setAttribute('aria-current', 'page');
-          else el.removeAttribute('aria-current');
-        });
-      }
-      items.forEach(function (item) {
-        item.addEventListener('click', function () { setActive(item); });
-      });
     })();
   </script>
   <script>
