@@ -344,6 +344,8 @@
     .btn-add.added { background: var(--signal); color: var(--signal-ink); cursor: default; }
     .btn-trailer { background: var(--surface); color: var(--ink); }
     .btn-trailer svg { fill: currentColor; }
+    .btn-share { background: var(--surface); color: var(--ink); }
+    .btn-share svg { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
     .game-card { cursor: pointer; }
     /* La portada es el botón de la tarjeta (abre el detalle): el título
@@ -2193,12 +2195,48 @@
       var bagIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1 11H6L5 8Zm3 0V6a4 4 0 0 1 8 0v2M12 11v5M9.5 13.5h5"></path></svg>';
       var checkIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"></path></svg>';
       var playIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7Z"></path></svg>';
+      var shareIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"></path></svg>';
       function renderDetailActions(game) {
         var inCart = !!cart[game.id];
         gdActions.innerHTML =
           '<button class="icon-btn btn-add' + (inCart ? ' added' : '') + '" type="button" data-add="' + game.id + '" aria-disabled="' + (inCart ? 'true' : 'false') + '" aria-label="Pedir ' + escapeHtml(game.title) + '">' + (inCart ? checkIcon : bagIcon) + '<span>' + (inCart ? 'Agregado' : 'Pedir') + '</span></button>' +
           (game.trailer ? '<a class="icon-btn btn-trailer" href="' + game.trailer + '" target="_blank" rel="noopener" aria-label="Ver tráiler de ' + escapeHtml(game.title) + '">' + playIcon + '<span>Trailer</span></a>' : '') +
-          (game.gameplay ? '<a class="icon-btn btn-trailer" href="' + game.gameplay + '" target="_blank" rel="noopener" aria-label="Ver gameplay de ' + escapeHtml(game.title) + '">' + playIcon + '<span>Gameplay</span></a>' : '');
+          (game.gameplay ? '<a class="icon-btn btn-trailer" href="' + game.gameplay + '" target="_blank" rel="noopener" aria-label="Ver gameplay de ' + escapeHtml(game.title) + '">' + playIcon + '<span>Gameplay</span></a>' : '') +
+          '<button class="icon-btn btn-share" type="button" data-share="' + game.id + '" aria-label="Compartir ' + escapeHtml(game.title) + '">' + shareIcon + '<span>Compartir</span></button>';
+      }
+      /* Compartir (prueba): arma el mensaje listo con el título, el
+         tamaño tal como se muestra en el detalle (en MB cuando es
+         menor de 1 GB) y el precio de ese juego. Usa la hoja de
+         compartir del teléfono (navigator.share) cuando está
+         disponible; si no, copia el mensaje al portapapeles y avisa
+         con el toast «Mensaje copiado». Sin librerías ni rastreo. */
+      function shareGame(game) {
+        if (!game) return;
+        var text = '🎮 ¡Ya disponible en YossFoxx! ' + game.title + ' (' + gameStorage(game) + ', ' + gamePrice(game).toLocaleString('es-ES') + ' CUP). Pídelo al WhatsApp +53 5239 0321. Catálogo completo: https://yosdelpc.github.io/yossfoxx/';
+        if (navigator.share) {
+          var sharing = navigator.share({ text: text });
+          if (sharing && sharing.catch) sharing.catch(function () {});
+          return;
+        }
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(function () { showToast('Mensaje copiado'); }, function () { copyShareFallback(text); });
+          return;
+        }
+        copyShareFallback(text);
+      }
+      function copyShareFallback(text) {
+        try {
+          var ta = document.createElement('textarea');
+          ta.value = text;
+          ta.setAttribute('readonly', '');
+          ta.style.position = 'fixed';
+          ta.style.opacity = '0';
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand('copy');
+          document.body.removeChild(ta);
+        } catch (e) {}
+        showToast('Mensaje copiado');
       }
       function openGameDetail(game, trigger) {
         if (!game || !gameDetail) return;
@@ -2267,6 +2305,8 @@
       /* Pedir dentro del detalle: agrega al carrito como siempre y el
          botón pasa a "Agregado" sin cerrar la ventana. */
       if (gdActions) gdActions.addEventListener('click', function (event) {
+        var shareBtn = event.target.closest('[data-share]');
+        if (shareBtn) { shareGame(getGame(shareBtn.getAttribute('data-share'))); return; }
         var before = itemCount();
         handleAdd(event);
         if (itemCount() !== before) {
