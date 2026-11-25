@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="robots" content="noindex, nofollow">
+<title>Administración · Catálogo PS4 YossFoxx</title>
+<style>
+  * { box-sizing: border-box; }
+  :root { --bg: #080d0e; --surface: #11191b; --surface2: #182528; --ink: #f2f7f8; --muted: #9fb6ba; --accent: #46e6ff; --accent2: #25d8e8; --line: #2a3f44; --ok: #7be495; --warn: #ffd479; --bad: #ff8a8a; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; font-size: 16px; line-height: 1.45; }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 16px 14px 48px; }
+  h1 { font-size: 24px; margin: 6px 0 4px; color: var(--accent); }
+  h2 { font-size: 18px; margin: 0 0 10px; color: var(--accent); }
+  p { margin: 6px 0; }
+  .sub { color: var(--muted); font-size: 14px; }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px; margin: 14px 0; }
+  label { display: block; font-weight: 600; margin: 14px 0 4px; font-size: 15px; }
+  label span { font-weight: 400; color: var(--muted); font-size: 13px; }
+  input[type="text"], input[type="number"], select, textarea { width: 100%; padding: 11px 10px; border-radius: 9px; border: 1px solid var(--line); background: var(--surface2); color: var(--ink); font-size: 16px; }
+  textarea { min-height: 84px; resize: vertical; }
+  input[type="file"] { width: 100%; padding: 8px 0; font-size: 15px; }
+  input[type="checkbox"] { width: 20px; height: 20px; accent-color: var(--accent); vertical-align: middle; }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 520px) { .row { grid-template-columns: 1fr; } }
+  button, .btn { display: inline-block; border: 0; border-radius: 10px; padding: 12px 16px; font-size: 16px; font-weight: 700; cursor: pointer; text-align: center; text-decoration: none; }
+  .btn-main { background: var(--accent); color: #04222a; width: 100%; margin-top: 14px; }
+  .btn-ghost { background: var(--surface2); color: var(--ink); border: 1px solid var(--line); }
+  .btn-danger { background: transparent; color: var(--bad); border: 1px solid var(--bad); padding: 8px 12px; font-size: 14px; }
+  .btn-small { padding: 8px 12px; font-size: 14px; }
+  .price { font-size: 26px; font-weight: 800; color: var(--accent); }
+  .ok { color: var(--ok); } .warn { color: var(--warn); } .bad { color: var(--bad); }
+  pre { background: #05090a; border: 1px solid var(--line); border-radius: 9px; padding: 10px; overflow-x: auto; font-size: 12.5px; line-height: 1.5; white-space: pre-wrap; word-break: break-word; }
+  .pend { border-top: 1px solid var(--line); padding: 10px 0; }
+  .pend:first-of-type { border-top: 0; }
+  .pend b { font-size: 16px; }
+  .pend .meta { color: var(--muted); font-size: 14px; }
+  .pend .acts { margin-top: 8px; display: flex; gap: 8px; flex-wrap: wrap; }
+  canvas#coverPrev { width: 150px; height: 210px; border-radius: 8px; border: 1px solid var(--line); background: #000; display: block; margin-top: 8px; }
+  ol li { margin: 8px 0; }
+  code { background: var(--surface2); padding: 1px 6px; border-radius: 6px; font-size: 14px; }
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Administración · YossFoxx</h1>
+  <p class="sub">Página solo para Yosdel. No está enlazada en la tienda. No envía tus datos a ningún lado: todo pasa en tu teléfono. Guárdala: <code>https://yosdelpc.github.io/yossfoxx/admin.html</code></p>
+
+  <div class="card" id="baseCard">
+    <h2>Base de juegos</h2>
+    <p id="baseInfo">Cargando la lista actual desde la página…</p>
+    <p><button class="btn btn-ghost btn-small" type="button" id="reloadBase">Volver a cargar la base</button>
+    <label for="baseFile" style="display:inline-block; margin-left:8px; font-weight:400;">o sube tu <code>juegos.json</code>: <input type="file" id="baseFile" accept=".json,application/json" style="width:auto;"></label></p>
+  </div>
+
+  <div class="card">
+    <h2>Agregar un juego</h2>
+    <form id="gameForm" autocomplete="off">
+      <label for="fTitle">Título *</label>
+      <input type="text" id="fTitle" placeholder="Ej: God of War: Sons of Sparta" required>
+
+      <label for="fCap">Capacidad * <span>— escribe como se muestra en la página: 23,9 GB o 314,5 MB</span></label>
+      <input type="text" id="fCap" placeholder="Ej: 23,9 GB" required>
+      <p id="capInfo" class="sub"></p>
+
+      <div class="row">
+        <div>
+          <label for="fCat">Categoría</label>
+          <input type="text" id="fCat" list="cats" placeholder="Ej: Acción">
+          <datalist id="cats">
+            <option value="Acción"></option><option value="Aventura"></option><option value="Deportes"></option>
+            <option value="Lucha"></option><option value="Arcade"></option><option value="RPG"></option>
+            <option value="Shooter"></option><option value="Carreras"></option><option value="Terror"></option>
+            <option value="Plataformas"></option><option value="Estrategia"></option><option value="Simulación"></option>
+          </datalist>
+        </div>
+        <div>
+          <label for="fJug">Jugadores</label>
+          <input type="text" id="fJug" placeholder="Ej: 1">
+        </div>
+      </div>
+
+      <div class="row">
+        <div>
+          <label for="fModo">Modo</label>
+          <input type="text" id="fModo" placeholder="Ej: Un jugador">
+        </div>
+        <div>
+          <label for="fAnio">Año</label>
+          <input type="number" id="fAnio" placeholder="Ej: 2016" min="1990" max="2100">
+        </div>
+      </div>
+
+      <div class="row">
+        <div>
+          <label for="fPegi">PEGI</label>
+          <select id="fPegi">
+            <option value="">Sin elegir</option>
+            <option value="3">3</option><option value="7">7</option><option value="12">12</option>
+            <option value="16">16</option><option value="18">18</option>
+          </select>
+        </div>
+        <div>
+          <label for="fPunt">Puntuación <span>— solo si tiene Metascore en PS4</span></label>
+          <input type="text" id="fPunt" placeholder="Ej: 85 / 100">
+        </div>
+      </div>
+
+      <label for="fIdioma">Idioma <span>— escribe solo lo confirmado: textos, voces o ambos</span></label>
+      <input type="text" id="fIdioma" placeholder="Ej: Textos en español">
+
+      <label for="fTrailer">Tráiler <span>— enlace de YouTube o solo el ID</span></label>
+      <input type="text" id="fTrailer" placeholder="Ej: https://www.youtube.com/watch?v=…">
+      <label for="fGameplay">Gameplay <span>— enlace de YouTube o solo el ID</span></label>
+      <input type="text" id="fGameplay" placeholder="Ej: https://www.youtube.com/watch?v=…">
+
+      <label for="fSin">Sinopsis</label>
+      <textarea id="fSin" placeholder="De qué trata el juego, en una o dos frases."></textarea>
+
+      <label for="fCover">Portada * <span>— imagen del juego; se ajusta a 400×560 WebP (máx. 60 KB)</span></label>
+      <input type="file" id="fCover" accept="image/*" required>
+      <p><label style="font-weight:400; margin-top:8px;"><input type="checkbox" id="brandChk" checked> Aplicar la marca de la tienda (franja, línea dorada, YossFoxx y 52390321)</label></p>
+      <canvas id="coverPrev" width="400" height="560" class="hidden"></canvas>
+      <p id="coverInfo" class="sub"></p>
+
+      <p><label style="font-weight:400;"><input type="checkbox" id="fPrem"> Mostrar en Estrenos (va de 3.º, después de FC 27 y God of War: Sons of Sparta)</label></p>
+      <p id="ordenInfo" class="sub"></p>
+
+      <p>Precio calculado: <span class="price" id="priceOut">—</span></p>
+      <p id="dupWarn" class="warn hidden"></p>
+      <p id="formErr" class="bad hidden"></p>
+
+      <h2 style="margin-top:20px;">Así quedará guardado</h2>
+      <pre id="preview">Llena el título y la capacidad para ver el avance.</pre>
+      <button class="btn-main" type="submit" id="addBtn">Agregar a la lista</button>
+    </form>
+  </div>
+
+  <div class="card">
+    <h2>Juegos en lista (<span id="pendCount">0</span>)</h2>
+    <div id="pendList"><p class="sub">Todavía no hay juegos en lista.</p></div>
+    <button class="btn-main hidden" type="button" id="dlJsonBtn">Descargar juegos.json actualizado</button>
+    <p><button class="btn btn-ghost btn-small" type="button" id="clearBtn">Vaciar la lista</button></p>
+    <p class="sub">La lista se guarda en este teléfono aunque cierres la página. Al descargar, el archivo trae los juegos viejos más los de la lista, en el mismo formato de siempre.</p>
+  </div>
+
+  <div class="card">
+    <h2>Cómo subirlo a GitHub desde el teléfono</h2>
+    <ol>
+      <li>Descarga <code>juegos.json</code> y cada portada con los botones de esta página.</li>
+      <li>Abre la app de GitHub → repositorio <b>YosdelPC/yossfoxx</b>.</li>
+      <li>Entra a la carpeta <code>doc</code> → sube <code>juegos.json</code> y elige reemplazar el actual → commit a <b>main</b>.</li>
+      <li>Entra a <code>assets</code> → <code>imagenes</code> → <code>portadas</code> → sube cada portada nueva (<code>00184.webp</code>, etc.) → commit a <b>main</b>.</li>
+      <li>Espera de 2 a 5 minutos y abre la tienda para comprobar que el juego ya sale.</li>
+      <li>El PDF del catálogo no lo genera esta página: se actualiza cuando hables con Muse.</li>
+      <li>Si el juego estaba pedido en Pedidos de Usuarios, díselo a Muse para marcarlo como Agregado.</li>
+    </ol>
+  </div>
+</div>
+<script>
+(function () {
+  'use strict';
+  var LS_KEY = 'yfAdminPendingV1';
+  var base = [];
+  var pending = [];
+  var coverReady = null; /* {name, dataUrl, kb} */
+
+  function $(id) { return document.getElementById(id); }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]; }); }
+  function trim(s) { return String(s == null ? '' : s).replace(/^\s+|\s+$/g, ''); }
+
+  /* Misma regla de precios de la tienda. */
+  function priceFor(title, cap) {
+    if (title === 'EA SPORTS FC 27') return 1000;
+    if (cap <= 1) return 200;
+    if (cap <= 3) return 300;
+    if (cap >= 100) return 1000;
+    if (cap >= 49.5) return 800;
+    return 500;
+  }
+  function fmtCap(v) {
+    if (v < 1) return Math.round(v * 1000) + ' MB';
+    return v.toLocaleString('es-ES', { maximumFractionDigits: 4 }) + ' GB';
+  }
+  function parseCap(s) {
+    s = trim(s).replace(',', '.');
+    var m = s.match(/([\d.]+)\s*(gb|mb)?/i);
+    if (!m) return null;
+    var v = parseFloat(m[1]);
+    if (isNaN(v) || v <= 0) return null;
+    if ((m[2] || 'GB').toUpperCase() === 'MB') v = v / 1000;
+    return Math.round(v * 10000) / 10000;
+  }
+  function ytId(s) {
+    s = trim(s);
+    if (!s) return '';
+    var m = s.match(/(?:v=|youtu\.be\/|embed\/|shorts\/|live\/)([A-Za-z0-9_-]{11})/);
+    if (m) return m[1];
+    if (/^[A-Za-z0-9_-]{11}$/.test(s)) return s;
+    return null;
+  }
+  function gameNum(g) { var n = parseInt(String(g.id || '').replace('game-', ''), 10); return isNaN(n) ? 0 : n; }
+
+  function nextId() {
+    var max = 0, i;
+    for (i = 0; i < base.length; i++) max = Math.max(max, gameNum(base[i]));
+    for (i = 0; i < pending.length; i++) max = Math.max(max, gameNum(pending[i].game));
+    return max + 1;
+  }
+  function pad(n, len) { var s = String(n); while (s.length < len) s = '0' + s; return s; }
+  function nextOrden() {
+    var min = null, i, o;
+    for (i = 0; i < base.length; i++) {
+      o = base[i].orden;
+      if (base[i].premiere && typeof o === 'number' && o > -2 && (min === null || o < min)) min = o;
+    }
+    if (min === null) return -1.5;
+    return (-2 + min) / 2;
+  }
+
+  function baseInfo() {
+    var n = nextId();
+    $('baseInfo').innerHTML = 'Base cargada: <b>' + base.length + ' juegos</b> · próximo ID <code>game-' + pad(n, 3) + '</code> · próxima portada <code>' + pad(n, 5) + '.webp</code>';
+  }
+  function loadBaseFromText(text) {
+    try {
+      var data = JSON.parse(text);
+      if (!Array.isArray(data) || !data.length) throw new Error('vacia');
+      base = data;
+      baseInfo();
+      updateAll();
+    } catch (e) {
+      $('baseInfo').innerHTML = '<span class="bad">No se pudo leer ese juegos.json. Revisa el archivo e inténtalo de nuevo.</span>';
+    }
+  }
+  function loadBase() {
+    $('baseInfo').textContent = 'Cargando la lista actual desde la página…';
+    fetch('doc/juegos.json', { cache: 'no-store' }).then(function (r) {
+      if (!r.ok) throw new Error('http ' + r.status);
+      return r.text();
+    }).then(loadBaseFromText).catch(function () {
+      $('baseInfo').innerHTML = '<span class="warn">No se pudo cargar sola. Sube tu <code>juegos.json</code> con el botón de arriba (lo descargas de la carpeta <code>doc</code> del repo).</span>';
+    });
+  }
+  $('reloadBase').addEventListener('click', loadBase);
+  $('baseFile').addEventListener('change', function () {
+    var f = this.files && this.files[0];
+    if (!f) return;
+    var rd = new FileReader();
+    rd.onload = function () { loadBaseFromText(String(rd.result || '')); };
+    rd.readAsText(f);
+  });
+
+  /* Portada: recorte centrado a 400x560 + marca opcional + WebP <= 60 KB. */
+  function processCover(file) {
+    coverReady = null;
+    $('coverInfo').textContent = 'Procesando la portada…';
+    var rd = new FileReader();
+    rd.onload = function () {
+      var img = new Image();
+      img.onload = function () {
+        var cv = $('coverPrev'), ctx = cv.getContext('2d');
+        var W = 400, H = 560;
+        var sc = Math.max(W / img.width, H / img.height);
+        var dw = img.width * sc, dh = img.height * sc;
+        ctx.clearRect(0, 0, W, H);
+        ctx.drawImage(img, (W - dw) / 2, (H - dh) / 2, dw, dh);
+        if ($('brandChk').checked) drawBrand(ctx, W, H);
+        cv.classList.remove('hidden');
+        var q = 0.85;
+        (function toBlob() {
+          cv.toBlob(function (blob) {
+            if (!blob) { $('coverInfo').innerHTML = '<span class="bad">No se pudo procesar la imagen. Prueba con otra.</span>'; return; }
+            var kb = blob.size / 1024;
+            if (kb > 60 && q > 0.5) { q -= 0.1; toBlob(); return; }
+            var r2 = new FileReader();
+            r2.onload = function () {
+              var n = nextId();
+              coverReady = { name: pad(n, 5) + '.webp', dataUrl: String(r2.result || ''), kb: kb };
+              $('coverInfo').innerHTML = 'Portada lista: <code>' + coverReady.name + '</code> · ' + kb.toFixed(1) + ' KB' + (kb > 60 ? ' <span class="warn">(pasa de 60 KB, se ve igual pero pesa más)</span>' : '');
+              updateAll();
+            };
+            r2.readAsDataURL(blob);
+          }, 'image/webp', q);
+        })();
+      };
+      img.onerror = function () { $('coverInfo').innerHTML = '<span class="bad">Ese archivo no se pudo abrir como imagen.</span>'; };
+      img.src = String(rd.result || '');
+    };
+    rd.readAsDataURL(file);
+  }
+  function drawBrand(ctx, W, H) {
+    var g = ctx.createLinearGradient(0, 380, 0, H);
+    g.addColorStop(0, 'rgba(0,0,0,0)');
+    g.addColorStop(0.45, 'rgba(0,0,0,0.55)');
+    g.addColorStop(1, 'rgba(0,0,0,0.88)');
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 380, W, H - 380);
+    ctx.fillStyle = '#d4af37';
+    ctx.fillRect(0, 480, W, 3);
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#ffffff';
+    ctx.font = '700 30px Arial, sans-serif';
+    ctx.fillText('YossFoxx', W / 2, 520);
+    ctx.fillStyle = '#d4af37';
+    ctx.font = '700 22px Arial, sans-serif';
+    ctx.fillText('52390321', W / 2, 550);
+  }
+  $('fCover').addEventListener('change', function () {
+    var f = this.files && this.files[0];
+    if (f) processCover(f);
+  });
+  $('brandChk').addEventListener('change', function () {
+    var f = $('fCover').files && $('fCover').files[0];
+    if (f) processCover(f);
+  });
+
+  function currentValues() {
+    var title = trim($('fTitle').value);
+    var capRaw = trim($('fCap').value);
+    var cap = parseCap(capRaw);
+    var tr = ytId($('fTrailer').value);
+    var gp = ytId($('fGameplay').value);
+    var punt = trim($('fPunt').value);
+    if (/^\d+$/.test(punt)) punt = punt + ' / 100';
+    return { title: title, capRaw: capRaw, cap: cap, tr: tr, gp: gp, punt: punt };
+  }
+
+  function buildGame(v, n) {
+    var g = {};
+    g.id = 'game-' + pad(n, 3);
+    g.title = v.title;
+    g.capacity = v.cap;
+    g.cover = 'assets/imagenes/portadas/' + pad(n, 5) + '.webp';
+    if (v.tr) g.trailer = 'https://www.youtube.com/watch?v=' + v.tr;
+    if ($('fPrem').checked) { g.premiere = true; g.orden = nextOrden(); }
+    var cat = trim($('fCat').value); if (cat) g.categoria = cat;
+    var jug = trim($('fJug').value); if (jug) g.jugadores = jug;
+    var modo = trim($('fModo').value); if (modo) g.modo = modo;
+    var anio = parseInt($('fAnio').value, 10); if (!isNaN(anio)) g.anio = anio;
+    var pegi = parseInt($('fPegi').value, 10); if (!isNaN(pegi)) g.pegi = pegi;
+    var idioma = trim($('fIdioma').value); if (idioma) g.idioma = idioma;
+    if (v.punt) g.puntuacion = v.punt;
+    var sin = trim($('fSin').value); if (sin) g.sinopsis = sin;
+    if (v.gp) g.gameplay = 'https://www.youtube.com/watch?v=' + v.gp;
+    return g;
+  }
+
+  function updateAll() {
+    var v = currentValues();
+    var n = nextId();
+    var priceTxt = '—', errs = [];
+    if (v.cap !== null && v.title) {
+      priceTxt = priceFor(v.title, v.cap).toLocaleString('es-ES') + ' CUP';
+    }
+    $('priceOut').textContent = priceTxt;
+    $('capInfo').textContent = v.capRaw ? (v.cap === null ? 'No entiendo esa capacidad. Escribe por ejemplo: 23,9 GB' : 'Se guarda como ' + v.cap + ' GB y se muestra como ' + fmtCap(v.cap) + '.') : '';
+    $('ordenInfo').textContent = $('fPrem').checked ? ('En Estrenos irá de 3.º con orden ' + nextOrden() + '.') : '';
+    var dup = null, i;
+    if (v.title) {
+      var low = v.title.toLocaleLowerCase('es');
+      for (i = 0; i < base.length; i++) {
+        if (String(base[i].title || '').toLocaleLowerCase('es') === low) { dup = base[i]; break; }
+      }
+    }
+    var dw = $('dupWarn');
+    if (dup) { dw.textContent = 'Ojo: «' + dup.title + '» ya está en el catálogo (' + fmtCap(dup.capacity) + ').'; dw.classList.remove('hidden'); }
+    else dw.classList.add('hidden');
+    if (v.title && v.cap !== null && (v.tr !== null) && (v.gp !== null)) {
+      var g = buildGame(v, n);
+      $('preview').textContent = JSON.stringify(g, null, 2);
+    } else {
+      $('preview').textContent = 'Llena el título y la capacidad para ver el avance.' + ((v.tr === null || v.gp === null) ? '\nRevisa el enlace de tráiler o gameplay: no parece de YouTube.' : '');
+    }
+  }
+
+  ['fTitle', 'fCap', 'fCat', 'fJug', 'fModo', 'fAnio', 'fPegi', 'fIdioma', 'fPunt', 'fTrailer', 'fGameplay', 'fSin'].forEach(function (id) {
+    $(id).addEventListener('input', updateAll);
+    $(id).addEventListener('change', updateAll);
+  });
+  $('fPrem').addEventListener('change', updateAll);
+
+  function savePending() {
+    try { localStorage.setItem(LS_KEY, JSON.stringify(pending)); } catch (e) { /* sin espacio: sigue en memoria */ }
+  }
+  function loadPending() {
+    try {
+      var raw = localStorage.getItem(LS_KEY);
+      if (raw) { var d = JSON.parse(raw); if (Array.isArray(d)) pending = d; }
+    } catch (e) { pending = []; }
+  }
+
+  function downloadBlob(blob, name) {
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = name;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 800);
+  }
+  function dataUrlToBlob(dataUrl) {
+    var parts = dataUrl.split(','), meta = parts[0].match(/:(.*?);/);
+    var bin = atob(parts[1]), len = bin.length, arr = new Uint8Array(len);
+    for (var i = 0; i < len; i++) arr[i] = bin.charCodeAt(i);
+    return new Blob([arr], { type: (meta && meta[1]) || 'image/webp' });
+  }
+
+  function renderPending() {
+    var list = $('pendList');
+    $('pendCount').textContent = pending.length;
+    $('dlJsonBtn').classList.toggle('hidden', !pending.length);
+    if (!pending.length) { list.innerHTML = '<p class="sub">Todavía no hay juegos en lista.</p>'; return; }
+    var html = '';
+    pending.forEach(function (p, i) {
+      html += '<div class="pend"><b>' + esc(p.game.title) + '</b><div class="meta">' + fmtCap(p.game.capacity) + ' · ' + priceFor(p.game.title, p.game.capacity).toLocaleString('es-ES') + ' CUP · <code>' + esc(p.coverName) + '</code>' + (p.game.premiere ? ' · Estrenos' : '') + '</div>' +
+        '<div class="acts"><button class="btn btn-ghost btn-small" type="button" data-dl="' + i + '">Descargar portada</button>' +
+        '<button class="btn-danger" type="button" data-rm="' + i + '">Quitar</button></div></div>';
+    });
+    list.innerHTML = html;
+    Array.prototype.forEach.call(list.querySelectorAll('[data-dl]'), function (b) {
+      b.addEventListener('click', function () {
+        var p = pending[+b.getAttribute('data-dl')];
+        if (p && p.coverDataUrl) downloadBlob(dataUrlToBlob(p.coverDataUrl), p.coverName);
+      });
+    });
+    Array.prototype.forEach.call(list.querySelectorAll('[data-rm]'), function (b) {
+      b.addEventListener('click', function () {
+        pending.splice(+b.getAttribute('data-rm'), 1);
+        savePending(); renderPending(); updateAll();
+      });
+    });
+  }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]; }); }
+
+  $('gameForm').addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    var err = $('formErr');
+    var v = currentValues();
+    var msgs = [];
+    if (!v.title) msgs.push('Falta el título.');
+    if (v.cap === null) msgs.push('Falta la capacidad o no se entiende (ej: 23,9 GB).');
+    if (v.tr === null) msgs.push('El enlace de tráiler no parece de YouTube.');
+    if (v.gp === null) msgs.push('El enlace de gameplay no parece de YouTube.');
+    if (!coverReady) msgs.push('Falta la portada: elige la imagen del juego.');
+    if (msgs.length) { err.innerHTML = msgs.join('<br>'); err.classList.remove('hidden'); return; }
+    err.classList.add('hidden');
+    var n = nextId();
+    var g = buildGame(v, n);
+    pending.push({ game: g, coverName: coverReady.name, coverDataUrl: coverReady.dataUrl, coverKb: coverReady.kb });
+    savePending(); renderPending();
+    $('gameForm').reset();
+    $('brandChk').checked = true;
+    coverReady = null;
+    $('coverPrev').classList.add('hidden');
+    $('coverInfo').textContent = '';
+    updateAll();
+    window.scrollTo({ top: $('pendList').offsetTop - 80, behavior: 'smooth' });
+  });
+
+  $('dlJsonBtn').addEventListener('click', function () {
+    var all = base.concat(pending.map(function (p) { return p.game; }));
+    var text = '[\n' + all.map(function (g) { return '  ' + JSON.stringify(g); }).join(',\n') + '\n]\n';
+    downloadBlob(new Blob([text], { type: 'application/json' }), 'juegos.json');
+  });
+  $('clearBtn').addEventListener('click', function () {
+    if (!pending.length) return;
+    if (window.confirm('¿Vaciar la lista de ' + pending.length + ' juego(s)?')) {
+      pending = []; savePending(); renderPending(); updateAll();
+    }
+  });
+
+  loadPending();
+  renderPending();
+  loadBase();
+  updateAll();
+})();
+</script>
+</body>
+</html>
