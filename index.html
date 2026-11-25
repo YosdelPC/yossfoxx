@@ -2206,23 +2206,57 @@
       }
       /* Compartir (prueba): arma el mensaje listo con el título, el
          tamaño tal como se muestra en el detalle (en MB cuando es
-         menor de 1 GB) y el precio de ese juego. Usa la hoja de
-         compartir del teléfono (navigator.share) cuando está
-         disponible; si no, copia el mensaje al portapapeles y avisa
-         con el toast «Mensaje copiado». Sin librerías ni rastreo. */
+         menor de 1 GB) y el precio de ese juego. Primero intenta
+         descargar la portada de ESE juego y compartirla como archivo
+         junto al mensaje (navigator.share con files, verificando con
+         navigator.canShare que el teléfono lo soporte). Si compartir
+         archivos no está soportado o la descarga de la portada falla,
+         cae al comportamiento anterior: compartir solo el texto con
+         la hoja de compartir del teléfono (navigator.share) cuando
+         está disponible; si no, copia el mensaje al portapapeles y
+         avisa con el toast «Mensaje copiado». El mensaje no cambia.
+         Sin librerías ni rastreo. */
       function shareGame(game) {
         if (!game) return;
         var text = '🎮 ¡Ya disponible en YossFoxx! ' + game.title + ' (' + gameStorage(game) + ', ' + gamePrice(game).toLocaleString('es-ES') + ' CUP). Pídelo al WhatsApp +53 5239 0321. Catálogo completo: https://yosdelpc.github.io/yossfoxx/';
-        if (navigator.share) {
-          var sharing = navigator.share({ text: text });
-          if (sharing && sharing.catch) sharing.catch(function () {});
-          return;
+        function shareTextOnly() {
+          if (navigator.share) {
+            var sharing = navigator.share({ text: text });
+            if (sharing && sharing.catch) sharing.catch(function () {});
+            return;
+          }
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(function () { showToast('Mensaje copiado'); }, function () { copyShareFallback(text); });
+            return;
+          }
+          copyShareFallback(text);
         }
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(text).then(function () { showToast('Mensaje copiado'); }, function () { copyShareFallback(text); });
-          return;
+        function shareWithCover() {
+          fetch(game.cover).then(function (resp) {
+            if (!resp.ok) throw new Error('cover');
+            return resp.blob();
+          }).then(function (blob) {
+            var name = String(game.cover).split('/').pop().split('?')[0] || 'portada.webp';
+            var file;
+            try {
+              file = new File([blob], name, { type: blob.type || 'image/webp' });
+            } catch (e) {
+              shareTextOnly();
+              return;
+            }
+            if (navigator.canShare({ files: [file] })) {
+              var sharing = navigator.share({ text: text, files: [file] });
+              if (sharing && sharing.catch) sharing.catch(function () {});
+            } else {
+              shareTextOnly();
+            }
+          }).catch(function () { shareTextOnly(); });
         }
-        copyShareFallback(text);
+        if (game.cover && navigator.share && navigator.canShare) {
+          shareWithCover();
+        } else {
+          shareTextOnly();
+        }
       }
       function copyShareFallback(text) {
         try {
