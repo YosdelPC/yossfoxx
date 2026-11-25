@@ -2218,7 +2218,7 @@
          Sin librerías ni rastreo. */
       function shareGame(game) {
         if (!game) return;
-        var text = '🎮 ¡Ya disponible en YossFoxx! ' + game.title + ' (' + gameStorage(game) + ', ' + gamePrice(game).toLocaleString('es-ES') + ' CUP). Pídelo al WhatsApp +53 5239 0321. Catálogo completo: https://yosdelpc.github.io/yossfoxx/';
+        var text = '🎮 ¡Ya disponible en\n*Catálogo PS4 YossFoxx!*\n\n' + game.title + '\n(' + gameStorage(game) + ', ' + gamePrice(game).toLocaleString('es-ES') + ' CUP)\n\nPídelo al WhatsApp\n+53 52390321\n\nCatálogo completo:\nhttps://yosdelpc.github.io/yossfoxx/';
         function shareTextOnly() {
           if (navigator.share) {
             var sharing = navigator.share({ text: text });
